@@ -10,10 +10,10 @@ import UIKit
 
 struct ModuleFactory
 {
-	let repository: IRepository
+	private let repository: IRepository
 
-	init(repository: IRepository) {
-		self.repository = repository
+	init() {
+		self.repository = Repository()
 	}
 
 	func createNavigationController() -> UIViewController {
