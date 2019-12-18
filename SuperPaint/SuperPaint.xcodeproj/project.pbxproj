@@ -20,6 +20,7 @@
 		720A38B523AA92E10026EFC9 /* IImagesCollectionRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A38B423AA92E10026EFC9 /* IImagesCollectionRouter.swift */; };
 		720A38B823AA9A050026EFC9 /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A38B723AA9A050026EFC9 /* Repository.swift */; };
 		720A38BA23AA9A170026EFC9 /* IRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A38B923AA9A170026EFC9 /* IRepository.swift */; };
+		8511E6ED23AA936A0032B588 /* ModuleFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8511E6EC23AA936A0032B588 /* ModuleFactory.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,7 @@
 		720A38B423AA92E10026EFC9 /* IImagesCollectionRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IImagesCollectionRouter.swift; sourceTree = "<group>"; };
 		720A38B723AA9A050026EFC9 /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
 		720A38B923AA9A170026EFC9 /* IRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRepository.swift; sourceTree = "<group>"; };
+		8511E6EC23AA936A0032B588 /* ModuleFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleFactory.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +74,7 @@
 			children = (
 				720A38B623AA99EA0026EFC9 /* Repository */,
 				720A38A723AA91C50026EFC9 /* ImagesCollectionModule */,
+				8511E6EB23AA93550032B588 /* Factory */,
 				720A389523A7F8E20026EFC9 /* AppDelegate.swift */,
 				720A389723A7F8E20026EFC9 /* ViewController.swift */,
 				720A389923A7F8E30026EFC9 /* Main.storyboard */,
@@ -110,6 +113,14 @@
 				720A38B923AA9A170026EFC9 /* IRepository.swift */,
 			);
 			path = Repository;
+			sourceTree = "<group>";
+		};
+		8511E6EB23AA93550032B588 /* Factory */ = {
+			isa = PBXGroup;
+			children = (
+				8511E6EC23AA936A0032B588 /* ModuleFactory.swift */,
+			);
+			path = Factory;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -209,6 +220,7 @@
 				720A389823A7F8E20026EFC9 /* ViewController.swift in Sources */,
 				720A38A923AA920A0026EFC9 /* ImagesCollectionViewController.swift in Sources */,
 				720A38B523AA92E10026EFC9 /* IImagesCollectionRouter.swift in Sources */,
+				8511E6ED23AA936A0032B588 /* ModuleFactory.swift in Sources */,
 				720A389623A7F8E20026EFC9 /* AppDelegate.swift in Sources */,
 				720A38B123AA92BA0026EFC9 /* IImagesCollectionViewController.swift in Sources */,
 				720A38AE23AA922D0026EFC9 /* ImagesCollectionRouter.swift in Sources */,
