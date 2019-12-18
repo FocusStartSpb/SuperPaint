@@ -8,6 +8,6 @@
 
 import Foundation
 
-protocol IRepository
+protocol IRepository: AnyObject
 {
 }

@@ -10,12 +10,12 @@ import Foundation
 
 final class ImagesCollectionRouter
 {
-	weak var ImagesCollectionView: IImagesCollectionViewController?
+	weak var imagesCollectionView: IImagesCollectionViewController?
 
 	init() {
 	}
 
 	func inject(view: IImagesCollectionViewController) {
-		self.ImagesCollectionView = view
+		self.imagesCollectionView = view
 	}
 }
