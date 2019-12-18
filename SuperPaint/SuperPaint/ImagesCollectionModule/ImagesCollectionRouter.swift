@@ -19,3 +19,7 @@ final class ImagesCollectionRouter
 		self.imagesCollectionView = view
 	}
 }
+
+extension ImagesCollectionRouter: IImagesCollectionRouter
+{
+}

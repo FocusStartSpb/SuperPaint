@@ -8,6 +8,6 @@
 
 import Foundation
 
-protocol IImagesCollectionPresenter
+protocol IImagesCollectionPresenter: AnyObject
 {
 }
