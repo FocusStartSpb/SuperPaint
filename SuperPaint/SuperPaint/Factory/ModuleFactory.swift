@@ -28,6 +28,6 @@ struct ModuleFactory
 		let view = ImagesCollectionViewController(presenter: presenter)
 		presenter.inject(view: view)
 		router.inject(view: view)
-		return viewController
+		return view
 	}
 }

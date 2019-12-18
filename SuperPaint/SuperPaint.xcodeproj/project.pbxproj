@@ -12,6 +12,14 @@
 		720A389B23A7F8E30026EFC9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 720A389923A7F8E30026EFC9 /* Main.storyboard */; };
 		720A389D23A7F8E60026EFC9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 720A389C23A7F8E60026EFC9 /* Assets.xcassets */; };
 		720A38A023A7F8E60026EFC9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 720A389E23A7F8E60026EFC9 /* LaunchScreen.storyboard */; };
+		720A38A923AA920A0026EFC9 /* ImagesCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A38A823AA920A0026EFC9 /* ImagesCollectionViewController.swift */; };
+		720A38AB23AA92180026EFC9 /* ImagesCollectionPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A38AA23AA92180026EFC9 /* ImagesCollectionPresenter.swift */; };
+		720A38AE23AA922D0026EFC9 /* ImagesCollectionRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A38AD23AA922D0026EFC9 /* ImagesCollectionRouter.swift */; };
+		720A38B123AA92BA0026EFC9 /* IImagesCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A38B023AA92BA0026EFC9 /* IImagesCollectionViewController.swift */; };
+		720A38B323AA92C80026EFC9 /* IImagesCollectionPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A38B223AA92C80026EFC9 /* IImagesCollectionPresenter.swift */; };
+		720A38B523AA92E10026EFC9 /* IImagesCollectionRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A38B423AA92E10026EFC9 /* IImagesCollectionRouter.swift */; };
+		720A38B823AA9A050026EFC9 /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A38B723AA9A050026EFC9 /* Repository.swift */; };
+		720A38BA23AA9A170026EFC9 /* IRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A38B923AA9A170026EFC9 /* IRepository.swift */; };
 		8511E6ED23AA936A0032B588 /* ModuleFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8511E6EC23AA936A0032B588 /* ModuleFactory.swift */; };
 /* End PBXBuildFile section */
 
@@ -23,6 +31,14 @@
 		720A389C23A7F8E60026EFC9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		720A389F23A7F8E60026EFC9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		720A38A123A7F8E60026EFC9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		720A38A823AA920A0026EFC9 /* ImagesCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesCollectionViewController.swift; sourceTree = "<group>"; };
+		720A38AA23AA92180026EFC9 /* ImagesCollectionPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesCollectionPresenter.swift; sourceTree = "<group>"; };
+		720A38AD23AA922D0026EFC9 /* ImagesCollectionRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesCollectionRouter.swift; sourceTree = "<group>"; };
+		720A38B023AA92BA0026EFC9 /* IImagesCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IImagesCollectionViewController.swift; sourceTree = "<group>"; };
+		720A38B223AA92C80026EFC9 /* IImagesCollectionPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IImagesCollectionPresenter.swift; sourceTree = "<group>"; };
+		720A38B423AA92E10026EFC9 /* IImagesCollectionRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IImagesCollectionRouter.swift; sourceTree = "<group>"; };
+		720A38B723AA9A050026EFC9 /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
+		720A38B923AA9A170026EFC9 /* IRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRepository.swift; sourceTree = "<group>"; };
 		8511E6EC23AA936A0032B588 /* ModuleFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleFactory.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -56,6 +72,8 @@
 		720A389423A7F8E20026EFC9 /* SuperPaint */ = {
 			isa = PBXGroup;
 			children = (
+				720A38B623AA99EA0026EFC9 /* Repository */,
+				720A38A723AA91C50026EFC9 /* ImagesCollectionModule */,
 				8511E6EB23AA93550032B588 /* Factory */,
 				720A389523A7F8E20026EFC9 /* AppDelegate.swift */,
 				720A389723A7F8E20026EFC9 /* ViewController.swift */,
@@ -65,6 +83,36 @@
 				720A38A123A7F8E60026EFC9 /* Info.plist */,
 			);
 			path = SuperPaint;
+			sourceTree = "<group>";
+		};
+		720A38A723AA91C50026EFC9 /* ImagesCollectionModule */ = {
+			isa = PBXGroup;
+			children = (
+				720A38AF23AA92910026EFC9 /* Protocols */,
+				720A38A823AA920A0026EFC9 /* ImagesCollectionViewController.swift */,
+				720A38AA23AA92180026EFC9 /* ImagesCollectionPresenter.swift */,
+				720A38AD23AA922D0026EFC9 /* ImagesCollectionRouter.swift */,
+			);
+			path = ImagesCollectionModule;
+			sourceTree = "<group>";
+		};
+		720A38AF23AA92910026EFC9 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				720A38B023AA92BA0026EFC9 /* IImagesCollectionViewController.swift */,
+				720A38B223AA92C80026EFC9 /* IImagesCollectionPresenter.swift */,
+				720A38B423AA92E10026EFC9 /* IImagesCollectionRouter.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		720A38B623AA99EA0026EFC9 /* Repository */ = {
+			isa = PBXGroup;
+			children = (
+				720A38B723AA9A050026EFC9 /* Repository.swift */,
+				720A38B923AA9A170026EFC9 /* IRepository.swift */,
+			);
+			path = Repository;
 			sourceTree = "<group>";
 		};
 		8511E6EB23AA93550032B588 /* Factory */ = {
@@ -167,9 +215,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				720A38AB23AA92180026EFC9 /* ImagesCollectionPresenter.swift in Sources */,
+				720A38B323AA92C80026EFC9 /* IImagesCollectionPresenter.swift in Sources */,
 				720A389823A7F8E20026EFC9 /* ViewController.swift in Sources */,
+				720A38A923AA920A0026EFC9 /* ImagesCollectionViewController.swift in Sources */,
+				720A38B523AA92E10026EFC9 /* IImagesCollectionRouter.swift in Sources */,
 				8511E6ED23AA936A0032B588 /* ModuleFactory.swift in Sources */,
 				720A389623A7F8E20026EFC9 /* AppDelegate.swift in Sources */,
+				720A38B123AA92BA0026EFC9 /* IImagesCollectionViewController.swift in Sources */,
+				720A38AE23AA922D0026EFC9 /* ImagesCollectionRouter.swift in Sources */,
+				720A38B823AA9A050026EFC9 /* Repository.swift in Sources */,
+				720A38BA23AA9A170026EFC9 /* IRepository.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
