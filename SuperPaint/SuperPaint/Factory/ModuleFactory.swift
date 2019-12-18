@@ -23,7 +23,7 @@ struct ModuleFactory
 	}
 
 	func createImagesCollectionModule() -> UIViewController {
-		let router = ImagesCollectionRouter()
+		let router = ImagesCollectionRouter(factory: self)
 		let presenter = ImagesCollectionPresenter(router: router, repository: repository)
 		let view = ImagesCollectionViewController(presenter: presenter)
 		presenter.inject(view: view)

@@ -11,6 +11,11 @@ import Foundation
 final class ImagesCollectionRouter
 {
 	weak var imagesCollectionView: IImagesCollectionViewController?
+	private let factory: ModuleFactory
+
+	init(factory: ModuleFactory) {
+		self.factory = factory
+	}
 
 	func inject(view: IImagesCollectionViewController) {
 		self.imagesCollectionView = view
