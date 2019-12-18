@@ -12,9 +12,6 @@ final class ImagesCollectionRouter
 {
 	weak var imagesCollectionView: IImagesCollectionViewController?
 
-	init() {
-	}
-
 	func inject(view: IImagesCollectionViewController) {
 		self.imagesCollectionView = view
 	}
