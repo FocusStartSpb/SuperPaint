@@ -22,6 +22,13 @@
 		720A38C023AD093E0026EFC9 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A38BF23AD093E0026EFC9 /* Constants.swift */; };
 		720A38C223AD6D5E0026EFC9 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A38C123AD6D5E0026EFC9 /* Fonts.swift */; };
 		8511E6ED23AA936A0032B588 /* ModuleFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8511E6EC23AA936A0032B588 /* ModuleFactory.swift */; };
+		85612AFB23ACE8140082DC95 /* ImageEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85612AFA23ACE8140082DC95 /* ImageEditorViewController.swift */; };
+		85612AFD23ACE8410082DC95 /* ImageEditorPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85612AFC23ACE8410082DC95 /* ImageEditorPresenter.swift */; };
+		85612AFF23ACE86E0082DC95 /* ImageEditorRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85612AFE23ACE86E0082DC95 /* ImageEditorRouter.swift */; };
+		85612B0223ACE8AC0082DC95 /* IImageEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85612B0123ACE8AC0082DC95 /* IImageEditorViewController.swift */; };
+		85612B0423ACE8DC0082DC95 /* IImageEditorPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85612B0323ACE8DC0082DC95 /* IImageEditorPresenter.swift */; };
+		85612B0623ACE8FC0082DC95 /* IImageEditorRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85612B0523ACE8FC0082DC95 /* IImageEditorRouter.swift */; };
+		859BCCDC23AF725B00553048 /* Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859BCCDB23AF725B00553048 /* Filter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +49,13 @@
 		720A38BF23AD093E0026EFC9 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		720A38C123AD6D5E0026EFC9 /* Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
 		8511E6EC23AA936A0032B588 /* ModuleFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleFactory.swift; sourceTree = "<group>"; };
+		85612AFA23ACE8140082DC95 /* ImageEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageEditorViewController.swift; sourceTree = "<group>"; };
+		85612AFC23ACE8410082DC95 /* ImageEditorPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageEditorPresenter.swift; sourceTree = "<group>"; };
+		85612AFE23ACE86E0082DC95 /* ImageEditorRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageEditorRouter.swift; sourceTree = "<group>"; };
+		85612B0123ACE8AC0082DC95 /* IImageEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IImageEditorViewController.swift; sourceTree = "<group>"; };
+		85612B0323ACE8DC0082DC95 /* IImageEditorPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IImageEditorPresenter.swift; sourceTree = "<group>"; };
+		85612B0523ACE8FC0082DC95 /* IImageEditorRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IImageEditorRouter.swift; sourceTree = "<group>"; };
+		859BCCDB23AF725B00553048 /* Filter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Filter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +89,7 @@
 			isa = PBXGroup;
 			children = (
 				720A38BE23AD09340026EFC9 /* Models */,
+				85612AF923ACE7E70082DC95 /* EditorModule */,
 				720A38B623AA99EA0026EFC9 /* Repository */,
 				720A38A723AA91C50026EFC9 /* ImagesCollectionModule */,
 				8511E6EB23AA93550032B588 /* Factory */,
@@ -130,6 +145,7 @@
 			children = (
 				720A38BF23AD093E0026EFC9 /* Constants.swift */,
 				720A38C123AD6D5E0026EFC9 /* Fonts.swift */,
+				859BCCDB23AF725B00553048 /* Filter.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -140,6 +156,27 @@
 				8511E6EC23AA936A0032B588 /* ModuleFactory.swift */,
 			);
 			path = Factory;
+			sourceTree = "<group>";
+		};
+		85612AF923ACE7E70082DC95 /* EditorModule */ = {
+			isa = PBXGroup;
+			children = (
+				85612B0023ACE8950082DC95 /* Protocols */,
+				85612AFA23ACE8140082DC95 /* ImageEditorViewController.swift */,
+				85612AFC23ACE8410082DC95 /* ImageEditorPresenter.swift */,
+				85612AFE23ACE86E0082DC95 /* ImageEditorRouter.swift */,
+			);
+			path = EditorModule;
+			sourceTree = "<group>";
+		};
+		85612B0023ACE8950082DC95 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				85612B0123ACE8AC0082DC95 /* IImageEditorViewController.swift */,
+				85612B0323ACE8DC0082DC95 /* IImageEditorPresenter.swift */,
+				85612B0523ACE8FC0082DC95 /* IImageEditorRouter.swift */,
+			);
+			path = Protocols;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -234,17 +271,24 @@
 			buildActionMask = 2147483647;
 			files = (
 				720A38AB23AA92180026EFC9 /* ImagesCollectionPresenter.swift in Sources */,
+				85612B0423ACE8DC0082DC95 /* IImageEditorPresenter.swift in Sources */,
 				720A38B323AA92C80026EFC9 /* IImagesCollectionPresenter.swift in Sources */,
 				720A38C223AD6D5E0026EFC9 /* Fonts.swift in Sources */,
 				720A38BD23ACF27B0026EFC9 /* ImageCell.swift in Sources */,
 				720A38A923AA920A0026EFC9 /* ImagesCollectionViewController.swift in Sources */,
 				720A38B523AA92E10026EFC9 /* IImagesCollectionRouter.swift in Sources */,
+				85612AFB23ACE8140082DC95 /* ImageEditorViewController.swift in Sources */,
 				8511E6ED23AA936A0032B588 /* ModuleFactory.swift in Sources */,
+				85612B0623ACE8FC0082DC95 /* IImageEditorRouter.swift in Sources */,
 				720A389623A7F8E20026EFC9 /* AppDelegate.swift in Sources */,
 				720A38B123AA92BA0026EFC9 /* IImagesCollectionViewController.swift in Sources */,
+				85612AFF23ACE86E0082DC95 /* ImageEditorRouter.swift in Sources */,
 				720A38AE23AA922D0026EFC9 /* ImagesCollectionRouter.swift in Sources */,
+				85612B0223ACE8AC0082DC95 /* IImageEditorViewController.swift in Sources */,
 				720A38B823AA9A050026EFC9 /* Repository.swift in Sources */,
 				720A38BA23AA9A170026EFC9 /* IRepository.swift in Sources */,
+				85612AFD23ACE8410082DC95 /* ImageEditorPresenter.swift in Sources */,
+				859BCCDC23AF725B00553048 /* Filter.swift in Sources */,
 				720A38C023AD093E0026EFC9 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
