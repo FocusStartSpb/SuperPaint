@@ -53,13 +53,14 @@ final class ImagesCollectionViewController: UIViewController
 			self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add,
 																	 target: self,
 																	 action: #selector(addNewImage))
+			self.navigationItem.rightBarButtonItem?.isEnabled = true
 		}
 		self.collectionView.allowsMultipleSelection = true
 		let indexPaths = self.collectionView.indexPathsForVisibleItems
 		for indexPath in indexPaths {
 			if indexPath.row == 0 {
 				let cell = self.collectionView.cellForItem(at: indexPath) as? ImageCell
-				cell?.imageView.image = UIImage(named: "new_image_disabled")
+				cell?.imageView.image = Images.newImageDisabled
 				cell?.isUserInteractionEnabled = false
 				self.collectionView.reloadItems(at: [indexPath])
 				continue
@@ -78,6 +79,7 @@ final class ImagesCollectionViewController: UIViewController
 
 private extension ImagesCollectionViewController
 {
+	// MARK: - Настройка collection view
 	func setupCollectionView() {
 		self.collectionView.delegate = self
 		self.collectionView.dataSource = self
@@ -94,6 +96,7 @@ private extension ImagesCollectionViewController
 		])
 	}
 
+	// MARK: - Настройки navigation bar
 	func settingsForNavigationBar() {
 		self.title = "Gallery"
 		self.navigationItem.leftBarButtonItem = editButtonItem
@@ -104,23 +107,53 @@ private extension ImagesCollectionViewController
 		self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: font]
 	}
 
-	@objc func addNewImage() {
-		// (ED-XX) Add new image
+	// MARK: - Создаем и показываем Alert Controller на экране
+	func openActionSheet() {
+		let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+		let cameraAction = UIAlertAction(title: "Camera", style: .default) { _ in
+			self.chooseImagePicker(source: .camera)
+		}
+		cameraAction.setValue(Images.cameraIcon, forKey: "image")
+		cameraAction.setValue(CATextLayerAlignmentMode.left, forKey: "titleTextAlignment")
+		let libraryAction = UIAlertAction(title: "Library", style: .default) { _ in
+			self.chooseImagePicker(source: .photoLibrary)
+		}
+		libraryAction.setValue(Images.libraryIcon, forKey: "image")
+		libraryAction.setValue(CATextLayerAlignmentMode.left, forKey: "titleTextAlignment")
+		let webAction = UIAlertAction(title: "Web search", style: .default) { _ in
+			// (ED-27) Move to web search
+		}
+		webAction.setValue(Images.webIcon, forKey: "image")
+		webAction.setValue(CATextLayerAlignmentMode.left, forKey: "titleTextAlignment")
+		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+		actionSheet.addAction(cameraAction)
+		actionSheet.addAction(libraryAction)
+		actionSheet.addAction(webAction)
+		actionSheet.addAction(cancelAction)
+		present(actionSheet, animated: true)
 	}
 
+	// MARK: - Действие добавления новой картинки
+	@objc func addNewImage() {
+		self.openActionSheet()
+	}
+
+	// MARK: - Действие удаления выбранных картинок
 	@objc func removeImages() {
-		// (ED-YY) Remove images
+		// (ED-25) Remove images
 	}
 }
 
+// MARK: - UICollectionViewDelegate
 extension ImagesCollectionViewController: UICollectionViewDelegate
 {
 	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 		if indexPath.row == 0 && self.isEditing == false {
-			// (ED-XX) Add new image
+			self.collectionView.deselectItem(at: indexPath, animated: false)
+			self.openActionSheet()
 		}
 		else if indexPath.row != 0 && self.isEditing == false {
-			// (ED-ZZ) Edit image
+			// (ED-26) Move to edit screen
 		}
 		else if indexPath.row != 0 && self.isEditing {
 			self.navigationItem.rightBarButtonItem?.isEnabled = true
@@ -134,6 +167,7 @@ extension ImagesCollectionViewController: UICollectionViewDelegate
 	}
 }
 
+// MARK: - UICollectionViewDataSource
 extension ImagesCollectionViewController: UICollectionViewDataSource
 {
 	func collectionView(_ collectionView: UICollectionView,
@@ -148,11 +182,11 @@ extension ImagesCollectionViewController: UICollectionViewDataSource
 			for: indexPath) as? ImageCell ?? ImageCell(frame: .zero)
 		if indexPath.row == 0 {
 			if self.isEditing {
-				cell.imageView.image = UIImage(named: "new_image_disabled")
+				cell.imageView.image = Images.newImageDisabled
 				cell.isUserInteractionEnabled = false
 			}
 			else {
-				cell.imageView.image = UIImage(named: "new_image_enabled")
+				cell.imageView.image = Images.newImageEnabled
 				cell.isUserInteractionEnabled = true
 			}
 			cell.isInEditingMode = false
@@ -166,13 +200,14 @@ extension ImagesCollectionViewController: UICollectionViewDataSource
 			else {
 				cell.isInEditingMode = false
 			}
-			cell.selectionImageView.image = cell.isSelected ? UIImage(named: "selected") : UIImage(named: "not_selected")
+			cell.selectionImageView.image = cell.isSelected ? Images.selected : Images.notSelected
 			cell.imageView.image = nil
 		}
 		return cell
 	}
 }
 
+// MARK: - UICollectionViewDelegateFlowLayout
 extension ImagesCollectionViewController: UICollectionViewDelegateFlowLayout
 {
 	func collectionView(_ collectionView: UICollectionView,
@@ -188,6 +223,26 @@ extension ImagesCollectionViewController: UICollectionViewDelegateFlowLayout
 						insetForSectionAt section: Int) -> UIEdgeInsets {
 		let spacing = Constants.spacing
 			return UIEdgeInsets(top: spacing, left: spacing, bottom: spacing, right: spacing)
+	}
+}
+
+// MARK: - UIImagePickerControllerDelegate, UINavigationControllerDelegate
+extension ImagesCollectionViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate
+{
+	func chooseImagePicker(source: UIImagePickerController.SourceType) {
+		if UIImagePickerController.isSourceTypeAvailable(source) {
+			let imagePicker = UIImagePickerController()
+			imagePicker.delegate = self
+			imagePicker.allowsEditing = true
+			imagePicker.sourceType = source
+			present(imagePicker, animated: true)
+		}
+	}
+
+	func imagePickerController(_ picker: UIImagePickerController,
+							   didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+		// (ED-26) Move to edit screen
+		dismiss(animated: true, completion: nil)
 	}
 }
 

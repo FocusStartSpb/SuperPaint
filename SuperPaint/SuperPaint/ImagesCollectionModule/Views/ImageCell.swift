@@ -40,7 +40,7 @@ final class ImageCell: UICollectionViewCell
 	override var isSelected: Bool {
 		didSet {
 			if isInEditingMode {
-				self.selectionImageView.image = isSelected ? UIImage(named: "selected") : UIImage(named: "not_selected")
+				self.selectionImageView.image = isSelected ? Images.selected : Images.notSelected
 			}
 		}
 	}
@@ -75,6 +75,6 @@ private extension ImageCell
 			self.selectionImageView.heightAnchor.constraint(equalTo: self.contentView.heightAnchor, multiplier: 1 / 6),
 			self.selectionImageView.widthAnchor.constraint(equalTo: self.contentView.heightAnchor, multiplier: 1 / 6),
 		])
-		self.selectionImageView.image = UIImage(named: "not_selected")
+		self.selectionImageView.image = Images.notSelected
 	}
 }
