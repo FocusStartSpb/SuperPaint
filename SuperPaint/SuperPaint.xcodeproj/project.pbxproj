@@ -30,6 +30,7 @@
 		85612B0423ACE8DC0082DC95 /* IImageEditorPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85612B0323ACE8DC0082DC95 /* IImageEditorPresenter.swift */; };
 		85612B0623ACE8FC0082DC95 /* IImageEditorRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85612B0523ACE8FC0082DC95 /* IImageEditorRouter.swift */; };
 		859BCCDC23AF725B00553048 /* Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859BCCDB23AF725B00553048 /* Filter.swift */; };
+		859BCCD123AE99C600553048 /* EditorControlsCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859BCCD023AE99C600553048 /* EditorControlsCreator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -57,6 +58,7 @@
 		85612B0123ACE8AC0082DC95 /* IImageEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IImageEditorViewController.swift; sourceTree = "<group>"; };
 		85612B0323ACE8DC0082DC95 /* IImageEditorPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IImageEditorPresenter.swift; sourceTree = "<group>"; };
 		85612B0523ACE8FC0082DC95 /* IImageEditorRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IImageEditorRouter.swift; sourceTree = "<group>"; };
+		859BCCD023AE99C600553048 /* EditorControlsCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorControlsCreator.swift; sourceTree = "<group>"; };
 		859BCCDB23AF725B00553048 /* Filter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Filter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -91,6 +93,7 @@
 			isa = PBXGroup;
 			children = (
 				720A38BE23AD09340026EFC9 /* Models */,
+				859BCCDA23AF723B00553048 /* Model */,
 				85612AF923ACE7E70082DC95 /* EditorModule */,
 				720A38B623AA99EA0026EFC9 /* Repository */,
 				720A38A723AA91C50026EFC9 /* ImagesCollectionModule */,
@@ -164,6 +167,7 @@
 		85612AF923ACE7E70082DC95 /* EditorModule */ = {
 			isa = PBXGroup;
 			children = (
+				859BCCCF23AE999B00553048 /* EditorControlsCreator */,
 				85612B0023ACE8950082DC95 /* Protocols */,
 				85612AFA23ACE8140082DC95 /* ImageEditorViewController.swift */,
 				85612AFC23ACE8410082DC95 /* ImageEditorPresenter.swift */,
@@ -180,6 +184,22 @@
 				85612B0523ACE8FC0082DC95 /* IImageEditorRouter.swift */,
 			);
 			path = Protocols;
+			sourceTree = "<group>";
+		};
+		859BCCDA23AF723B00553048 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				859BCCDB23AF725B00553048 /* Filter.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		859BCCCF23AE999B00553048 /* EditorControlsCreator */ = {
+			isa = PBXGroup;
+			children = (
+				859BCCD023AE99C600553048 /* EditorControlsCreator.swift */,
+			);
+			path = EditorControlsCreator;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -288,6 +308,7 @@
 				720A38B123AA92BA0026EFC9 /* IImagesCollectionViewController.swift in Sources */,
 				85612AFF23ACE86E0082DC95 /* ImageEditorRouter.swift in Sources */,
 				720A38AE23AA922D0026EFC9 /* ImagesCollectionRouter.swift in Sources */,
+				859BCCD123AE99C600553048 /* EditorControlsCreator.swift in Sources */,
 				85612B0223ACE8AC0082DC95 /* IImageEditorViewController.swift in Sources */,
 				720A38B823AA9A050026EFC9 /* Repository.swift in Sources */,
 				720A38BA23AA9A170026EFC9 /* IRepository.swift in Sources */,
