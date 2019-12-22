@@ -18,6 +18,10 @@
 		720A38B523AA92E10026EFC9 /* IImagesCollectionRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A38B423AA92E10026EFC9 /* IImagesCollectionRouter.swift */; };
 		720A38B823AA9A050026EFC9 /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A38B723AA9A050026EFC9 /* Repository.swift */; };
 		720A38BA23AA9A170026EFC9 /* IRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A38B923AA9A170026EFC9 /* IRepository.swift */; };
+		720A38BD23ACF27B0026EFC9 /* ImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A38BC23ACF27B0026EFC9 /* ImageCell.swift */; };
+		720A38C023AD093E0026EFC9 /* ViewConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A38BF23AD093E0026EFC9 /* ViewConstants.swift */; };
+		720A38C223AD6D5E0026EFC9 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A38C123AD6D5E0026EFC9 /* Fonts.swift */; };
+		720A38F223AF8C030026EFC9 /* Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A38F123AF8C030026EFC9 /* Images.swift */; };
 		8511E6ED23AA936A0032B588 /* ModuleFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8511E6EC23AA936A0032B588 /* ModuleFactory.swift */; };
 		85612AFB23ACE8140082DC95 /* ImageEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85612AFA23ACE8140082DC95 /* ImageEditorViewController.swift */; };
 		85612AFD23ACE8410082DC95 /* ImageEditorPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85612AFC23ACE8410082DC95 /* ImageEditorPresenter.swift */; };
@@ -42,6 +46,10 @@
 		720A38B423AA92E10026EFC9 /* IImagesCollectionRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IImagesCollectionRouter.swift; sourceTree = "<group>"; };
 		720A38B723AA9A050026EFC9 /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
 		720A38B923AA9A170026EFC9 /* IRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRepository.swift; sourceTree = "<group>"; };
+		720A38BC23ACF27B0026EFC9 /* ImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCell.swift; sourceTree = "<group>"; };
+		720A38BF23AD093E0026EFC9 /* ViewConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewConstants.swift; sourceTree = "<group>"; };
+		720A38C123AD6D5E0026EFC9 /* Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
+		720A38F123AF8C030026EFC9 /* Images.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Images.swift; sourceTree = "<group>"; };
 		8511E6EC23AA936A0032B588 /* ModuleFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleFactory.swift; sourceTree = "<group>"; };
 		85612AFA23ACE8140082DC95 /* ImageEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageEditorViewController.swift; sourceTree = "<group>"; };
 		85612AFC23ACE8410082DC95 /* ImageEditorPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageEditorPresenter.swift; sourceTree = "<group>"; };
@@ -82,7 +90,7 @@
 		720A389423A7F8E20026EFC9 /* SuperPaint */ = {
 			isa = PBXGroup;
 			children = (
-				859BCCDA23AF723B00553048 /* Model */,
+				720A38BE23AD09340026EFC9 /* Models */,
 				85612AF923ACE7E70082DC95 /* EditorModule */,
 				720A38B623AA99EA0026EFC9 /* Repository */,
 				720A38A723AA91C50026EFC9 /* ImagesCollectionModule */,
@@ -98,6 +106,7 @@
 		720A38A723AA91C50026EFC9 /* ImagesCollectionModule */ = {
 			isa = PBXGroup;
 			children = (
+				720A38BB23ACF2580026EFC9 /* Views */,
 				720A38AF23AA92910026EFC9 /* Protocols */,
 				720A38A823AA920A0026EFC9 /* ImagesCollectionViewController.swift */,
 				720A38AA23AA92180026EFC9 /* ImagesCollectionPresenter.swift */,
@@ -123,6 +132,25 @@
 				720A38B923AA9A170026EFC9 /* IRepository.swift */,
 			);
 			path = Repository;
+			sourceTree = "<group>";
+		};
+		720A38BB23ACF2580026EFC9 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				720A38BC23ACF27B0026EFC9 /* ImageCell.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		720A38BE23AD09340026EFC9 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				720A38BF23AD093E0026EFC9 /* ViewConstants.swift */,
+				720A38C123AD6D5E0026EFC9 /* Fonts.swift */,
+				859BCCDB23AF725B00553048 /* Filter.swift */,
+				720A38F123AF8C030026EFC9 /* Images.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		8511E6EB23AA93550032B588 /* Factory */ = {
@@ -152,14 +180,6 @@
 				85612B0523ACE8FC0082DC95 /* IImageEditorRouter.swift */,
 			);
 			path = Protocols;
-			sourceTree = "<group>";
-		};
-		859BCCDA23AF723B00553048 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				859BCCDB23AF725B00553048 /* Filter.swift */,
-			);
-			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -256,8 +276,11 @@
 				720A38AB23AA92180026EFC9 /* ImagesCollectionPresenter.swift in Sources */,
 				85612B0423ACE8DC0082DC95 /* IImageEditorPresenter.swift in Sources */,
 				720A38B323AA92C80026EFC9 /* IImagesCollectionPresenter.swift in Sources */,
+				720A38C223AD6D5E0026EFC9 /* Fonts.swift in Sources */,
+				720A38BD23ACF27B0026EFC9 /* ImageCell.swift in Sources */,
 				720A38A923AA920A0026EFC9 /* ImagesCollectionViewController.swift in Sources */,
 				720A38B523AA92E10026EFC9 /* IImagesCollectionRouter.swift in Sources */,
+				720A38F223AF8C030026EFC9 /* Images.swift in Sources */,
 				85612AFB23ACE8140082DC95 /* ImageEditorViewController.swift in Sources */,
 				8511E6ED23AA936A0032B588 /* ModuleFactory.swift in Sources */,
 				85612B0623ACE8FC0082DC95 /* IImageEditorRouter.swift in Sources */,
@@ -270,6 +293,7 @@
 				720A38BA23AA9A170026EFC9 /* IRepository.swift in Sources */,
 				85612AFD23ACE8410082DC95 /* ImageEditorPresenter.swift in Sources */,
 				859BCCDC23AF725B00553048 /* Filter.swift in Sources */,
+				720A38C023AD093E0026EFC9 /* ViewConstants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -408,6 +432,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 72DN37DPYX;
 				INFOPLIST_FILE = SuperPaint/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -425,6 +450,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 72DN37DPYX;
 				INFOPLIST_FILE = SuperPaint/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
