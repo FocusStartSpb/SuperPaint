@@ -28,7 +28,7 @@ final class ImageCell: UICollectionViewCell
 
 	override func layoutSubviews() {
 		super.layoutSubviews()
-		self.layer.cornerRadius = Constants.cellCornerRadius
+		self.layer.cornerRadius = ViewConstants.cellCornerRadius
 	}
 
 	var isInEditingMode: Bool = false {

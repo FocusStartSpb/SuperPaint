@@ -8,7 +8,7 @@
 
 import UIKit
 
-enum Constants
+enum ViewConstants
 {
 	static let spacing: CGFloat = 16
 	static let spacingBetweenCells: CGFloat = 8

@@ -14,11 +14,12 @@ final class ImagesCollectionViewController: UIViewController
 	private let collectionView: UICollectionView = {
 		let layout = UICollectionViewFlowLayout()
 		layout.scrollDirection = .vertical
-		layout.minimumLineSpacing = Constants.spacingBetweenCells
-		layout.minimumInteritemSpacing = Constants.spacingBetweenCells
+		layout.minimumLineSpacing = ViewConstants.spacingBetweenCells
+		layout.minimumInteritemSpacing = ViewConstants.spacingBetweenCells
 		let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
 		return collectionView
 	}()
+	private var safeArea = UILayoutGuide()
 
 	init(presenter: IImagesCollectionPresenter) {
 		self.imagesCollectionPresenter = presenter
@@ -33,7 +34,8 @@ final class ImagesCollectionViewController: UIViewController
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		self.view.backgroundColor = .white
-		self.settingsForNavigationBar()
+		self.safeArea = self.view.layoutMarginsGuide
+		self.setupSettingsForNavigationBar()
 		self.setupCollectionView()
 	}
 
@@ -91,13 +93,13 @@ private extension ImagesCollectionViewController
 		NSLayoutConstraint.activate([
 			self.collectionView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
 			self.collectionView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-			self.collectionView.topAnchor.constraint(equalTo: self.view.layoutMarginsGuide.topAnchor),
-			self.collectionView.bottomAnchor.constraint(equalTo: self.view.layoutMarginsGuide.bottomAnchor),
+			self.collectionView.topAnchor.constraint(equalTo: self.safeArea.topAnchor),
+			self.collectionView.bottomAnchor.constraint(equalTo: self.safeArea.bottomAnchor),
 		])
 	}
 
 	// MARK: - Настройки navigation bar
-	func settingsForNavigationBar() {
+	func setupSettingsForNavigationBar() {
 		self.title = "Gallery"
 		self.navigationItem.leftBarButtonItem = editButtonItem
 		self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add,
@@ -116,12 +118,13 @@ private extension ImagesCollectionViewController
 		cameraAction.setValue(Images.cameraIcon, forKey: "image")
 		cameraAction.setValue(CATextLayerAlignmentMode.left, forKey: "titleTextAlignment")
 		let libraryAction = UIAlertAction(title: "Library", style: .default) { _ in
+
 			self.chooseImagePicker(source: .photoLibrary)
 		}
 		libraryAction.setValue(Images.libraryIcon, forKey: "image")
 		libraryAction.setValue(CATextLayerAlignmentMode.left, forKey: "titleTextAlignment")
 		let webAction = UIAlertAction(title: "Web search", style: .default) { _ in
-			// (ED-27) Move to web search
+			// TODO: - move to web search QIS-27
 		}
 		webAction.setValue(Images.webIcon, forKey: "image")
 		webAction.setValue(CATextLayerAlignmentMode.left, forKey: "titleTextAlignment")
@@ -140,7 +143,7 @@ private extension ImagesCollectionViewController
 
 	// MARK: - Действие удаления выбранных картинок
 	@objc func removeImages() {
-		// (ED-25) Remove images
+		// TODO: - remove images QIS-25
 	}
 }
 
@@ -153,7 +156,8 @@ extension ImagesCollectionViewController: UICollectionViewDelegate
 			self.openActionSheet()
 		}
 		else if indexPath.row != 0 && self.isEditing == false {
-			// (ED-26) Move to edit screen
+			self.collectionView.deselectItem(at: indexPath, animated: false)
+			// TODO: - move to edit screen QIS-26
 		}
 		else if indexPath.row != 0 && self.isEditing {
 			self.navigationItem.rightBarButtonItem?.isEnabled = true
@@ -213,15 +217,16 @@ extension ImagesCollectionViewController: UICollectionViewDelegateFlowLayout
 	func collectionView(_ collectionView: UICollectionView,
 						layout collectionViewLayout: UICollectionViewLayout,
 						sizeForItemAt indexPath: IndexPath) -> CGSize {
-		let totalSpacing = (2 * Constants.spacing) + ((Constants.numberOfItemsPerRow - 1) * Constants.spacingBetweenCells)
-		let width = (self.collectionView.bounds.width - totalSpacing) / Constants.numberOfItemsPerRow
+		let totalSpacing = (2 * ViewConstants.spacing) + ((ViewConstants.numberOfItemsPerRow - 1) *
+			ViewConstants.spacingBetweenCells)
+		let width = (self.collectionView.bounds.width - totalSpacing) / ViewConstants.numberOfItemsPerRow
 		return CGSize(width: width, height: width)
 	}
 
 	func collectionView(_ collectionView: UICollectionView,
 						layout collectionViewLayout: UICollectionViewLayout,
 						insetForSectionAt section: Int) -> UIEdgeInsets {
-		let spacing = Constants.spacing
+		let spacing = ViewConstants.spacing
 			return UIEdgeInsets(top: spacing, left: spacing, bottom: spacing, right: spacing)
 	}
 }
@@ -241,7 +246,7 @@ extension ImagesCollectionViewController: UIImagePickerControllerDelegate, UINav
 
 	func imagePickerController(_ picker: UIImagePickerController,
 							   didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
-		// (ED-26) Move to edit screen
+		// TODO: - move to edit screen QIS-26
 		dismiss(animated: true, completion: nil)
 	}
 }
