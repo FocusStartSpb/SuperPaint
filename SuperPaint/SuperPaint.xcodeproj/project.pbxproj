@@ -59,7 +59,7 @@
 		85612B0323ACE8DC0082DC95 /* IImageEditorPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IImageEditorPresenter.swift; sourceTree = "<group>"; };
 		85612B0523ACE8FC0082DC95 /* IImageEditorRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IImageEditorRouter.swift; sourceTree = "<group>"; };
 		859BCCD023AE99C600553048 /* EditorControlsCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorControlsCreator.swift; sourceTree = "<group>"; };
-		859BCCDB23AF725B00553048 /* Filter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Filter.swift; path = ../Model/Filter.swift; sourceTree = "<group>"; };
+		859BCCDB23AF725B00553048 /* Filter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Filter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,7 +92,7 @@
 		720A389423A7F8E20026EFC9 /* SuperPaint */ = {
 			isa = PBXGroup;
 			children = (
-				720A38BE23AD09340026EFC9 /* Models */,
+				720A38BE23AD09340026EFC9 /* Utils */,
 				85612AF923ACE7E70082DC95 /* EditorModule */,
 				720A38B623AA99EA0026EFC9 /* Repository */,
 				720A38A723AA91C50026EFC9 /* ImagesCollectionModule */,
@@ -144,15 +144,14 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		720A38BE23AD09340026EFC9 /* Models */ = {
+		720A38BE23AD09340026EFC9 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
 				720A38BF23AD093E0026EFC9 /* ViewConstants.swift */,
 				720A38C123AD6D5E0026EFC9 /* Fonts.swift */,
 				720A38F123AF8C030026EFC9 /* Images.swift */,
-				859BCCDB23AF725B00553048 /* Filter.swift */,
 			);
-			path = Models;
+			path = Utils;
 			sourceTree = "<group>";
 		};
 		8511E6EB23AA93550032B588 /* Factory */ = {
@@ -166,6 +165,7 @@
 		85612AF923ACE7E70082DC95 /* EditorModule */ = {
 			isa = PBXGroup;
 			children = (
+				859BCCE323AFF6C000553048 /* Model */,
 				859BCCCF23AE999B00553048 /* EditorControlsCreator */,
 				85612B0023ACE8950082DC95 /* Protocols */,
 				85612AFA23ACE8140082DC95 /* ImageEditorViewController.swift */,
@@ -191,6 +191,14 @@
 				859BCCD023AE99C600553048 /* EditorControlsCreator.swift */,
 			);
 			path = EditorControlsCreator;
+			sourceTree = "<group>";
+		};
+		859BCCE323AFF6C000553048 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				859BCCDB23AF725B00553048 /* Filter.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
