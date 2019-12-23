@@ -26,6 +26,6 @@ extension ImagesCollectionRouter: IImagesCollectionRouter
 {
 	func pushEditorModule(with image: UIImage) {
 		let vc = self.factory.createImageEditorModule(image: image)
-		(self.imagesCollectionView as? UIViewController)?.navigationController?.pushViewController(vc, animated: true)
+		self.imagesCollectionView?.navController?.pushViewController(vc, animated: true)
 	}
 }

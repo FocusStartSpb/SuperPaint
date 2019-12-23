@@ -258,4 +258,7 @@ extension ImagesCollectionViewController: UIImagePickerControllerDelegate, UINav
 
 extension ImagesCollectionViewController: IImagesCollectionViewController
 {
+	var navController: UINavigationController? {
+		return self.navigationController
+	}
 }
