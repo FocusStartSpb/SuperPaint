@@ -29,6 +29,7 @@
 		85612B0223ACE8AC0082DC95 /* IImageEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85612B0123ACE8AC0082DC95 /* IImageEditorViewController.swift */; };
 		85612B0423ACE8DC0082DC95 /* IImageEditorPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85612B0323ACE8DC0082DC95 /* IImageEditorPresenter.swift */; };
 		85612B0623ACE8FC0082DC95 /* IImageEditorRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85612B0523ACE8FC0082DC95 /* IImageEditorRouter.swift */; };
+		8577DDA023B10D3100BE86E2 /* FilterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8577DD9F23B10D3100BE86E2 /* FilterCell.swift */; };
 		859BCCD123AE99C600553048 /* EditorControlsCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859BCCD023AE99C600553048 /* EditorControlsCreator.swift */; };
 		859BCCDC23AF725B00553048 /* Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859BCCDB23AF725B00553048 /* Filter.swift */; };
 		859BCCE523B0F4D100553048 /* UIImage+resize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859BCCE423B0F4D100553048 /* UIImage+resize.swift */; };
@@ -60,6 +61,7 @@
 		85612B0123ACE8AC0082DC95 /* IImageEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IImageEditorViewController.swift; sourceTree = "<group>"; };
 		85612B0323ACE8DC0082DC95 /* IImageEditorPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IImageEditorPresenter.swift; sourceTree = "<group>"; };
 		85612B0523ACE8FC0082DC95 /* IImageEditorRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IImageEditorRouter.swift; sourceTree = "<group>"; };
+		8577DD9F23B10D3100BE86E2 /* FilterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCell.swift; sourceTree = "<group>"; };
 		859BCCD023AE99C600553048 /* EditorControlsCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorControlsCreator.swift; sourceTree = "<group>"; };
 		859BCCDB23AF725B00553048 /* Filter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Filter.swift; sourceTree = "<group>"; };
 		859BCCE423B0F4D100553048 /* UIImage+resize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+resize.swift"; sourceTree = "<group>"; };
@@ -211,7 +213,7 @@
 		859BCCEA23B0F94400553048 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				859BCCE823B0F7F100553048 /* FilterCell.swift */,
+				8577DD9F23B10D3100BE86E2 /* FilterCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -311,6 +313,7 @@
 				85612B0423ACE8DC0082DC95 /* IImageEditorPresenter.swift in Sources */,
 				720A38B323AA92C80026EFC9 /* IImagesCollectionPresenter.swift in Sources */,
 				720A38C223AD6D5E0026EFC9 /* Fonts.swift in Sources */,
+				8577DDA023B10D3100BE86E2 /* FilterCell.swift in Sources */,
 				720A38BD23ACF27B0026EFC9 /* ImageCell.swift in Sources */,
 				720A38A923AA920A0026EFC9 /* ImagesCollectionViewController.swift in Sources */,
 				720A38B523AA92E10026EFC9 /* IImagesCollectionRouter.swift in Sources */,
@@ -323,7 +326,6 @@
 				720A38B123AA92BA0026EFC9 /* IImagesCollectionViewController.swift in Sources */,
 				85612AFF23ACE86E0082DC95 /* ImageEditorRouter.swift in Sources */,
 				720A38AE23AA922D0026EFC9 /* ImagesCollectionRouter.swift in Sources */,
-				859BCCE923B0F7F100553048 /* FilterCell.swift in Sources */,
 				859BCCD123AE99C600553048 /* EditorControlsCreator.swift in Sources */,
 				85612B0223ACE8AC0082DC95 /* IImageEditorViewController.swift in Sources */,
 				720A38B823AA9A050026EFC9 /* Repository.swift in Sources */,
