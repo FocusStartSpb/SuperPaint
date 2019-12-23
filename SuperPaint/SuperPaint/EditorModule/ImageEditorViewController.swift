@@ -31,7 +31,9 @@ final class ImageEditorViewController: UIViewController
 			instrumentsCollection.isHidden = true
 			topActionsView.isHidden = (newValue == false)
 			filtersCollection.isHidden = (newValue == false)
-		}
+			filtersButton.isSelected = newValue
+			instrumentsButton.isSelected = filtersButton.isSelected ? false : instrumentsButton.isSelected
+			}
 	}
 	private var showInstruments: Bool {
 		get {
@@ -41,6 +43,8 @@ final class ImageEditorViewController: UIViewController
 			filtersCollection.isHidden = true
 			topActionsView.isHidden = (newValue == false)
 			instrumentsCollection.isHidden = (newValue == false)
+			instrumentsButton.isSelected = newValue
+			filtersButton.isSelected = instrumentsButton.isSelected ? false : filtersButton.isSelected
 		}
 	}
 
@@ -80,8 +84,10 @@ extension ImageEditorViewController: UICollectionViewDataSource
 	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 		if collectionView == filtersCollection {
 //TODO: - добавить новый класс для кастомной ячейки для фильтров, и использовать его тут QIS-17
-			let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "filterCell", for: indexPath)
-			cell.backgroundColor = .green
+			let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FilterCell.cellReuseIdentifier,
+														  for: indexPath) as? FilterCell ?? FilterCell(frame: .zero)
+			cell.imageView.image = presenter.currentImage
+			cell.label.text = "filter"
 			return cell
 		}
 		else {
@@ -96,6 +102,11 @@ extension ImageEditorViewController: UICollectionViewDataSource
 extension ImageEditorViewController: UICollectionViewDelegate
 {
 // TODO: - обработка кликов по фильтрам и вызов применения фильтров из презентера QIS-21
+	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+		if collectionView == filtersCollection {
+			collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+		}
+	}
 // TODO: - обработка кликов по инструментам QIS-23
 }
 // MARK: - UICollectionViewDelegateFlowLayout
@@ -141,8 +152,12 @@ private extension ImageEditorViewController
 		filtersCollection.delegate = self
 		instrumentsCollection.dataSource = self
 		instrumentsCollection.delegate = self
-		filtersCollection.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "filterCell")
+		filtersCollection.register(FilterCell.self, forCellWithReuseIdentifier: FilterCell.cellReuseIdentifier)
 		instrumentsCollection.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "instrumentCell")
+		self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save",
+																 style: .plain,
+																 target: self,
+																 action: #selector(savePressed))
 	}
 
 	@objc func toggleFiltersCollection(_ sender: UIButton) {
@@ -151,5 +166,8 @@ private extension ImageEditorViewController
 
 	@objc func toggleInstrumentsCollection(_ sender: UIButton) {
 		showInstruments = (showInstruments == false)
+	}
+
+	@objc func savePressed(_ sender: UIBarButtonItem) {
 	}
 }
