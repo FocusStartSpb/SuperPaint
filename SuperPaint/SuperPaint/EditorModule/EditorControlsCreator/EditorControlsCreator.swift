@@ -18,13 +18,14 @@ enum EditorControlsCreator
 	static func setButtonProperties(_ button: UIButton, parentView: UIView) {
 		button.setTitleColor(.black, for: .normal)
 		button.setTitleColor(.lightGray, for: .highlighted)
+		button.setTitleColor(ViewConstants.systemButtonColor, for: .selected)
 		button.translatesAutoresizingMaskIntoConstraints = false
 		parentView.addSubview(button)
 	}
-//Настройка свойств и расположения кнопок
+// MARK: - Настройка кнопок
 	static func setupButtons(filtersButton: UIButton, instrumentsButton: UIButton, parentView: UIView) {
-		filtersButton.setTitle("Фильтры", for: .normal)
-		instrumentsButton.setTitle("Инструменты", for: .normal)
+		filtersButton.setTitle("Filters", for: .normal)
+		instrumentsButton.setTitle("Instruments", for: .normal)
 		setButtonProperties(filtersButton, parentView: parentView)
 		setButtonProperties(instrumentsButton, parentView: parentView)
 		NSLayoutConstraint.activate([
@@ -38,7 +39,7 @@ enum EditorControlsCreator
 			filtersButton.trailingAnchor.constraint(equalTo: instrumentsButton.leadingAnchor),
 		])
 	}
-//Настройка свойств и расположения imageView
+// MARK: - Настройка imageView
 	static func setupImageView(imageView: UIImageView,
 							   image: UIImage,
 							   parentView: UIView,
@@ -55,7 +56,7 @@ enum EditorControlsCreator
 			imageView.bottomAnchor.constraint(equalTo: verticalStack.topAnchor, constant: -10),
 		])
 	}
-//Настройка свойств и расположения stackView
+// MARK: - Настройка stackView
 	static func setupStackView(verticalStack: UIStackView,
 							   topActionsView: UIView,
 							   bottomActionsView: UIView,
@@ -78,7 +79,7 @@ enum EditorControlsCreator
 		])
 	}
 
-//Настройка свойств и расположения collectionView
+// MARK: - Настройка collectionView
 	static func setupCollectionViews(parentView: UIView,
 									 filtersCollection: UICollectionView,
 									 instrumentsCollection: UICollectionView) {
@@ -91,6 +92,8 @@ enum EditorControlsCreator
 	static func setCollectionViewProperties(_ collectionView: UICollectionView, parentView: UIView) {
 		let layout = UICollectionViewFlowLayout()
 		layout.scrollDirection = .horizontal
+		layout.minimumInteritemSpacing = 0
+		layout.minimumLineSpacing = 0
 		collectionView.setCollectionViewLayout(layout, animated: true)
 		collectionView.backgroundColor = .clear
 		collectionView.translatesAutoresizingMaskIntoConstraints = false
