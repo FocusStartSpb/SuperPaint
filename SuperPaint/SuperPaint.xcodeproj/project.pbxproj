@@ -22,6 +22,8 @@
 		720A38C023AD093E0026EFC9 /* ViewConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A38BF23AD093E0026EFC9 /* ViewConstants.swift */; };
 		720A38C223AD6D5E0026EFC9 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A38C123AD6D5E0026EFC9 /* Fonts.swift */; };
 		720A38F223AF8C030026EFC9 /* Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A38F123AF8C030026EFC9 /* Images.swift */; };
+		720A38F523B14FE00026EFC9 /* DatabaseRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A38F423B14FE00026EFC9 /* DatabaseRepository.swift */; };
+		720A38F723B14FEE0026EFC9 /* IDatabaseRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A38F623B14FEE0026EFC9 /* IDatabaseRepository.swift */; };
 		8511E6ED23AA936A0032B588 /* ModuleFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8511E6EC23AA936A0032B588 /* ModuleFactory.swift */; };
 		85612AFB23ACE8140082DC95 /* ImageEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85612AFA23ACE8140082DC95 /* ImageEditorViewController.swift */; };
 		85612AFD23ACE8410082DC95 /* ImageEditorPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85612AFC23ACE8410082DC95 /* ImageEditorPresenter.swift */; };
@@ -54,6 +56,8 @@
 		720A38BF23AD093E0026EFC9 /* ViewConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewConstants.swift; sourceTree = "<group>"; };
 		720A38C123AD6D5E0026EFC9 /* Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
 		720A38F123AF8C030026EFC9 /* Images.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Images.swift; sourceTree = "<group>"; };
+		720A38F423B14FE00026EFC9 /* DatabaseRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseRepository.swift; sourceTree = "<group>"; };
+		720A38F623B14FEE0026EFC9 /* IDatabaseRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDatabaseRepository.swift; sourceTree = "<group>"; };
 		8511E6EC23AA936A0032B588 /* ModuleFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleFactory.swift; sourceTree = "<group>"; };
 		85612AFA23ACE8140082DC95 /* ImageEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageEditorViewController.swift; sourceTree = "<group>"; };
 		85612AFC23ACE8410082DC95 /* ImageEditorPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageEditorPresenter.swift; sourceTree = "<group>"; };
@@ -101,6 +105,7 @@
 				720A38BE23AD09340026EFC9 /* Utils */,
 				85612AF923ACE7E70082DC95 /* EditorModule */,
 				720A38B623AA99EA0026EFC9 /* Repository */,
+				720A38F323B14FCC0026EFC9 /* DatabaseRepository */,
 				720A38A723AA91C50026EFC9 /* ImagesCollectionModule */,
 				8511E6EB23AA93550032B588 /* Factory */,
 				720A389523A7F8E20026EFC9 /* AppDelegate.swift */,
@@ -160,6 +165,15 @@
 				859BCCE623B0F4DD00553048 /* UIImage+setFilter.swift */,
 			);
 			path = Utils;
+			sourceTree = "<group>";
+		};
+		720A38F323B14FCC0026EFC9 /* DatabaseRepository */ = {
+			isa = PBXGroup;
+			children = (
+				720A38F423B14FE00026EFC9 /* DatabaseRepository.swift */,
+				720A38F623B14FEE0026EFC9 /* IDatabaseRepository.swift */,
+			);
+			path = DatabaseRepository;
 			sourceTree = "<group>";
 		};
 		8511E6EB23AA93550032B588 /* Factory */ = {
@@ -317,6 +331,7 @@
 				720A38BD23ACF27B0026EFC9 /* ImageCell.swift in Sources */,
 				720A38A923AA920A0026EFC9 /* ImagesCollectionViewController.swift in Sources */,
 				720A38B523AA92E10026EFC9 /* IImagesCollectionRouter.swift in Sources */,
+				720A38F723B14FEE0026EFC9 /* IDatabaseRepository.swift in Sources */,
 				720A38F223AF8C030026EFC9 /* Images.swift in Sources */,
 				859BCCE723B0F4DD00553048 /* UIImage+setFilter.swift in Sources */,
 				85612AFB23ACE8140082DC95 /* ImageEditorViewController.swift in Sources */,
@@ -325,6 +340,7 @@
 				720A389623A7F8E20026EFC9 /* AppDelegate.swift in Sources */,
 				720A38B123AA92BA0026EFC9 /* IImagesCollectionViewController.swift in Sources */,
 				85612AFF23ACE86E0082DC95 /* ImageEditorRouter.swift in Sources */,
+				720A38F523B14FE00026EFC9 /* DatabaseRepository.swift in Sources */,
 				720A38AE23AA922D0026EFC9 /* ImagesCollectionRouter.swift in Sources */,
 				859BCCD123AE99C600553048 /* EditorControlsCreator.swift in Sources */,
 				85612B0223ACE8AC0082DC95 /* IImageEditorViewController.swift in Sources */,
