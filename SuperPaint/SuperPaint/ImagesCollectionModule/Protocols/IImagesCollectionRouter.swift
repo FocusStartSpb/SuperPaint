@@ -6,8 +6,9 @@
 //  Copyright © 2019 Fixiki. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 protocol IImagesCollectionRouter: AnyObject
 {
+	func pushEditorModule(with image: UIImage)
 }

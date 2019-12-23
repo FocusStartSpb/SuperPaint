@@ -6,7 +6,7 @@
 //  Copyright © 2019 Fixiki. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 final class ImagesCollectionPresenter
 {
@@ -26,4 +26,7 @@ final class ImagesCollectionPresenter
 
 extension ImagesCollectionPresenter: IImagesCollectionPresenter
 {
+	func onCellPressed(with image: UIImage) {
+		self.imagesCollectionRouter.pushEditorModule(with: image)
+	}
 }

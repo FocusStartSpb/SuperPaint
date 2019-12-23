@@ -6,8 +6,9 @@
 //  Copyright © 2019 Fixiki. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 protocol IImagesCollectionViewController: AnyObject
 {
+	var navController: UINavigationController? { get }
 }
