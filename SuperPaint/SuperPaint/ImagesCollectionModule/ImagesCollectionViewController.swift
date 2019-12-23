@@ -157,7 +157,8 @@ extension ImagesCollectionViewController: UICollectionViewDelegate
 		}
 		else if indexPath.row != 0 && self.isEditing == false {
 			self.collectionView.deselectItem(at: indexPath, animated: false)
-			// TODO: - move to edit screen QIS-26
+			guard let image = (self.collectionView.cellForItem(at: indexPath) as? ImageCell)?.imageView.image else { return }
+			self.imagesCollectionPresenter.onCellPressed(with: image)
 		}
 		else if indexPath.row != 0 && self.isEditing {
 			self.navigationItem.rightBarButtonItem?.isEnabled = true
@@ -205,7 +206,7 @@ extension ImagesCollectionViewController: UICollectionViewDataSource
 				cell.isInEditingMode = false
 			}
 			cell.selectionImageView.image = cell.isSelected ? Images.selected : Images.notSelected
-			cell.imageView.image = nil
+			cell.imageView.image = Images.newImageDisabled
 		}
 		return cell
 	}
@@ -246,7 +247,11 @@ extension ImagesCollectionViewController: UIImagePickerControllerDelegate, UINav
 
 	func imagePickerController(_ picker: UIImagePickerController,
 							   didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
-		// TODO: - move to edit screen QIS-26
+		guard let image = info[.editedImage] as? UIImage else {
+			dismiss(animated: true, completion: nil)
+			return
+		}
+		self.imagesCollectionPresenter.onCellPressed(with: image)
 		dismiss(animated: true, completion: nil)
 	}
 }

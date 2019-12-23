@@ -6,7 +6,7 @@
 //  Copyright © 2019 Fixiki. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 final class ImagesCollectionRouter
 {
@@ -24,4 +24,8 @@ final class ImagesCollectionRouter
 
 extension ImagesCollectionRouter: IImagesCollectionRouter
 {
+	func pushEditorModule(with image: UIImage) {
+		let vc = self.factory.createImageEditorModule(image: image)
+		(self.imagesCollectionView as? UIViewController)?.navigationController?.pushViewController(vc, animated: true)
+	}
 }

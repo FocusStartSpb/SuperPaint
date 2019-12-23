@@ -6,8 +6,9 @@
 //  Copyright © 2019 Fixiki. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 protocol IImagesCollectionPresenter: AnyObject
 {
+	func onCellPressed(with image: UIImage)
 }
