@@ -10,10 +10,12 @@ import UIKit
 
 struct ModuleFactory
 {
-	private let repository: IRepository
+	private let networkRepository: INetworkRepository
+	private let databaseRepository: IDatabaseRepository
 
 	init() {
-		self.repository = Repository()
+		self.networkRepository = NetworkRepository()
+		self.databaseRepository = DatabaseRepository()
 	}
 
 	func createNavigationController() -> UIViewController {
@@ -24,7 +26,7 @@ struct ModuleFactory
 
 	func createImagesCollectionModule() -> UIViewController {
 		let router = ImagesCollectionRouter(factory: self)
-		let presenter = ImagesCollectionPresenter(router: router, repository: repository)
+		let presenter = ImagesCollectionPresenter(router: router, repository: self.databaseRepository)
 		let view = ImagesCollectionViewController(presenter: presenter)
 		presenter.inject(view: view)
 		router.inject(view: view)
@@ -33,7 +35,7 @@ struct ModuleFactory
 
 	func createImageEditorModule(image: UIImage) -> UIViewController {
 		let router = ImageEditorRouter(factory: self)
-		let presenter = ImageEditorPresenter(router: router, repository: repository, image: image)
+		let presenter = ImageEditorPresenter(router: router, repository: self.databaseRepository, image: image)
 		let view = ImageEditorViewController(presenter: presenter)
 		presenter.inject(view: view)
 		router.inject(view: view)

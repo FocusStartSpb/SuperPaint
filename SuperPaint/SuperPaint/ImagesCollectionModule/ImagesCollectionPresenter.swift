@@ -11,10 +11,10 @@ import UIKit
 final class ImagesCollectionPresenter
 {
 	private let imagesCollectionRouter: IImagesCollectionRouter
-	private let repository: IRepository
+	private let repository: IDatabaseRepository
 	private weak var imagesCollectionViewController: IImagesCollectionViewController?
 
-	init(router: IImagesCollectionRouter, repository: IRepository) {
+	init(router: IImagesCollectionRouter, repository: IDatabaseRepository) {
 		self.imagesCollectionRouter = router
 		self.repository = repository
 	}

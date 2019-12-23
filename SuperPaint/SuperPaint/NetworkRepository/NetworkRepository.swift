@@ -8,10 +8,10 @@
 
 import Foundation
 
-final class Repository
+final class NetworkRepository
 {
 }
 
-extension Repository: IRepository
+extension NetworkRepository: INetworkRepository
 {
 }

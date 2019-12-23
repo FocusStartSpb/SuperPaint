@@ -8,6 +8,6 @@
 
 import Foundation
 
-protocol IRepository: AnyObject
+protocol INetworkRepository: AnyObject
 {
 }
