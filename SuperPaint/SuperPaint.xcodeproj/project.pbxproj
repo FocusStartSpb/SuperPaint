@@ -16,8 +16,8 @@
 		720A38B123AA92BA0026EFC9 /* IImagesCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A38B023AA92BA0026EFC9 /* IImagesCollectionViewController.swift */; };
 		720A38B323AA92C80026EFC9 /* IImagesCollectionPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A38B223AA92C80026EFC9 /* IImagesCollectionPresenter.swift */; };
 		720A38B523AA92E10026EFC9 /* IImagesCollectionRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A38B423AA92E10026EFC9 /* IImagesCollectionRouter.swift */; };
-		720A38B823AA9A050026EFC9 /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A38B723AA9A050026EFC9 /* Repository.swift */; };
-		720A38BA23AA9A170026EFC9 /* IRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A38B923AA9A170026EFC9 /* IRepository.swift */; };
+		720A38B823AA9A050026EFC9 /* NetworkRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A38B723AA9A050026EFC9 /* NetworkRepository.swift */; };
+		720A38BA23AA9A170026EFC9 /* INetworkRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A38B923AA9A170026EFC9 /* INetworkRepository.swift */; };
 		720A38BD23ACF27B0026EFC9 /* ImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A38BC23ACF27B0026EFC9 /* ImageCell.swift */; };
 		720A38C023AD093E0026EFC9 /* ViewConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A38BF23AD093E0026EFC9 /* ViewConstants.swift */; };
 		720A38C223AD6D5E0026EFC9 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A38C123AD6D5E0026EFC9 /* Fonts.swift */; };
@@ -50,8 +50,8 @@
 		720A38B023AA92BA0026EFC9 /* IImagesCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IImagesCollectionViewController.swift; sourceTree = "<group>"; };
 		720A38B223AA92C80026EFC9 /* IImagesCollectionPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IImagesCollectionPresenter.swift; sourceTree = "<group>"; };
 		720A38B423AA92E10026EFC9 /* IImagesCollectionRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IImagesCollectionRouter.swift; sourceTree = "<group>"; };
-		720A38B723AA9A050026EFC9 /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
-		720A38B923AA9A170026EFC9 /* IRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRepository.swift; sourceTree = "<group>"; };
+		720A38B723AA9A050026EFC9 /* NetworkRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkRepository.swift; sourceTree = "<group>"; };
+		720A38B923AA9A170026EFC9 /* INetworkRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = INetworkRepository.swift; sourceTree = "<group>"; };
 		720A38BC23ACF27B0026EFC9 /* ImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCell.swift; sourceTree = "<group>"; };
 		720A38BF23AD093E0026EFC9 /* ViewConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewConstants.swift; sourceTree = "<group>"; };
 		720A38C123AD6D5E0026EFC9 /* Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
@@ -104,7 +104,7 @@
 			children = (
 				720A38BE23AD09340026EFC9 /* Utils */,
 				85612AF923ACE7E70082DC95 /* EditorModule */,
-				720A38B623AA99EA0026EFC9 /* Repository */,
+				720A38B623AA99EA0026EFC9 /* NetworkRepository */,
 				720A38F323B14FCC0026EFC9 /* DatabaseRepository */,
 				720A38A723AA91C50026EFC9 /* ImagesCollectionModule */,
 				8511E6EB23AA93550032B588 /* Factory */,
@@ -138,13 +138,13 @@
 			path = Protocols;
 			sourceTree = "<group>";
 		};
-		720A38B623AA99EA0026EFC9 /* Repository */ = {
+		720A38B623AA99EA0026EFC9 /* NetworkRepository */ = {
 			isa = PBXGroup;
 			children = (
-				720A38B723AA9A050026EFC9 /* Repository.swift */,
-				720A38B923AA9A170026EFC9 /* IRepository.swift */,
+				720A38B723AA9A050026EFC9 /* NetworkRepository.swift */,
+				720A38B923AA9A170026EFC9 /* INetworkRepository.swift */,
 			);
-			path = Repository;
+			path = NetworkRepository;
 			sourceTree = "<group>";
 		};
 		720A38BB23ACF2580026EFC9 /* Views */ = {
@@ -344,9 +344,9 @@
 				720A38AE23AA922D0026EFC9 /* ImagesCollectionRouter.swift in Sources */,
 				859BCCD123AE99C600553048 /* EditorControlsCreator.swift in Sources */,
 				85612B0223ACE8AC0082DC95 /* IImageEditorViewController.swift in Sources */,
-				720A38B823AA9A050026EFC9 /* Repository.swift in Sources */,
+				720A38B823AA9A050026EFC9 /* NetworkRepository.swift in Sources */,
 				859BCCE523B0F4D100553048 /* UIImage+resize.swift in Sources */,
-				720A38BA23AA9A170026EFC9 /* IRepository.swift in Sources */,
+				720A38BA23AA9A170026EFC9 /* INetworkRepository.swift in Sources */,
 				85612AFD23ACE8410082DC95 /* ImageEditorPresenter.swift in Sources */,
 				859BCCDC23AF725B00553048 /* Filter.swift in Sources */,
 				720A38C023AD093E0026EFC9 /* ViewConstants.swift in Sources */,

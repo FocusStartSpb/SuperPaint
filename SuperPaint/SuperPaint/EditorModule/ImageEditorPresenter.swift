@@ -11,12 +11,12 @@ import UIKit
 final class ImageEditorPresenter
 {
 	private let router: IImageEditorRouter
-	private let repository: IRepository
+	private let repository: IDatabaseRepository
 	private weak var view: IImageEditorViewController?
 	private var image: UIImage
 	var filteredImages: [UIImage] = []
 
-	init(router: IImageEditorRouter, repository: IRepository, image: UIImage) {
+	init(router: IImageEditorRouter, repository: IDatabaseRepository, image: UIImage) {
 		self.router = router
 		self.repository = repository
 		self.image = image
