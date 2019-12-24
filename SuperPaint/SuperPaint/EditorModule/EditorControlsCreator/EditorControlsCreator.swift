@@ -40,20 +40,36 @@ enum EditorControlsCreator
 		])
 	}
 // MARK: - Настройка imageView
+//	static func setupImageView(imageView: UIImageView,
+//							   image: UIImage,
+//							   parentView: UIView,
+//							   safeArea: UILayoutGuide,
+//							   verticalStack: UIStackView) {
+//		imageView.image = image
+//		imageView.contentMode = .scaleAspectFit
+//		imageView.translatesAutoresizingMaskIntoConstraints = false
+//		parentView.addSubview(imageView)
+//		NSLayoutConstraint.activate([
+//			imageView.topAnchor.constraint(equalTo: safeArea.topAnchor),
+//			imageView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
+//			imageView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor),
+//			imageView.bottomAnchor.constraint(equalTo: verticalStack.topAnchor, constant: -10),
+//		])
+//	}
 	static func setupImageView(imageView: UIImageView,
 							   image: UIImage,
-							   parentView: UIView,
-							   safeArea: UILayoutGuide,
-							   verticalStack: UIStackView) {
+							   parentView: UIView) {
 		imageView.image = image
 		imageView.contentMode = .scaleAspectFit
 		imageView.translatesAutoresizingMaskIntoConstraints = false
 		parentView.addSubview(imageView)
 		NSLayoutConstraint.activate([
-			imageView.topAnchor.constraint(equalTo: safeArea.topAnchor),
-			imageView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
-			imageView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor),
-			imageView.bottomAnchor.constraint(equalTo: verticalStack.topAnchor, constant: -10),
+			imageView.topAnchor.constraint(equalTo: parentView.topAnchor),
+			imageView.leadingAnchor.constraint(equalTo: parentView.leadingAnchor),
+			imageView.trailingAnchor.constraint(equalTo: parentView.trailingAnchor),
+			imageView.bottomAnchor.constraint(equalTo: parentView.bottomAnchor),
+			imageView.centerXAnchor.constraint(equalTo: parentView.centerXAnchor),
+			imageView.centerYAnchor.constraint(equalTo: parentView.centerYAnchor),
 		])
 	}
 // MARK: - Настройка stackView
@@ -112,6 +128,19 @@ enum EditorControlsCreator
 		NSLayoutConstraint.activate([
 			spinner.centerXAnchor.constraint(equalTo: parentView.centerXAnchor),
 			spinner.centerYAnchor.constraint(equalTo: parentView.centerYAnchor),
+		])
+	}
+
+	static func setupScrollView(scrollView: UIScrollView, parentView: UIView, verticalStack: UIStackView) {
+		scrollView.minimumZoomScale = 1.0
+		scrollView.maximumZoomScale = 4.0
+		scrollView.translatesAutoresizingMaskIntoConstraints = false
+		parentView.addSubview(scrollView)
+		NSLayoutConstraint.activate([
+			scrollView.topAnchor.constraint(equalTo: parentView.topAnchor),
+			scrollView.leadingAnchor.constraint(equalTo: parentView.leadingAnchor),
+			scrollView.trailingAnchor.constraint(equalTo: parentView.trailingAnchor),
+			scrollView.bottomAnchor.constraint(equalTo: verticalStack.topAnchor, constant: -10),
 		])
 	}
 }

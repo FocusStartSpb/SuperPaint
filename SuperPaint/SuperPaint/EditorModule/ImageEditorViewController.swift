@@ -20,6 +20,8 @@ final class ImageEditorViewController: UIViewController
 	private let bottomActionsView = UIView()
 	private let verticalStack = UIStackView()
 	private let spinner = UIActivityIndicatorView()
+	private let scrollView = UIScrollView()
+	private let saveQuestionAlert = UIAlertController(title: "Warning", message: "Save image?", preferredStyle: .alert)
 
 	private var saveButton: UIBarButtonItem?
 	private var undoButton: UIBarButtonItem?
@@ -76,13 +78,13 @@ final class ImageEditorViewController: UIViewController
 extension ImageEditorViewController: IImageEditorViewController
 {
 	func stopSpinner() {
-		filtersCollection.isUserInteractionEnabled = true
+//		filtersCollection.isUserInteractionEnabled = true
 		spinner.stopAnimating()
 	}
 
 	func startSpinner() {
 		spinner.startAnimating()
-		filtersCollection.isUserInteractionEnabled = false
+//		filtersCollection.isUserInteractionEnabled = false
 	}
 
 	func refreshButtonsState(imagesStackIsEmpty: Bool) {
@@ -97,6 +99,14 @@ extension ImageEditorViewController: IImageEditorViewController
 		return self.navigationController
 	}
 }
+// MARK: - UIScrollViewDelegate
+extension ImageEditorViewController: UIScrollViewDelegate
+{
+	func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+		return imageView
+	}
+}
+
 // MARK: - UICollectionViewDataSource
 extension ImageEditorViewController: UICollectionViewDataSource
 {
@@ -153,12 +163,8 @@ private extension ImageEditorViewController
 	func setupInitialState() {
 		safeArea = self.view.layoutMarginsGuide
 		self.view.backgroundColor = .white
-		self.navigationItem.hidesBackButton = true
-		let newBackButton = UIBarButtonItem(title: "❮ Back",
-											style: .plain,
-											target: self,
-											action: #selector(back))
-		self.navigationItem.leftBarButtonItem = newBackButton
+		setupNavigationBarItems()
+
 		EditorControlsCreator.setupActionsView(actionsView: topActionsView, parentView: self.view)
 		EditorControlsCreator.setupActionsView(actionsView: bottomActionsView, parentView: self.view)
 		EditorControlsCreator.setupButtons(filtersButton: filtersButton,
@@ -173,11 +179,10 @@ private extension ImageEditorViewController
 									   parentView: self.view,
 									   safeArea: safeArea)
 
+		EditorControlsCreator.setupScrollView(scrollView: scrollView, parentView: self.view, verticalStack: verticalStack)
 		EditorControlsCreator.setupImageView(imageView: imageView,
 											 image: presenter.currentImage,
-											 parentView: self.view,
-											 safeArea: safeArea,
-											 verticalStack: verticalStack)
+											 parentView: scrollView)
 
 		EditorControlsCreator.setupCollectionViews(parentView: topActionsView,
 											 filtersCollection: filtersCollection,
@@ -185,12 +190,30 @@ private extension ImageEditorViewController
 
 		EditorControlsCreator.setupSpinner(spinner: spinner, parentView: imageView)
 
+		filtersCollection.register(FilterCell.self, forCellWithReuseIdentifier: FilterCell.cellReuseIdentifier)
+		instrumentsCollection.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "instrumentCell")
+
+		setDelegates()
+		let doubleTap = UITapGestureRecognizer(target: self, action: #selector(defaultZoom))
+		doubleTap.numberOfTapsRequired = 2
+		scrollView.addGestureRecognizer(doubleTap)
+	}
+
+	func setDelegates() {
+		scrollView.delegate = self
 		filtersCollection.dataSource = self
 		filtersCollection.delegate = self
 		instrumentsCollection.dataSource = self
 		instrumentsCollection.delegate = self
-		filtersCollection.register(FilterCell.self, forCellWithReuseIdentifier: FilterCell.cellReuseIdentifier)
-		instrumentsCollection.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "instrumentCell")
+	}
+
+	func setupNavigationBarItems() {
+		self.navigationItem.hidesBackButton = true
+		let newBackButton = UIBarButtonItem(title: "❮ Back",
+											style: .plain,
+											target: self,
+											action: #selector(back))
+		self.navigationItem.leftBarButtonItem = newBackButton
 		saveButton = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(savePressed))
 		undoButton = UIBarButtonItem(barButtonSystemItem: .reply, target: self, action: #selector(undoPressed))
 		undoButton?.isEnabled = false
@@ -198,9 +221,17 @@ private extension ImageEditorViewController
 		self.navigationItem.setRightBarButtonItems(barButtonItems, animated: true)
 	}
 
+	@objc func defaultZoom() {
+		if scrollView.zoomScale == 1.0 {
+			scrollView.setZoomScale(2, animated: true)
+		}
+		else {
+			scrollView.setZoomScale(1.0, animated: true)
+		}
+	}
+
 	@objc func back() {
 		if presenter.imageEdited {
-			let alert = UIAlertController(title: "Warning", message: "Save image?", preferredStyle: .alert)
 			let okAction = UIAlertAction(title: "Yes", style: .default) { [weak self] _ in
 				self?.presenter.saveImage()
 				self?.presenter.moveBack()
@@ -208,10 +239,10 @@ private extension ImageEditorViewController
 			let cancelAction = UIAlertAction(title: "No", style: .destructive){[weak self] _ in
 				self?.presenter.moveBack()
 			}
-			alert.addAction(okAction)
-			alert.addAction(cancelAction)
+			saveQuestionAlert.addAction(okAction)
+			saveQuestionAlert.addAction(cancelAction)
 
-			self.present(alert, animated: true)
+			self.present(saveQuestionAlert, animated: true)
 		}
 		else {
 			presenter.moveBack()

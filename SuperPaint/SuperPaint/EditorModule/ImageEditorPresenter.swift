@@ -54,11 +54,11 @@ extension ImageEditorPresenter: IImageEditorPresenter
 			imageStack.clear()
 			imageStack.push(sourceImage)
 			view?.refreshButtonsState(imagesStackIsEmpty: imageStack.isEmpty)
-			let filterQueue = DispatchQueue(label: "FilterQueue", qos: .userInitiated, attributes: .concurrent)
+			let filterQueue = DispatchQueue(label: "FilterQueue", qos: .userInteractive, attributes: .concurrent)
 			filterQueue.async { [weak self] in
 				self?.sourceImage.setFilter(self?.filtersList[filterIndex]) { filteredImage in
+					self?.editingImage = filteredImage
 					DispatchQueue.main.async {
-						self?.editingImage = filteredImage
 						self?.view?.setImage(image: filteredImage)
 						self?.view?.stopSpinner()
 						self?.previousAppliedFilterIndex = filterIndex
