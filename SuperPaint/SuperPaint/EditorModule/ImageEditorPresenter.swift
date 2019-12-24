@@ -17,7 +17,8 @@ final class ImageEditorPresenter
 	private let repository: IDatabaseRepository
 	private weak var view: IImageEditorViewController?
 	private let id: String
-	private var image: UIImage
+	private var sourceImage: UIImage
+	private var editingImage: UIImage
 	private var previousAppliedFilterIndex: Int?
 	private let isNewImage: Bool
 
@@ -25,7 +26,8 @@ final class ImageEditorPresenter
 		self.router = router
 		self.repository = repository
 		self.id = id
-		self.image = image
+		self.sourceImage = image
+		self.editingImage = image
 		filtersList = FiltersList.allCases.map{ $0.getFilter() }
 		self.isNewImage = isNewImage
 	}
@@ -41,7 +43,7 @@ extension ImageEditorPresenter: IImageEditorPresenter
 		previousAppliedFilterIndex = nil
 	}
 
-	func applyFilter(image: UIImage, filterIndex: Int) {
+	func applyFilter(filterIndex: Int) {
 		//Если фильтр уже применен не применяем снова
 		var currentFilterAlreadyApplied = false
 		if let previousIndex = previousAppliedFilterIndex, previousIndex == filterIndex {
@@ -50,11 +52,12 @@ extension ImageEditorPresenter: IImageEditorPresenter
 		if currentFilterAlreadyApplied == false {
 			view?.startSpinner()
 			imageStack.clear()
-			imageStack.push(image)
+			imageStack.push(sourceImage)
 			view?.refreshButtonsState(imagesStackIsEmpty: imageStack.isEmpty)
-			let filterQueue = DispatchQueue(label: "FilterQueue", qos: .userInitiated, attributes: .concurrent)
+			let filterQueue = DispatchQueue(label: "FilterQueue", qos: .userInteractive, attributes: .concurrent)
 			filterQueue.async { [weak self] in
-				image.setFilter(self?.filtersList[filterIndex]) { filteredImage in
+				self?.sourceImage.setFilter(self?.filtersList[filterIndex]) { filteredImage in
+					self?.editingImage = filteredImage
 					DispatchQueue.main.async {
 						self?.view?.setImage(image: filteredImage)
 						self?.view?.stopSpinner()
@@ -70,7 +73,7 @@ extension ImageEditorPresenter: IImageEditorPresenter
 	}
 
 	var currentImage: UIImage {
-		return image
+		return sourceImage
 	}
 
 	var numberOfPreviews: Int {
@@ -81,6 +84,10 @@ extension ImageEditorPresenter: IImageEditorPresenter
 		return isNewImage
 	}
 
+	var imageEdited: Bool {
+		return sourceImage != editingImage
+	}
+
 	func triggerViewReadyEvent() {
 		createFilteredImageCollection()
 	}
@@ -89,13 +96,15 @@ extension ImageEditorPresenter: IImageEditorPresenter
 		self.view = view
 	}
 
-	func saveImage(id: String, data: NSData, isNewImage: Bool) {
+	func saveImage() {
+		guard let imageData = editingImage.pngData() else { return }
 		if isNewImage {
-			self.repository.saveImage(id: id, data: data)
+			self.repository.saveImage(id: id, data: imageData as NSData)
 		}
 		else {
-			self.repository.updateImage(id: id, data: data)
+			self.repository.updateImage(id: id, data: imageData as NSData)
 		}
+		moveBack()
 	}
 
 	func moveBack() {
@@ -106,7 +115,7 @@ extension ImageEditorPresenter: IImageEditorPresenter
 private extension ImageEditorPresenter
 {
 	func createFilteredImageCollection() {
-		guard let preview = image.resizeImage(to: 100) else { return }
+		guard let preview = sourceImage.resizeImage(to: 100) else { return }
 		filtersList.forEach{ preview.setFilter($0) { filteredImage in self.filteredPreviews.append(filteredImage) }
 		}
 	}
