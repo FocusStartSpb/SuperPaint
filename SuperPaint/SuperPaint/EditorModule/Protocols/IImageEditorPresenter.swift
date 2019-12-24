@@ -22,6 +22,6 @@ protocol IImageEditorPresenter: AnyObject
 	func applyFilter(image: UIImage, filterIndex: Int)
 	func undoAction()
 
-	func saveImage(id: String, data: NSData, isNewImage: Bool)
+	func saveImage()
 	func moveBack()
 }
