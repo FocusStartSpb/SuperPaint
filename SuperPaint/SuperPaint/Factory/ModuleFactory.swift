@@ -15,7 +15,7 @@ struct ModuleFactory
 
 	init() {
 		self.networkRepository = NetworkRepository()
-		self.databaseRepository = DatabaseRepository()
+		self.databaseRepository = DatabaseRepository(imagesManager: CDImageModelManager())
 	}
 
 	func createNavigationController() -> UIViewController {
