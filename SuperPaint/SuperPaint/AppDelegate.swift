@@ -36,5 +36,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate
 	}
 
 	func applicationWillTerminate(_ application: UIApplication) {
+		let databaseRepository = DatabaseRepository(imagesManager: CDImageModelManager())
+		databaseRepository.saveContext()
 	}
 }

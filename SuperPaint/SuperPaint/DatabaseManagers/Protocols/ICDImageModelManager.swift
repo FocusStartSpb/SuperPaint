@@ -1,17 +1,15 @@
 //
-//  IDatabaseRepository.swift
+//  ICDImageModelManager.swift
 //  SuperPaint
 //
-//  Created by Иван Медведев on 23/12/2019.
+//  Created by Иван Медведев on 24/12/2019.
 //  Copyright © 2019 Fixiki. All rights reserved.
 //
 
 import Foundation
 
-protocol IDatabaseRepository
+protocol ICDImageModelManager
 {
-	var imagesManager: ICDImageModelManager { get }
-
 	func loadImages(completion: (ImagesResult) -> Void)
 	func saveImage(_ image: ImageModel)
 	func deleteImages(_ images: [ImageModel])
