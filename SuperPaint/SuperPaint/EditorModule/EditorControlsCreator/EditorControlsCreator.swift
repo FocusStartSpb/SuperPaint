@@ -92,8 +92,6 @@ enum EditorControlsCreator
 	static func setCollectionViewProperties(_ collectionView: UICollectionView, parentView: UIView) {
 		let layout = UICollectionViewFlowLayout()
 		layout.scrollDirection = .horizontal
-		layout.minimumInteritemSpacing = 0
-		layout.minimumLineSpacing = 0
 		collectionView.setCollectionViewLayout(layout, animated: true)
 		collectionView.backgroundColor = .clear
 		collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -104,6 +102,16 @@ enum EditorControlsCreator
 			collectionView.bottomAnchor.constraint(equalTo: parentView.bottomAnchor),
 			collectionView.leadingAnchor.constraint(equalTo: parentView.leadingAnchor),
 			collectionView.trailingAnchor.constraint(equalTo: parentView.trailingAnchor),
+		])
+	}
+
+	static func setupSpinner(spinner: UIActivityIndicatorView, parentView: UIView) {
+		spinner.style = .whiteLarge
+		spinner.translatesAutoresizingMaskIntoConstraints = false
+		parentView.addSubview(spinner)
+		NSLayoutConstraint.activate([
+			spinner.centerXAnchor.constraint(equalTo: parentView.centerXAnchor),
+			spinner.centerYAnchor.constraint(equalTo: parentView.centerYAnchor),
 		])
 	}
 }

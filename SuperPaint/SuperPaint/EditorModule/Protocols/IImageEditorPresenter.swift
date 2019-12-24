@@ -13,11 +13,14 @@ protocol IImageEditorPresenter: AnyObject
 	var currentId: String { get }
 	var currentImage: UIImage { get }
 	var newImage: Bool { get }
-	var filteredImages: [UIImage] { get }
-	var numberOfFilters: Int { get }
+	var filteredPreviews: [UIImage] { get }
+	var numberOfPreviews: Int { get }
+	var filtersList: [Filter] { get }
 
 	func inject(view: IImageEditorViewController)
 	func triggerViewReadyEvent()
+	func applyFilter(image: UIImage, filterIndex: Int)
+	func undoAction()
 
 	func saveImage(id: String, data: NSData, isNewImage: Bool)
 	func moveBack()
