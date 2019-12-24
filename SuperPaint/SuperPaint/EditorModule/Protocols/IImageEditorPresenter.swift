@@ -17,5 +17,6 @@ protocol IImageEditorPresenter: AnyObject
 
 	func inject(view: IImageEditorViewController)
 	func triggerViewReadyEvent()
-	func applyFilter(image: UIImage, filterIndex: Int, completion: @escaping (UIImage) -> Void)
+	func applyFilter(image: UIImage, filterIndex: Int)
+	func undoAction()
 }

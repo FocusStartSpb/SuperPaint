@@ -10,12 +10,14 @@ import UIKit
 
 final class ImageEditorPresenter
 {
+	let filtersList: [Filter]
+	var filteredPreviews: [UIImage] = []
+	private var imageStack = ImagesStack()
 	private let router: IImageEditorRouter
 	private let repository: IDatabaseRepository
-	let filtersList: [Filter]
 	private weak var view: IImageEditorViewController?
 	private var image: UIImage
-	var filteredPreviews: [UIImage] = []
+	private var previousAppliedFilterIndex: Int?
 
 	init(router: IImageEditorRouter, repository: IDatabaseRepository, image: UIImage) {
 		self.router = router
@@ -27,12 +29,33 @@ final class ImageEditorPresenter
 
 extension ImageEditorPresenter: IImageEditorPresenter
 {
-	func applyFilter(image: UIImage, filterIndex: Int, completion: @escaping (UIImage) -> Void) {
-		let filterQueue = DispatchQueue(label: "FilterQueue", qos: .userInitiated, attributes: .concurrent)
-		filterQueue.async { [weak self] in
-			image.setFilter(self?.filtersList[filterIndex]) { filteredImage in
-				DispatchQueue.main.async {
-					completion(filteredImage)
+	func undoAction() {
+		if let lastImage = imageStack.pop() {
+			view?.setImage(image: lastImage)
+		}
+		view?.refreshButtonsState(imagesStackIsEmpty: imageStack.isEmpty)
+		previousAppliedFilterIndex = nil
+	}
+
+	func applyFilter(image: UIImage, filterIndex: Int) {
+		//Если фильтр уже применен не применяем снова
+		var currentFilterAlreadyApplied = false
+		if let previousIndex = previousAppliedFilterIndex, previousIndex == filterIndex {
+			currentFilterAlreadyApplied = true
+		}
+		if currentFilterAlreadyApplied == false {
+			view?.startSpinner()
+			imageStack.clear()
+			imageStack.push(image)
+			view?.refreshButtonsState(imagesStackIsEmpty: imageStack.isEmpty)
+			let filterQueue = DispatchQueue(label: "FilterQueue", qos: .userInitiated, attributes: .concurrent)
+			filterQueue.async { [weak self] in
+				image.setFilter(self?.filtersList[filterIndex]) { filteredImage in
+					DispatchQueue.main.async {
+						self?.view?.setImage(image: filteredImage)
+						self?.view?.stopSpinner()
+						self?.previousAppliedFilterIndex = filterIndex
+					}
 				}
 			}
 		}

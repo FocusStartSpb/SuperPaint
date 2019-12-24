@@ -21,11 +21,9 @@ final class ImageEditorViewController: UIViewController
 	private let verticalStack = UIStackView()
 	private let spinner = UIActivityIndicatorView()
 
-	private var imagesStack = ImagesStack()
 	private var saveButton: UIBarButtonItem?
 	private var undoButton: UIBarButtonItem?
 	private var safeArea = UILayoutGuide()
-	private var previousAppliedFilterIndex: Int?
 
 	private var showFilters: Bool {
 		get {
@@ -71,6 +69,21 @@ final class ImageEditorViewController: UIViewController
 // MARK: - IImageEditorViewController
 extension ImageEditorViewController: IImageEditorViewController
 {
+	func stopSpinner() {
+		spinner.stopAnimating()
+	}
+
+	func startSpinner() {
+		spinner.startAnimating()
+	}
+
+	func refreshButtonsState(imagesStackIsEmpty: Bool) {
+		undoButton?.isEnabled = imagesStackIsEmpty ? false : true
+	}
+
+	func setImage(image: UIImage) {
+		imageView.image = image
+	}
 }
 // MARK: - UICollectionViewDataSource
 extension ImageEditorViewController: UICollectionViewDataSource
@@ -108,23 +121,8 @@ extension ImageEditorViewController: UICollectionViewDelegate
 	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 		collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
 		if collectionView == filtersCollection {
-			//Если фильтр уже применен не применяем снова
-			var currentFilterAlreadyApplied = false
-			if let previousIndex = previousAppliedFilterIndex, previousIndex == indexPath.row {
-				currentFilterAlreadyApplied = true
-			}
-			if currentFilterAlreadyApplied == false {
-				imagesStack.clear()
-				spinner.startAnimating()
-				let image = presenter.currentImage
-				imagesStack.push(image)
-				refreshUndoButtonState()
-				presenter.applyFilter(image: image, filterIndex: indexPath.row) {[weak self] filteredImage in
-					self?.imageView.image = filteredImage
-					self?.spinner.stopAnimating()
-					self?.previousAppliedFilterIndex = indexPath.row
-				}
-			}
+			let image = presenter.currentImage
+			presenter.applyFilter(image: image, filterIndex: indexPath.row)
 		}
 	}
 // TODO: - обработка кликов по инструментам QIS-23
@@ -183,10 +181,6 @@ private extension ImageEditorViewController
 		self.navigationItem.setRightBarButtonItems(barButtonItems, animated: true)
 	}
 
-	func refreshUndoButtonState() {
-		undoButton?.isEnabled = imagesStack.isEmpty ? false : true
-	}
-
 	@objc func toggleFiltersCollection(_ sender: UIButton) {
 		showFilters = (showFilters == false)
 	}
@@ -199,9 +193,6 @@ private extension ImageEditorViewController
 	}
 
 	@objc func undoPressed(_ sender: UIBarButtonItem) {
-		if let image = imagesStack.pop() {
-			imageView.image = image
-		}
-		refreshUndoButtonState()
+		presenter.undoAction()
 	}
 }
