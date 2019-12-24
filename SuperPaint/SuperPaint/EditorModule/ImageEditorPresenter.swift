@@ -43,7 +43,7 @@ extension ImageEditorPresenter: IImageEditorPresenter
 		previousAppliedFilterIndex = nil
 	}
 
-	func applyFilter(image: UIImage, filterIndex: Int) {
+	func applyFilter(filterIndex: Int) {
 		//Если фильтр уже применен не применяем снова
 		var currentFilterAlreadyApplied = false
 		if let previousIndex = previousAppliedFilterIndex, previousIndex == filterIndex {
@@ -52,11 +52,11 @@ extension ImageEditorPresenter: IImageEditorPresenter
 		if currentFilterAlreadyApplied == false {
 			view?.startSpinner()
 			imageStack.clear()
-			imageStack.push(image)
+			imageStack.push(sourceImage)
 			view?.refreshButtonsState(imagesStackIsEmpty: imageStack.isEmpty)
 			let filterQueue = DispatchQueue(label: "FilterQueue", qos: .userInitiated, attributes: .concurrent)
 			filterQueue.async { [weak self] in
-				image.setFilter(self?.filtersList[filterIndex]) { filteredImage in
+				self?.sourceImage.setFilter(self?.filtersList[filterIndex]) { filteredImage in
 					DispatchQueue.main.async {
 						self?.editingImage = filteredImage
 						self?.view?.setImage(image: filteredImage)
@@ -82,6 +82,10 @@ extension ImageEditorPresenter: IImageEditorPresenter
 
 	var newImage: Bool {
 		return isNewImage
+	}
+
+	var imageEdited: Bool {
+		return sourceImage != editingImage
 	}
 
 	func triggerViewReadyEvent() {

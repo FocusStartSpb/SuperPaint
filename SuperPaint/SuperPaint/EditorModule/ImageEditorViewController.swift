@@ -65,16 +65,24 @@ final class ImageEditorViewController: UIViewController
 		setupInitialState()
 		presenter.triggerViewReadyEvent()
 	}
+
+	override func didMove(toParent parent: UIViewController?) {
+		if parent == nil {
+			back()
+		}
+	}
 }
 // MARK: - IImageEditorViewController
 extension ImageEditorViewController: IImageEditorViewController
 {
 	func stopSpinner() {
+		filtersCollection.isUserInteractionEnabled = true
 		spinner.stopAnimating()
 	}
 
 	func startSpinner() {
 		spinner.startAnimating()
+		filtersCollection.isUserInteractionEnabled = false
 	}
 
 	func refreshButtonsState(imagesStackIsEmpty: Bool) {
@@ -125,8 +133,7 @@ extension ImageEditorViewController: UICollectionViewDelegate
 	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 		collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
 		if collectionView == filtersCollection {
-			let image = presenter.currentImage
-			presenter.applyFilter(image: image, filterIndex: indexPath.row)
+			presenter.applyFilter(filterIndex: indexPath.row)
 		}
 	}
 // TODO: - обработка кликов по инструментам QIS-23
@@ -146,6 +153,12 @@ private extension ImageEditorViewController
 	func setupInitialState() {
 		safeArea = self.view.layoutMarginsGuide
 		self.view.backgroundColor = .white
+		self.navigationItem.hidesBackButton = true
+		let newBackButton = UIBarButtonItem(title: "❮ Back",
+											style: .plain,
+											target: self,
+											action: #selector(back))
+		self.navigationItem.leftBarButtonItem = newBackButton
 		EditorControlsCreator.setupActionsView(actionsView: topActionsView, parentView: self.view)
 		EditorControlsCreator.setupActionsView(actionsView: bottomActionsView, parentView: self.view)
 		EditorControlsCreator.setupButtons(filtersButton: filtersButton,
@@ -183,6 +196,26 @@ private extension ImageEditorViewController
 		undoButton?.isEnabled = false
 		let barButtonItems = [saveButton, undoButton].compactMap{ $0 }
 		self.navigationItem.setRightBarButtonItems(barButtonItems, animated: true)
+	}
+
+	@objc func back() {
+		if presenter.imageEdited {
+			let alert = UIAlertController(title: "Warning", message: "Save image?", preferredStyle: .alert)
+			let okAction = UIAlertAction(title: "Yes", style: .default) { [weak self] _ in
+				self?.presenter.saveImage()
+				self?.presenter.moveBack()
+			}
+			let cancelAction = UIAlertAction(title: "No", style: .destructive){[weak self] _ in
+				self?.presenter.moveBack()
+			}
+			alert.addAction(okAction)
+			alert.addAction(cancelAction)
+
+			self.present(alert, animated: true)
+		}
+		else {
+			presenter.moveBack()
+		}
 	}
 
 	@objc func toggleFiltersCollection(_ sender: UIButton) {
