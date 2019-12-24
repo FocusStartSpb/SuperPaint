@@ -67,6 +67,9 @@ final class ImageEditorViewController: UIViewController
 // MARK: - IImageEditorViewController
 extension ImageEditorViewController: IImageEditorViewController
 {
+	var navController: UINavigationController? {
+		return self.navigationController
+	}
 }
 // MARK: - UICollectionViewDataSource
 extension ImageEditorViewController: UICollectionViewDataSource
@@ -169,5 +172,8 @@ private extension ImageEditorViewController
 	}
 
 	@objc func savePressed(_ sender: UIBarButtonItem) {
+		guard let imageData = self.presenter.currentImage.pngData() else { return }
+		self.presenter.saveImage(id: self.presenter.currentId, data: imageData as NSData, isNewImage: self.presenter.newImage)
+		self.presenter.moveBack()
 	}
 }

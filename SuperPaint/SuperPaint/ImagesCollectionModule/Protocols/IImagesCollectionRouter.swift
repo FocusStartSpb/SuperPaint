@@ -10,5 +10,5 @@ import UIKit
 
 protocol IImagesCollectionRouter: AnyObject
 {
-	func pushEditorModule(with image: UIImage)
+	func pushEditorModule(id: String, data: NSData, isNewImage: Bool)
 }

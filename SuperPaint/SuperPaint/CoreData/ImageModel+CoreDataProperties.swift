@@ -16,6 +16,6 @@ extension ImageModel
 		return NSFetchRequest<ImageModel>(entityName: "ImageModel")
 	}
 
-	@NSManaged public var image: NSData?
+	@NSManaged public var imageData: NSData?
 	@NSManaged public var id: String?
 }

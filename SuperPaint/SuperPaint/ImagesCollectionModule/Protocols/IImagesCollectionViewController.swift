@@ -11,4 +11,6 @@ import UIKit
 protocol IImagesCollectionViewController: AnyObject
 {
 	var navController: UINavigationController? { get }
+
+	func reloadView()
 }

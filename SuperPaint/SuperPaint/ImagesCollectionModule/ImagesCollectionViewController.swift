@@ -37,6 +37,12 @@ final class ImagesCollectionViewController: UIViewController
 		self.safeArea = self.view.layoutMarginsGuide
 		self.setupSettingsForNavigationBar()
 		self.setupCollectionView()
+		self.loadImages()
+	}
+
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		self.loadImages()
 	}
 
 	override func setEditing(_ editing: Bool, animated: Bool) {
@@ -118,7 +124,6 @@ private extension ImagesCollectionViewController
 		cameraAction.setValue(Images.cameraIcon, forKey: "image")
 		cameraAction.setValue(CATextLayerAlignmentMode.left, forKey: "titleTextAlignment")
 		let libraryAction = UIAlertAction(title: "Library", style: .default) { _ in
-
 			self.chooseImagePicker(source: .photoLibrary)
 		}
 		libraryAction.setValue(Images.libraryIcon, forKey: "image")
@@ -136,6 +141,10 @@ private extension ImagesCollectionViewController
 		present(actionSheet, animated: true)
 	}
 
+	// MARK: - Загружаем картинки из базы данных
+	func loadImages() {
+		self.imagesCollectionPresenter.loadImages()
+	}
 	// MARK: - Действие добавления новой картинки
 	@objc func addNewImage() {
 		self.openActionSheet()
@@ -143,7 +152,16 @@ private extension ImagesCollectionViewController
 
 	// MARK: - Действие удаления выбранных картинок
 	@objc func removeImages() {
-		// TODO: - remove images QIS-25
+		guard let selectedIndexes = self.collectionView.indexPathsForSelectedItems else { return }
+		var selectedImages: [ImageModel] = []
+		selectedIndexes.forEach { indexPath in
+			selectedImages.append(self.imagesCollectionPresenter.getImageModelAt(index: indexPath.row - 1))
+		}
+		self.imagesCollectionPresenter.deleteImages(selectedImages)
+		self.collectionView.deleteItems(at: selectedIndexes)
+		if self.imagesCollectionPresenter.getNumberOfImages() == 1 {
+			self.navigationItem.rightBarButtonItem?.isEnabled = false
+		}
 	}
 }
 
@@ -157,8 +175,9 @@ extension ImagesCollectionViewController: UICollectionViewDelegate
 		}
 		else if indexPath.row != 0 && self.isEditing == false {
 			self.collectionView.deselectItem(at: indexPath, animated: false)
-			guard let image = (self.collectionView.cellForItem(at: indexPath) as? ImageCell)?.imageView.image else { return }
-			self.imagesCollectionPresenter.onCellPressed(with: image)
+			let imageModel = self.imagesCollectionPresenter.getImageModelAt(index: indexPath.row - 1)
+			guard let id = imageModel.id, let imageData = imageModel.imageData else { return }
+			self.imagesCollectionPresenter.onCellPressed(id: id, data: imageData, isNewImage: false)
 		}
 		else if indexPath.row != 0 && self.isEditing {
 			self.navigationItem.rightBarButtonItem?.isEnabled = true
@@ -177,7 +196,7 @@ extension ImagesCollectionViewController: UICollectionViewDataSource
 {
 	func collectionView(_ collectionView: UICollectionView,
 						numberOfItemsInSection section: Int) -> Int {
-		return 35
+		return self.imagesCollectionPresenter.getNumberOfImages()
 	}
 
 	func collectionView(_ collectionView: UICollectionView,
@@ -206,7 +225,11 @@ extension ImagesCollectionViewController: UICollectionViewDataSource
 				cell.isInEditingMode = false
 			}
 			cell.selectionImageView.image = cell.isSelected ? Images.selected : Images.notSelected
-			cell.imageView.image = Images.newImageDisabled
+
+			let imageModel = self.imagesCollectionPresenter.getImageModelAt(index: indexPath.row - 1)
+			if let data = imageModel.imageData as Data?, let image = UIImage(data: data) {
+				cell.imageView.image = image
+			}
 		}
 		return cell
 	}
@@ -239,7 +262,6 @@ extension ImagesCollectionViewController: UIImagePickerControllerDelegate, UINav
 		if UIImagePickerController.isSourceTypeAvailable(source) {
 			let imagePicker = UIImagePickerController()
 			imagePicker.delegate = self
-			imagePicker.allowsEditing = true
 			imagePicker.sourceType = source
 			present(imagePicker, animated: true)
 		}
@@ -247,18 +269,26 @@ extension ImagesCollectionViewController: UIImagePickerControllerDelegate, UINav
 
 	func imagePickerController(_ picker: UIImagePickerController,
 							   didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
-		guard let image = info[.editedImage] as? UIImage else {
+		guard let image = info[.originalImage] as? UIImage, let imageData = image.pngData() else {
 			dismiss(animated: true, completion: nil)
 			return
 		}
-		self.imagesCollectionPresenter.onCellPressed(with: image)
+
+		let id = UUID().uuidString
+		let data = imageData as NSData
+		self.imagesCollectionPresenter.onCellPressed(id: id, data: data, isNewImage: true)
 		dismiss(animated: true, completion: nil)
 	}
 }
 
+// MARK: - IImagesCollectionViewController
 extension ImagesCollectionViewController: IImagesCollectionViewController
 {
 	var navController: UINavigationController? {
 		return self.navigationController
+	}
+
+	func reloadView() {
+		self.collectionView.reloadData()
 	}
 }

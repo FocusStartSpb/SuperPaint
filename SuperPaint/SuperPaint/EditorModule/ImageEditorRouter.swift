@@ -23,4 +23,8 @@ extension ImageEditorRouter: IImageEditorRouter
 	func inject(view: IImageEditorViewController) {
 		self.view = view
 	}
+
+	func moveBack() {
+		self.view?.navController?.popViewController(animated: true)
+	}
 }
