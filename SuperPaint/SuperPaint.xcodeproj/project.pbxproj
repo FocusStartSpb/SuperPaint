@@ -24,6 +24,11 @@
 		720A38F223AF8C030026EFC9 /* Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A38F123AF8C030026EFC9 /* Images.swift */; };
 		720A38F523B14FE00026EFC9 /* DatabaseRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A38F423B14FE00026EFC9 /* DatabaseRepository.swift */; };
 		720A38F723B14FEE0026EFC9 /* IDatabaseRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A38F623B14FEE0026EFC9 /* IDatabaseRepository.swift */; };
+		720A38FA23B21C010026EFC9 /* ImageModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 720A38F823B21C010026EFC9 /* ImageModel.xcdatamodeld */; };
+		720A38FE23B21E070026EFC9 /* CDImageModelManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A38FD23B21E070026EFC9 /* CDImageModelManager.swift */; };
+		720A390423B220EE0026EFC9 /* ImageModel+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A390223B220EE0026EFC9 /* ImageModel+CoreDataClass.swift */; };
+		720A390523B220EE0026EFC9 /* ImageModel+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A390323B220EE0026EFC9 /* ImageModel+CoreDataProperties.swift */; };
+		720A390823B223100026EFC9 /* ICDImageModelManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A390723B223100026EFC9 /* ICDImageModelManager.swift */; };
 		8511E6ED23AA936A0032B588 /* ModuleFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8511E6EC23AA936A0032B588 /* ModuleFactory.swift */; };
 		85612AFB23ACE8140082DC95 /* ImageEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85612AFA23ACE8140082DC95 /* ImageEditorViewController.swift */; };
 		85612AFD23ACE8410082DC95 /* ImageEditorPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85612AFC23ACE8410082DC95 /* ImageEditorPresenter.swift */; };
@@ -58,6 +63,11 @@
 		720A38F123AF8C030026EFC9 /* Images.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Images.swift; sourceTree = "<group>"; };
 		720A38F423B14FE00026EFC9 /* DatabaseRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseRepository.swift; sourceTree = "<group>"; };
 		720A38F623B14FEE0026EFC9 /* IDatabaseRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDatabaseRepository.swift; sourceTree = "<group>"; };
+		720A38F923B21C010026EFC9 /* ImageModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ImageModel.xcdatamodel; sourceTree = "<group>"; };
+		720A38FD23B21E070026EFC9 /* CDImageModelManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CDImageModelManager.swift; sourceTree = "<group>"; };
+		720A390223B220EE0026EFC9 /* ImageModel+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImageModel+CoreDataClass.swift"; sourceTree = "<group>"; };
+		720A390323B220EE0026EFC9 /* ImageModel+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImageModel+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		720A390723B223100026EFC9 /* ICDImageModelManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ICDImageModelManager.swift; sourceTree = "<group>"; };
 		8511E6EC23AA936A0032B588 /* ModuleFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleFactory.swift; sourceTree = "<group>"; };
 		85612AFA23ACE8140082DC95 /* ImageEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageEditorViewController.swift; sourceTree = "<group>"; };
 		85612AFC23ACE8410082DC95 /* ImageEditorPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageEditorPresenter.swift; sourceTree = "<group>"; };
@@ -102,6 +112,8 @@
 		720A389423A7F8E20026EFC9 /* SuperPaint */ = {
 			isa = PBXGroup;
 			children = (
+				720A38FC23B21D460026EFC9 /* DatabaseManagers */,
+				720A38FB23B21C090026EFC9 /* CoreData */,
 				720A38BE23AD09340026EFC9 /* Utils */,
 				85612AF923ACE7E70082DC95 /* EditorModule */,
 				720A38B623AA99EA0026EFC9 /* NetworkRepository */,
@@ -174,6 +186,33 @@
 				720A38F623B14FEE0026EFC9 /* IDatabaseRepository.swift */,
 			);
 			path = DatabaseRepository;
+			sourceTree = "<group>";
+		};
+		720A38FB23B21C090026EFC9 /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				720A38F823B21C010026EFC9 /* ImageModel.xcdatamodeld */,
+				720A390223B220EE0026EFC9 /* ImageModel+CoreDataClass.swift */,
+				720A390323B220EE0026EFC9 /* ImageModel+CoreDataProperties.swift */,
+			);
+			path = CoreData;
+			sourceTree = "<group>";
+		};
+		720A38FC23B21D460026EFC9 /* DatabaseManagers */ = {
+			isa = PBXGroup;
+			children = (
+				720A390623B223010026EFC9 /* Protocols */,
+				720A38FD23B21E070026EFC9 /* CDImageModelManager.swift */,
+			);
+			path = DatabaseManagers;
+			sourceTree = "<group>";
+		};
+		720A390623B223010026EFC9 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				720A390723B223100026EFC9 /* ICDImageModelManager.swift */,
+			);
+			path = Protocols;
 			sourceTree = "<group>";
 		};
 		8511E6EB23AA93550032B588 /* Factory */ = {
@@ -326,6 +365,8 @@
 				720A38AB23AA92180026EFC9 /* ImagesCollectionPresenter.swift in Sources */,
 				85612B0423ACE8DC0082DC95 /* IImageEditorPresenter.swift in Sources */,
 				720A38B323AA92C80026EFC9 /* IImagesCollectionPresenter.swift in Sources */,
+				720A390523B220EE0026EFC9 /* ImageModel+CoreDataProperties.swift in Sources */,
+				720A390423B220EE0026EFC9 /* ImageModel+CoreDataClass.swift in Sources */,
 				720A38C223AD6D5E0026EFC9 /* Fonts.swift in Sources */,
 				8577DDA023B10D3100BE86E2 /* FilterCell.swift in Sources */,
 				720A38BD23ACF27B0026EFC9 /* ImageCell.swift in Sources */,
@@ -338,12 +379,15 @@
 				8511E6ED23AA936A0032B588 /* ModuleFactory.swift in Sources */,
 				85612B0623ACE8FC0082DC95 /* IImageEditorRouter.swift in Sources */,
 				720A389623A7F8E20026EFC9 /* AppDelegate.swift in Sources */,
+				720A38FA23B21C010026EFC9 /* ImageModel.xcdatamodeld in Sources */,
 				720A38B123AA92BA0026EFC9 /* IImagesCollectionViewController.swift in Sources */,
 				85612AFF23ACE86E0082DC95 /* ImageEditorRouter.swift in Sources */,
+				720A390823B223100026EFC9 /* ICDImageModelManager.swift in Sources */,
 				720A38F523B14FE00026EFC9 /* DatabaseRepository.swift in Sources */,
 				720A38AE23AA922D0026EFC9 /* ImagesCollectionRouter.swift in Sources */,
 				859BCCD123AE99C600553048 /* EditorControlsCreator.swift in Sources */,
 				85612B0223ACE8AC0082DC95 /* IImageEditorViewController.swift in Sources */,
+				720A38FE23B21E070026EFC9 /* CDImageModelManager.swift in Sources */,
 				720A38B823AA9A050026EFC9 /* NetworkRepository.swift in Sources */,
 				859BCCE523B0F4D100553048 /* UIImage+resize.swift in Sources */,
 				720A38BA23AA9A170026EFC9 /* INetworkRepository.swift in Sources */,
@@ -541,6 +585,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		720A38F823B21C010026EFC9 /* ImageModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				720A38F923B21C010026EFC9 /* ImageModel.xcdatamodel */,
+			);
+			currentVersion = 720A38F923B21C010026EFC9 /* ImageModel.xcdatamodel */;
+			path = ImageModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 720A388A23A7F8E20026EFC9 /* Project object */;
 }
