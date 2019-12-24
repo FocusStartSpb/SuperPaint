@@ -19,9 +19,11 @@ final class ImageEditorViewController: UIViewController
 	private let topActionsView = UIView()
 	private let bottomActionsView = UIView()
 	private let verticalStack = UIStackView()
+	private let spinner = UIActivityIndicatorView()
 
+	private var saveButton: UIBarButtonItem?
+	private var undoButton: UIBarButtonItem?
 	private var safeArea = UILayoutGuide()
-	private var image = UIImage()
 
 	private var showFilters: Bool {
 		get {
@@ -67,13 +69,28 @@ final class ImageEditorViewController: UIViewController
 // MARK: - IImageEditorViewController
 extension ImageEditorViewController: IImageEditorViewController
 {
+	func stopSpinner() {
+		spinner.stopAnimating()
+	}
+
+	func startSpinner() {
+		spinner.startAnimating()
+	}
+
+	func refreshButtonsState(imagesStackIsEmpty: Bool) {
+		undoButton?.isEnabled = imagesStackIsEmpty ? false : true
+	}
+
+	func setImage(image: UIImage) {
+		imageView.image = image
+	}
 }
 // MARK: - UICollectionViewDataSource
 extension ImageEditorViewController: UICollectionViewDataSource
 {
 	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 		if collectionView == filtersCollection {
-			return presenter.numberOfFilters
+			return presenter.numberOfPreviews
 		}
 		else {
 // TODO: - количество инструментов из презентера QIS-16
@@ -83,11 +100,10 @@ extension ImageEditorViewController: UICollectionViewDataSource
 
 	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 		if collectionView == filtersCollection {
-//TODO: - добавить новый класс для кастомной ячейки для фильтров, и использовать его тут QIS-17
 			let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FilterCell.cellReuseIdentifier,
 														  for: indexPath) as? FilterCell ?? FilterCell(frame: .zero)
-			cell.imageView.image = presenter.currentImage
-			cell.label.text = "filter"
+			cell.imageView.image = presenter.filteredPreviews[indexPath.row]
+			cell.label.text = presenter.filtersList[indexPath.row].name
 			return cell
 		}
 		else {
@@ -103,8 +119,10 @@ extension ImageEditorViewController: UICollectionViewDelegate
 {
 // TODO: - обработка кликов по фильтрам и вызов применения фильтров из презентера QIS-21
 	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+		collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
 		if collectionView == filtersCollection {
-			collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+			let image = presenter.currentImage
+			presenter.applyFilter(image: image, filterIndex: indexPath.row)
 		}
 	}
 // TODO: - обработка кликов по инструментам QIS-23
@@ -124,7 +142,6 @@ private extension ImageEditorViewController
 	func setupInitialState() {
 		safeArea = self.view.layoutMarginsGuide
 		self.view.backgroundColor = .white
-		self.image = presenter.currentImage
 		EditorControlsCreator.setupActionsView(actionsView: topActionsView, parentView: self.view)
 		EditorControlsCreator.setupActionsView(actionsView: bottomActionsView, parentView: self.view)
 		EditorControlsCreator.setupButtons(filtersButton: filtersButton,
@@ -140,24 +157,28 @@ private extension ImageEditorViewController
 									   safeArea: safeArea)
 
 		EditorControlsCreator.setupImageView(imageView: imageView,
-									   image: image,
-									   parentView: self.view,
-									   safeArea: safeArea,
-									   verticalStack: verticalStack)
+											 image: presenter.currentImage,
+											 parentView: self.view,
+											 safeArea: safeArea,
+											 verticalStack: verticalStack)
 
 		EditorControlsCreator.setupCollectionViews(parentView: topActionsView,
 											 filtersCollection: filtersCollection,
 											 instrumentsCollection: instrumentsCollection)
+
+		EditorControlsCreator.setupSpinner(spinner: spinner, parentView: imageView)
+
 		filtersCollection.dataSource = self
 		filtersCollection.delegate = self
 		instrumentsCollection.dataSource = self
 		instrumentsCollection.delegate = self
 		filtersCollection.register(FilterCell.self, forCellWithReuseIdentifier: FilterCell.cellReuseIdentifier)
 		instrumentsCollection.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "instrumentCell")
-		self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save",
-																 style: .plain,
-																 target: self,
-																 action: #selector(savePressed))
+		saveButton = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(savePressed))
+		undoButton = UIBarButtonItem(barButtonSystemItem: .reply, target: self, action: #selector(undoPressed))
+		undoButton?.isEnabled = false
+		let barButtonItems = [saveButton, undoButton].compactMap{ $0 }
+		self.navigationItem.setRightBarButtonItems(barButtonItems, animated: true)
 	}
 
 	@objc func toggleFiltersCollection(_ sender: UIButton) {
@@ -169,5 +190,9 @@ private extension ImageEditorViewController
 	}
 
 	@objc func savePressed(_ sender: UIBarButtonItem) {
+	}
+
+	@objc func undoPressed(_ sender: UIBarButtonItem) {
+		presenter.undoAction()
 	}
 }
