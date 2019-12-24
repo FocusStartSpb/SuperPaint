@@ -8,10 +8,11 @@
 
 import Foundation
 
-protocol ICDImageModelManager
+protocol ICDImageModelManager: AnyObject
 {
 	func loadImages(completion: (ImagesResult) -> Void)
-	func saveImage(_ image: ImageModel)
+	func saveImage(id: String, data imageData: NSData)
+	func updateImage(id: String, data imageData: NSData)
 	func deleteImages(_ images: [ImageModel])
 	func saveContext()
 }

@@ -30,8 +30,12 @@ extension DatabaseRepository: IDatabaseRepository
 		}
 	}
 
-	func saveImage(_ image: ImageModel) {
-		self.imagesManager.saveImage(image)
+	func saveImage(id: String, data imageData: NSData) {
+		self.imagesManager.saveImage(id: id, data: imageData)
+	}
+
+	func updateImage(id: String, data imageData: NSData) {
+		self.imagesManager.updateImage(id: id, data: imageData)
 	}
 
 	func deleteImages(_ images: [ImageModel]) {

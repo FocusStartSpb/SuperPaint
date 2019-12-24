@@ -14,4 +14,6 @@ protocol IImageEditorViewController: AnyObject
 	func startSpinner()
 	func refreshButtonsState(imagesStackIsEmpty: Bool)
 	func setImage(image: UIImage)
+
+	var navController: UINavigationController? { get }
 }

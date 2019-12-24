@@ -8,12 +8,13 @@
 
 import Foundation
 
-protocol IDatabaseRepository
+protocol IDatabaseRepository: AnyObject
 {
 	var imagesManager: ICDImageModelManager { get }
 
 	func loadImages(completion: (ImagesResult) -> Void)
-	func saveImage(_ image: ImageModel)
+	func saveImage(id: String, data imageData: NSData)
+	func updateImage(id: String, data imageData: NSData)
 	func deleteImages(_ images: [ImageModel])
 	func saveContext()
 }

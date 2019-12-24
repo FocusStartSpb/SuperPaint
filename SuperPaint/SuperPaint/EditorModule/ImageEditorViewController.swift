@@ -35,7 +35,7 @@ final class ImageEditorViewController: UIViewController
 			filtersCollection.isHidden = (newValue == false)
 			filtersButton.isSelected = newValue
 			instrumentsButton.isSelected = filtersButton.isSelected ? false : instrumentsButton.isSelected
-			}
+		}
 	}
 	private var showInstruments: Bool {
 		get {
@@ -83,6 +83,10 @@ extension ImageEditorViewController: IImageEditorViewController
 
 	func setImage(image: UIImage) {
 		imageView.image = image
+	}
+
+	var navController: UINavigationController? {
+		return self.navigationController
 	}
 }
 // MARK: - UICollectionViewDataSource
@@ -190,6 +194,9 @@ private extension ImageEditorViewController
 	}
 
 	@objc func savePressed(_ sender: UIBarButtonItem) {
+		guard let imageData = self.presenter.currentImage.pngData() else { return }
+		self.presenter.saveImage(id: self.presenter.currentId, data: imageData as NSData, isNewImage: self.presenter.newImage)
+		self.presenter.moveBack()
 	}
 
 	@objc func undoPressed(_ sender: UIBarButtonItem) {

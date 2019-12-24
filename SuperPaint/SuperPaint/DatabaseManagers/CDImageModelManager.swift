@@ -14,7 +14,7 @@ private enum ImageModelKeys
 {
 	static let name = "ImageModel"
 	static let id = "id"
-	static let image = "image"
+	static let imageData = "imageData"
 }
 
 final class CDImageModelManager
@@ -47,15 +47,35 @@ extension CDImageModelManager: ICDImageModelManager
 		}
 	}
 
-	func saveImage(_ image: ImageModel) {
+	func saveImage(id: String, data imageData: NSData) {
 		guard let imageEntity = NSEntityDescription.entity(forEntityName: ImageModelKeys.name,
 														   in: self.managedContext) else { return }
 		let imageModel = NSManagedObject(entity: imageEntity, insertInto: self.managedContext)
-		imageModel.setValue(image.id, forKey: ImageModelKeys.id)
-		imageModel.setValue(image.image, forKey: ImageModelKeys.image)
+		imageModel.setValue(id, forKey: ImageModelKeys.id)
+		imageModel.setValue(imageData, forKey: ImageModelKeys.imageData)
 
 		do {
 			try self.managedContext.save()
+		}
+		catch {
+			assertionFailure(error.localizedDescription)
+		}
+	}
+
+	func updateImage(id: String, data imageData: NSData) {
+		let fetchRequest = NSFetchRequest<ImageModel>(entityName: "ImageModel")
+		fetchRequest.predicate = NSPredicate(format: "id = %@", id)
+
+		do {
+			let imageModels = try managedContext.fetch(fetchRequest)
+			guard let imageToUpdate = imageModels.first else { return }
+			imageToUpdate.setValue(imageData, forKey: ImageModelKeys.imageData)
+			do {
+				try self.managedContext.save()
+			}
+			catch {
+				assertionFailure(error.localizedDescription)
+			}
 		}
 		catch {
 			assertionFailure(error.localizedDescription)

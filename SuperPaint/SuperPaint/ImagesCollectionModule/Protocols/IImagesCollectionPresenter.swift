@@ -10,5 +10,11 @@ import UIKit
 
 protocol IImagesCollectionPresenter: AnyObject
 {
-	func onCellPressed(with image: UIImage)
+	func loadImages()
+	func saveImage(id: String, data: NSData)
+	func deleteImages(_ images: [ImageModel])
+	func getImages() -> [ImageModel]
+	func getNumberOfImages() -> Int
+	func getImageModelAt(index: Int) -> ImageModel
+	func onCellPressed(id: String, data: NSData, isNewImage: Bool)
 }

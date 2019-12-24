@@ -33,9 +33,12 @@ struct ModuleFactory
 		return view
 	}
 
-	func createImageEditorModule(image: UIImage) -> UIViewController {
+	func createImageEditorModule(id: String, image: UIImage, isNewImage: Bool) -> UIViewController {
 		let router = ImageEditorRouter(factory: self)
-		let presenter = ImageEditorPresenter(router: router, repository: self.databaseRepository, image: image)
+		let presenter = ImageEditorPresenter(router: router,
+											 repository: self.databaseRepository,
+											 id: id, image: image,
+											 isNewImage: isNewImage)
 		let view = ImageEditorViewController(presenter: presenter)
 		presenter.inject(view: view)
 		router.inject(view: view)
