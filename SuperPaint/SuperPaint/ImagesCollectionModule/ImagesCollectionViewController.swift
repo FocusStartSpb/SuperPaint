@@ -152,16 +152,23 @@ private extension ImagesCollectionViewController
 
 	// MARK: - Действие удаления выбранных картинок
 	@objc func removeImages() {
-		guard let selectedIndexes = self.collectionView.indexPathsForSelectedItems else { return }
-		var selectedImages: [ImageModel] = []
-		selectedIndexes.forEach { indexPath in
-			selectedImages.append(self.imagesCollectionPresenter.getImageModelAt(index: indexPath.row - 1))
-		}
-		self.imagesCollectionPresenter.deleteImages(selectedImages)
-		self.collectionView.deleteItems(at: selectedIndexes)
-		if self.imagesCollectionPresenter.getNumberOfImages() == 1 {
+		let alertController = UIAlertController(title: "Delete images",
+												message: "Are you sure you want to delete these images?",
+												preferredStyle: .alert)
+		let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { _ in
+			guard let selectedIndexes = self.collectionView.indexPathsForSelectedItems else { return }
+			var selectedImages: [ImageModel] = []
+			selectedIndexes.forEach { indexPath in
+				selectedImages.append(self.imagesCollectionPresenter.getImageModelAt(index: indexPath.row - 1))
+			}
+			self.imagesCollectionPresenter.deleteImages(selectedImages)
+			self.collectionView.deleteItems(at: selectedIndexes)
 			self.navigationItem.rightBarButtonItem?.isEnabled = false
 		}
+		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+		alertController.addAction(deleteAction)
+		alertController.addAction(cancelAction)
+		present(alertController, animated: true)
 	}
 }
 
