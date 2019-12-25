@@ -12,7 +12,7 @@ protocol IImagesCollectionPresenter: AnyObject
 {
 	func loadImages()
 	func saveImage(id: String, data: NSData)
-	func deleteImages(_ images: [ImageModel])
+	func deleteImages(_ indexes: [IndexPath])
 	func getImages() -> [ImageModel]
 	func getNumberOfImages() -> Int
 	func getImageModelAt(index: Int) -> ImageModel

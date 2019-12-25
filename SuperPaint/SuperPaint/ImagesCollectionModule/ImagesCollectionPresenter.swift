@@ -44,13 +44,17 @@ extension ImagesCollectionPresenter: IImagesCollectionPresenter
 		self.repository.saveImage(id: id, data: data)
 	}
 
-	func deleteImages(_ images: [ImageModel]) {
-		let imagesIds = images.map { return $0.id }
+	func deleteImages(_ indexes: [IndexPath]) {
+		var selectedImages: [ImageModel] = []
+		indexes.forEach { indexPath in
+			selectedImages.append(self.imageModels[indexPath.row - ViewConstants.firstCell])
+		}
+		let imagesIds = selectedImages.map { return $0.id }
 		let imagesAfterDeletion = self.imageModels.filter { imageModel -> Bool in
 			return imagesIds.contains(imageModel.id) == false
 		}
 		self.imageModels = imagesAfterDeletion
-		self.repository.deleteImages(images)
+		self.repository.deleteImages(selectedImages)
 	}
 
 	func getImages() -> [ImageModel] {
@@ -58,7 +62,7 @@ extension ImagesCollectionPresenter: IImagesCollectionPresenter
 	}
 
 	func getNumberOfImages() -> Int {
-		return self.imageModels.count + 1 // 1 - Первая ячейка
+		return self.imageModels.count + ViewConstants.firstCell
 	}
 
 	func getImageModelAt(index: Int) -> ImageModel {

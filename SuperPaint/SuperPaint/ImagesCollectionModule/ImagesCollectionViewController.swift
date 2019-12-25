@@ -157,11 +157,7 @@ private extension ImagesCollectionViewController
 												preferredStyle: .alert)
 		let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { _ in
 			guard let selectedIndexes = self.collectionView.indexPathsForSelectedItems else { return }
-			var selectedImages: [ImageModel] = []
-			selectedIndexes.forEach { indexPath in
-				selectedImages.append(self.imagesCollectionPresenter.getImageModelAt(index: indexPath.row - 1))
-			}
-			self.imagesCollectionPresenter.deleteImages(selectedImages)
+			self.imagesCollectionPresenter.deleteImages(selectedIndexes)
 			self.collectionView.deleteItems(at: selectedIndexes)
 			self.navigationItem.rightBarButtonItem?.isEnabled = false
 		}
