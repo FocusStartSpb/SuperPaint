@@ -21,7 +21,6 @@ final class ImageEditorViewController: UIViewController
 	private let verticalStack = UIStackView()
 	private let spinner = UIActivityIndicatorView()
 	private let scrollView = UIScrollView()
-	private let saveQuestionAlert = UIAlertController(title: "Warning", message: "Save image?", preferredStyle: .alert)
 
 	private var saveButton: UIBarButtonItem?
 	private var undoButton: UIBarButtonItem?
@@ -232,17 +231,17 @@ private extension ImageEditorViewController
 
 	@objc func back() {
 		if presenter.imageEdited {
-			let okAction = UIAlertAction(title: "Yes", style: .default) { [weak self] _ in
-				self?.presenter.saveImage()
-				self?.presenter.moveBack()
-			}
-			let cancelAction = UIAlertAction(title: "No", style: .destructive){[weak self] _ in
-				self?.presenter.moveBack()
-			}
-			saveQuestionAlert.addAction(okAction)
-			saveQuestionAlert.addAction(cancelAction)
+			let backQuestionAlert = UIAlertController(title: "Image changed",
+			message: "Changes not saved. Are you sure want to quit?",
+			preferredStyle: .alert)
 
-			self.present(saveQuestionAlert, animated: true)
+			let quitAction = UIAlertAction(title: "Quit", style: .destructive) { _ in
+				self.presenter.moveBack()
+			}
+			let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+			backQuestionAlert.addAction(quitAction)
+			backQuestionAlert.addAction(cancelAction)
+			present(backQuestionAlert, animated: true)
 		}
 		else {
 			presenter.moveBack()
