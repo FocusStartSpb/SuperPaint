@@ -10,7 +10,7 @@ import UIKit
 
 extension UIImage
 {
-	func upOrientationImage() -> UIImage? {
+	func verticalOrientationImage() -> UIImage? {
 		switch imageOrientation {
 		case .up:
 			return self
