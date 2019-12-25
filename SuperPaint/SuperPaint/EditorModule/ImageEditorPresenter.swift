@@ -37,6 +37,7 @@ extension ImageEditorPresenter: IImageEditorPresenter
 {
 	func undoAction() {
 		if let lastImage = imageStack.pop() {
+			self.editingImage = lastImage
 			view?.setImage(image: lastImage)
 		}
 		view?.refreshButtonsState(imagesStackIsEmpty: imageStack.isEmpty)
