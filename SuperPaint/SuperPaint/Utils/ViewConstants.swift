@@ -15,4 +15,5 @@ enum ViewConstants
 	static let numberOfItemsPerRow: CGFloat = 3
 	static let cellCornerRadius: CGFloat = 20
 	static let systemButtonColor = UIButton(type: .system).currentTitleColor
+	static let firstCell: Int = 1
 }
