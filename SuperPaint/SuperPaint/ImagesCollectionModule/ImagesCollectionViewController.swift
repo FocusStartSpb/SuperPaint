@@ -272,7 +272,7 @@ extension ImagesCollectionViewController: UIImagePickerControllerDelegate, UINav
 
 	func imagePickerController(_ picker: UIImagePickerController,
 							   didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
-		guard let image = info[.originalImage] as? UIImage, let imageData = image.pngData() else {
+		guard let image = (info[.originalImage] as? UIImage)?.upOrientationImage(), let imageData = image.pngData() else {
 			dismiss(animated: true, completion: nil)
 			return
 		}

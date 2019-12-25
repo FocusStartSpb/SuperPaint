@@ -29,6 +29,7 @@
 		720A390423B220EE0026EFC9 /* ImageModel+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A390223B220EE0026EFC9 /* ImageModel+CoreDataClass.swift */; };
 		720A390523B220EE0026EFC9 /* ImageModel+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A390323B220EE0026EFC9 /* ImageModel+CoreDataProperties.swift */; };
 		720A390823B223100026EFC9 /* ICDImageModelManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A390723B223100026EFC9 /* ICDImageModelManager.swift */; };
+		720A390A23B3BF6A0026EFC9 /* UIImage+orientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A390923B3BF690026EFC9 /* UIImage+orientation.swift */; };
 		8511E6ED23AA936A0032B588 /* ModuleFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8511E6EC23AA936A0032B588 /* ModuleFactory.swift */; };
 		85612AFB23ACE8140082DC95 /* ImageEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85612AFA23ACE8140082DC95 /* ImageEditorViewController.swift */; };
 		85612AFD23ACE8410082DC95 /* ImageEditorPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85612AFC23ACE8410082DC95 /* ImageEditorPresenter.swift */; };
@@ -70,6 +71,7 @@
 		720A390223B220EE0026EFC9 /* ImageModel+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImageModel+CoreDataClass.swift"; sourceTree = "<group>"; };
 		720A390323B220EE0026EFC9 /* ImageModel+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImageModel+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		720A390723B223100026EFC9 /* ICDImageModelManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ICDImageModelManager.swift; sourceTree = "<group>"; };
+		720A390923B3BF690026EFC9 /* UIImage+orientation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+orientation.swift"; sourceTree = "<group>"; };
 		8511E6EC23AA936A0032B588 /* ModuleFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleFactory.swift; sourceTree = "<group>"; };
 		85612AFA23ACE8140082DC95 /* ImageEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageEditorViewController.swift; sourceTree = "<group>"; };
 		85612AFC23ACE8410082DC95 /* ImageEditorPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageEditorPresenter.swift; sourceTree = "<group>"; };
@@ -179,6 +181,7 @@
 				720A38F123AF8C030026EFC9 /* Images.swift */,
 				859BCCE423B0F4D100553048 /* UIImage+resize.swift */,
 				859BCCE623B0F4DD00553048 /* UIImage+setFilter.swift */,
+				720A390923B3BF690026EFC9 /* UIImage+orientation.swift */,
 				8577DDA123B22D3C00BE86E2 /* FiltersList.swift */,
 				8577DDA323B24E0B00BE86E2 /* ImagesStack.swift */,
 			);
@@ -397,6 +400,7 @@
 				85612B0223ACE8AC0082DC95 /* IImageEditorViewController.swift in Sources */,
 				720A38FE23B21E070026EFC9 /* CDImageModelManager.swift in Sources */,
 				720A38B823AA9A050026EFC9 /* NetworkRepository.swift in Sources */,
+				720A390A23B3BF6A0026EFC9 /* UIImage+orientation.swift in Sources */,
 				859BCCE523B0F4D100553048 /* UIImage+resize.swift in Sources */,
 				720A38BA23AA9A170026EFC9 /* INetworkRepository.swift in Sources */,
 				85612AFD23ACE8410082DC95 /* ImageEditorPresenter.swift in Sources */,
