@@ -77,13 +77,11 @@ final class ImageEditorViewController: UIViewController
 extension ImageEditorViewController: IImageEditorViewController
 {
 	func stopSpinner() {
-//		filtersCollection.isUserInteractionEnabled = true
 		spinner.stopAnimating()
 	}
 
 	func startSpinner() {
 		spinner.startAnimating()
-//		filtersCollection.isUserInteractionEnabled = false
 	}
 
 	func refreshButtonsState(imagesStackIsEmpty: Bool) {
@@ -115,7 +113,7 @@ extension ImageEditorViewController: UICollectionViewDataSource
 		}
 		else {
 // TODO: - количество инструментов из презентера QIS-16
-			return 8
+			return presenter.numberOfInstruments
 		}
 	}
 

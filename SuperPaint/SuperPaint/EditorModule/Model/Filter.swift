@@ -12,11 +12,11 @@ struct Filter
 {
 	let name: String
 	let code: String
-	var parameters: [String]
+	var parameters: [FilterParameter]
 
-	init(with name: String, code: String, parameters: [String?] = []) {
+	init(with name: String, code: String, parameters: [FilterParameter] = []) {
 		self.name = name
 		self.code = code
-		self.parameters = parameters.compactMap{ $0 }
+		self.parameters = parameters
 	}
 }

@@ -20,6 +20,7 @@ enum FiltersList: CaseIterable
 	case transfer
 	case sepia
 	case invert
+	case color
 
 	func getFilter() -> Filter {
 		switch self {
@@ -43,6 +44,14 @@ enum FiltersList: CaseIterable
 			return Filter(with: "Sepia", code: "CISepiaTone")
 		case .invert:
 			return Filter(with: "Invert", code: "CIColorInvert")
+		case .color:
+			return Filter(with: "Color",
+						  code: "CIColorControls",
+						  parameters: [
+							FilterParameter(parameterName: "inputSaturation", defaultValue: 1.0),
+							FilterParameter(parameterName: "inputBrightness", defaultValue: 0.0),
+							FilterParameter(parameterName: "inputContrast", defaultValue: 1.0),
+						])
 		}
 	}
 }

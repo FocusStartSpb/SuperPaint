@@ -11,6 +11,7 @@ import UIKit
 final class ImageEditorPresenter
 {
 	let filtersList: [Filter]
+	let instrumentsList: [Filter]
 	var filteredPreviews: [UIImage] = []
 	private var imageStack = ImagesStack()
 	private let router: IImageEditorRouter
@@ -28,7 +29,8 @@ final class ImageEditorPresenter
 		self.id = id
 		self.sourceImage = image
 		self.editingImage = image
-		filtersList = FiltersList.allCases.map{ $0.getFilter() }
+		filtersList = FiltersList.allCases.filter{ $0.getFilter().parameters.isEmpty }.map{ $0.getFilter() }
+		instrumentsList = FiltersList.allCases.filter{ $0.getFilter().parameters.isEmpty == false }.map{ $0.getFilter() }
 		self.isNewImage = isNewImage
 	}
 }
@@ -79,6 +81,10 @@ extension ImageEditorPresenter: IImageEditorPresenter
 
 	var numberOfPreviews: Int {
 		return filteredPreviews.count
+	}
+
+	var numberOfInstruments: Int {
+		return instrumentsList.count
 	}
 
 	var newImage: Bool {

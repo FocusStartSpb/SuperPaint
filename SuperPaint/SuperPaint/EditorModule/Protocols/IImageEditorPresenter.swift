@@ -15,7 +15,9 @@ protocol IImageEditorPresenter: AnyObject
 	var newImage: Bool { get }
 	var filteredPreviews: [UIImage] { get }
 	var numberOfPreviews: Int { get }
+	var numberOfInstruments: Int { get }
 	var filtersList: [Filter] { get }
+	var instrumentsList: [Filter] { get }
 	var imageEdited: Bool { get }
 
 	func inject(view: IImageEditorViewController)

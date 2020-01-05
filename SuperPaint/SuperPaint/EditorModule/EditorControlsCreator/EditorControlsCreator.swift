@@ -40,22 +40,6 @@ enum EditorControlsCreator
 		])
 	}
 // MARK: - Настройка imageView
-//	static func setupImageView(imageView: UIImageView,
-//							   image: UIImage,
-//							   parentView: UIView,
-//							   safeArea: UILayoutGuide,
-//							   verticalStack: UIStackView) {
-//		imageView.image = image
-//		imageView.contentMode = .scaleAspectFit
-//		imageView.translatesAutoresizingMaskIntoConstraints = false
-//		parentView.addSubview(imageView)
-//		NSLayoutConstraint.activate([
-//			imageView.topAnchor.constraint(equalTo: safeArea.topAnchor),
-//			imageView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
-//			imageView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor),
-//			imageView.bottomAnchor.constraint(equalTo: verticalStack.topAnchor, constant: -10),
-//		])
-//	}
 	static func setupImageView(imageView: UIImageView,
 							   image: UIImage,
 							   parentView: UIView) {
@@ -120,7 +104,7 @@ enum EditorControlsCreator
 			collectionView.trailingAnchor.constraint(equalTo: parentView.trailingAnchor),
 		])
 	}
-
+// MARK: - Настройка activityIndicator
 	static func setupSpinner(spinner: UIActivityIndicatorView, parentView: UIView) {
 		spinner.style = .whiteLarge
 		spinner.translatesAutoresizingMaskIntoConstraints = false
@@ -130,7 +114,7 @@ enum EditorControlsCreator
 			spinner.centerYAnchor.constraint(equalTo: parentView.centerYAnchor),
 		])
 	}
-
+// MARK: - Настройка scrollView для зума картинки
 	static func setupScrollView(scrollView: UIScrollView, parentView: UIView, verticalStack: UIStackView) {
 		scrollView.minimumZoomScale = 1.0
 		scrollView.maximumZoomScale = 4.0
