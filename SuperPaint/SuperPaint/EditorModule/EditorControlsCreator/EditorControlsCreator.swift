@@ -131,14 +131,10 @@ enum EditorControlsCreator
 	}
 // MARK: - Настройка слайдеров для инструментов
 	static func createSlider(parentView: UIStackView,
-							 defaultValue: NSNumber,
-							 minValue: NSNumber,
-							 maxValue: NSNumber,
-							 parameterName: String) -> UIView {
-		let view = SliderView(defaultValue: defaultValue,
-							  minValue: minValue,
-							  maxValue: maxValue,
-							  parameterName: parameterName)
+							 presenter: IImageEditorPresenter,
+							 instrument: Filter,
+							 parameter: FilterParameter) -> UIView {
+		let view = SliderView(presenter: presenter, instrument: instrument, parameter: parameter)
 		parentView.addArrangedSubview(view)
 		view.heightAnchor.constraint(equalToConstant: UIConstants.instrumentCollectionViewCellHeight * 2).isActive = true
 		return view

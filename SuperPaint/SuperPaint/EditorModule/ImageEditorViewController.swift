@@ -149,10 +149,8 @@ extension ImageEditorViewController: UICollectionViewDelegate
 		}
 		else {
 			showSliders(instrumentIndex: indexPath.row)
-//			createSliders(from: presenter.getCurrentInstrumentParameters(instrumentIndex: indexPath.row))
 		}
 	}
-// TODO: - обработка кликов по инструментам QIS-23
 }
 // MARK: - UICollectionViewDelegateFlowLayout
 extension ImageEditorViewController: UICollectionViewDelegateFlowLayout
@@ -236,7 +234,8 @@ private extension ImageEditorViewController
 		let barButtonItems = [saveButton, undoButton].compactMap{ $0 }
 		self.navigationItem.setRightBarButtonItems(barButtonItems, animated: true)
 	}
-
+//генерим вью со слайдерами для всех возможных инструметов
+//в итоге скрываем их
 	func createSliders() {
 		presenter.instrumentsList.forEach { instrument in
 			instrument.parameters.forEach { parameter in
@@ -244,14 +243,14 @@ private extension ImageEditorViewController
 					sliders[instrument.name] = []
 				}
 				sliders[instrument.name]?.append(EditorControlsCreator.createSlider(parentView: parametersStackView,
-																					defaultValue: parameter.defaultValue,
-																					minValue: parameter.minValue,
-																					maxValue: parameter.maxValue,
-																					parameterName: parameter.name))
+																					presenter: presenter,
+																					instrument: instrument,
+																					parameter: parameter))
 			}
 		}
 		showSliders()
 	}
+//Отображаем вью с параметрами для текущего инструмента
 //Если на вход ничего не пришло скрываем все
 	func showSliders(instrumentIndex: Int? = nil) {
 		if let index = instrumentIndex {
@@ -265,7 +264,8 @@ private extension ImageEditorViewController
 			}
 		}
 	}
-
+//По двойному тапу на картинке увеличиваем ее в 2 раза
+//По следующему двойному тапу возвращаем исходный масштаб
 	@objc func defaultZoom() {
 		if scrollView.zoomScale == 1.0 {
 			scrollView.setZoomScale(2, animated: true)
@@ -274,7 +274,7 @@ private extension ImageEditorViewController
 			scrollView.setZoomScale(1.0, animated: true)
 		}
 	}
-
+//По кнопке назад спрашиваем сохранить или нет
 	@objc func back() {
 		if presenter.imageEdited {
 			let backQuestionAlert = UIAlertController(title: "Image changed",

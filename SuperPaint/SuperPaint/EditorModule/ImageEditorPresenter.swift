@@ -34,7 +34,7 @@ final class ImageEditorPresenter
 		self.isNewImage = isNewImage
 	}
 }
-
+// MARK: - IImageEditorPresenter
 extension ImageEditorPresenter: IImageEditorPresenter
 {
 	func undoAction() {
@@ -66,6 +66,22 @@ extension ImageEditorPresenter: IImageEditorPresenter
 						self?.view?.stopSpinner()
 						self?.previousAppliedFilterIndex = filterIndex
 					}
+				}
+			}
+		}
+	}
+
+	func applyInstrument(instrument: Filter, parameter: FilterParameter, newValue: Float) {
+		view?.startSpinner()
+		imageStack.push(sourceImage)
+		view?.refreshButtonsState(imagesStackIsEmpty: imageStack.isEmpty)
+		let instrumentQueue = DispatchQueue(label: "FilterQueue", qos: .userInteractive, attributes: .concurrent)
+		instrumentQueue.async { [weak self] in
+			self?.sourceImage.setFilter(instrument, parameter: parameter, newValue: NSNumber(value: newValue)) { filteredImage in
+				self?.editingImage = filteredImage
+				DispatchQueue.main.async {
+					self?.view?.setImage(image: filteredImage)
+					self?.view?.stopSpinner()
 				}
 			}
 		}
@@ -122,7 +138,7 @@ extension ImageEditorPresenter: IImageEditorPresenter
 		self.router.moveBack()
 	}
 }
-
+// MARK: - private extension
 private extension ImageEditorPresenter
 {
 	func createFilteredImageCollection() {

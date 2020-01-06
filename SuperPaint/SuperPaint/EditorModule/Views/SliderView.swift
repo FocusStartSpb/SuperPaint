@@ -10,21 +10,20 @@ import UIKit
 
 final class SliderView: UIView
 {
-	let nameLabel = UILabel()
-	let slider = UISlider()
-	let valueLabel = UILabel()
+	private let presenter: IImageEditorPresenter
+	private let nameLabel = UILabel()
+	private let slider = UISlider()
+	private let valueLabel = UILabel()
+	private let parameter: FilterParameter
+	private let instrument: Filter
+	private var safeArea = UILayoutGuide()
 
-	init(defaultValue: NSNumber,
-		 minValue: NSNumber,
-		 maxValue: NSNumber,
-		 parameterName: String) {
+	init(presenter: IImageEditorPresenter, instrument: Filter, parameter: FilterParameter) {
+		self.presenter = presenter
+		self.instrument = instrument
+		self.parameter = parameter
 		super.init(frame: .zero)
 		setupInitialState()
-		slider.value = defaultValue.floatValue
-		slider.maximumValue = maxValue.floatValue
-		slider.minimumValue = minValue.floatValue
-		nameLabel.text = parameterName
-		valueLabel.text = String(format: "%.1f", defaultValue.floatValue)
 	}
 
 	@available(*, unavailable)
@@ -36,6 +35,8 @@ final class SliderView: UIView
 private extension SliderView
 {
 	func setupInitialState() {
+		safeArea = self.layoutMarginsGuide
+		slider.isContinuous = false
 		slider.translatesAutoresizingMaskIntoConstraints = false
 		nameLabel.translatesAutoresizingMaskIntoConstraints = false
 		valueLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -46,19 +47,24 @@ private extension SliderView
 		self.addSubview(slider)
 		self.addSubview(valueLabel)
 		NSLayoutConstraint.activate([
-			nameLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-			nameLabel.topAnchor.constraint(equalTo: self.topAnchor),
-			valueLabel.topAnchor.constraint(equalTo: self.topAnchor),
-			valueLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+			nameLabel.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
+			nameLabel.topAnchor.constraint(equalTo: safeArea.topAnchor),
+			valueLabel.topAnchor.constraint(equalTo: safeArea.topAnchor),
+			valueLabel.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor),
 			nameLabel.trailingAnchor.constraint(equalTo: valueLabel.leadingAnchor),
 			nameLabel.widthAnchor.constraint(equalTo: valueLabel.widthAnchor),
 			nameLabel.heightAnchor.constraint(equalTo: valueLabel.heightAnchor),
-			slider.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-			slider.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-			slider.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+			slider.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
+			slider.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor),
+			slider.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor),
 			slider.topAnchor.constraint(equalTo: nameLabel.bottomAnchor),
 			slider.heightAnchor.constraint(equalTo: nameLabel.heightAnchor),
 		])
+		slider.value = parameter.defaultValue.floatValue
+		slider.maximumValue = parameter.maxValue.floatValue
+		slider.minimumValue = parameter.minValue.floatValue
+		nameLabel.text = parameter.name
+		valueLabel.text = String(format: "%.1f", parameter.defaultValue.floatValue)
 	}
 
 	@objc func moveSlider(_ sender: UISlider) {
@@ -66,5 +72,6 @@ private extension SliderView
 		let roundedValue = round(sender.value / step) * step
 		sender.value = roundedValue
 		valueLabel.text = String(format: "%.1f", sender.value)
+		presenter.applyInstrument(instrument: instrument, parameter: parameter, newValue: roundedValue)
 	}
 }
