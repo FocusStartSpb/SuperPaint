@@ -16,7 +16,8 @@ final class ImageEditorViewController: UIViewController
 	private let imageView = UIImageView()
 	private let filtersButton = UIButton()
 	private let instrumentsButton = UIButton()
-	private let topActionsView = UIView()
+	private let topActionsStackView = UIStackView()
+	private let parametersStackView = UIStackView()
 	private let bottomActionsView = UIView()
 	private let verticalStack = UIStackView()
 	private let spinner = UIActivityIndicatorView()
@@ -24,6 +25,7 @@ final class ImageEditorViewController: UIViewController
 
 	private var saveButton: UIBarButtonItem?
 	private var undoButton: UIBarButtonItem?
+	private var sliders: [String: [UIView]] = [:]
 	private var safeArea = UILayoutGuide()
 
 	private var showFilters: Bool {
@@ -32,7 +34,8 @@ final class ImageEditorViewController: UIViewController
 		}
 		set {
 			instrumentsCollection.isHidden = true
-			topActionsView.isHidden = (newValue == false)
+			parametersStackView.isHidden = true
+			topActionsStackView.isHidden = (newValue == false)
 			filtersCollection.isHidden = (newValue == false)
 			filtersButton.isSelected = newValue
 			instrumentsButton.isSelected = filtersButton.isSelected ? false : instrumentsButton.isSelected
@@ -44,8 +47,9 @@ final class ImageEditorViewController: UIViewController
 		}
 		set {
 			filtersCollection.isHidden = true
-			topActionsView.isHidden = (newValue == false)
+			topActionsStackView.isHidden = (newValue == false)
 			instrumentsCollection.isHidden = (newValue == false)
+			parametersStackView.isHidden = (newValue == false)
 			instrumentsButton.isSelected = newValue
 			filtersButton.isSelected = instrumentsButton.isSelected ? false : filtersButton.isSelected
 		}
@@ -127,8 +131,9 @@ extension ImageEditorViewController: UICollectionViewDataSource
 		}
 		else {
 //TODO: - добавить новый класс для кастомной ячейки для инструментов, и использовать его тут QIS-22
-			let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "instrumentCell", for: indexPath)
-			cell.backgroundColor = .orange
+			let cell = collectionView.dequeueReusableCell(withReuseIdentifier: InstrumentCell.cellReuseIdentifier,
+														  for: indexPath) as? InstrumentCell ?? InstrumentCell(frame: .zero)
+			cell.label.text = presenter.instrumentsList[indexPath.row].name
 			return cell
 		}
 	}
@@ -142,6 +147,10 @@ extension ImageEditorViewController: UICollectionViewDelegate
 		if collectionView == filtersCollection {
 			presenter.applyFilter(filterIndex: indexPath.row)
 		}
+		else {
+			showSliders(instrumentIndex: indexPath.row)
+//			createSliders(from: presenter.getCurrentInstrumentParameters(instrumentIndex: indexPath.row))
+		}
 	}
 // TODO: - обработка кликов по инструментам QIS-23
 }
@@ -151,7 +160,14 @@ extension ImageEditorViewController: UICollectionViewDelegateFlowLayout
 	func collectionView(_ collectionView: UICollectionView,
 						layout collectionViewLayout: UICollectionViewLayout,
 						sizeForItemAt indexPath: IndexPath) -> CGSize {
-		return CGSize(width: topActionsView.bounds.height * 0.7, height: topActionsView.bounds.height * 0.7)
+		if collectionView == filtersCollection {
+			return CGSize(width: UIConstants.collectionViewCellWidth * 0.7,
+						  height: UIConstants.filterCollectionViewCellHeight * 0.7)
+		}
+		else {
+			return CGSize(width: UIConstants.collectionViewCellWidth,
+						  height: UIConstants.instrumentCollectionViewCellHeight * 0.9)
+		}
 	}
 }
 // MARK: - private extension
@@ -162,7 +178,7 @@ private extension ImageEditorViewController
 		self.view.backgroundColor = .white
 		setupNavigationBarItems()
 
-		EditorControlsCreator.setupActionsView(actionsView: topActionsView, parentView: self.view)
+		EditorControlsCreator.setupActionsView(actionsView: topActionsStackView, parentView: self.view)
 		EditorControlsCreator.setupActionsView(actionsView: bottomActionsView, parentView: self.view)
 		EditorControlsCreator.setupButtons(filtersButton: filtersButton,
 									 instrumentsButton: instrumentsButton,
@@ -171,7 +187,7 @@ private extension ImageEditorViewController
 		instrumentsButton.addTarget(self, action: #selector(toggleInstrumentsCollection), for: .touchUpInside)
 
 		EditorControlsCreator.setupStackView(verticalStack: verticalStack,
-									   topActionsView: topActionsView,
+									   topActionsView: topActionsStackView,
 									   bottomActionsView: bottomActionsView,
 									   parentView: self.view,
 									   safeArea: safeArea)
@@ -181,14 +197,17 @@ private extension ImageEditorViewController
 											 image: presenter.currentImage,
 											 parentView: scrollView)
 
-		EditorControlsCreator.setupCollectionViews(parentView: topActionsView,
+		EditorControlsCreator.setupCollectionViews(parentView: topActionsStackView,
 											 filtersCollection: filtersCollection,
-											 instrumentsCollection: instrumentsCollection)
+											 instrumentsCollection: instrumentsCollection,
+											 parametersStackView: parametersStackView)
 
 		EditorControlsCreator.setupSpinner(spinner: spinner, parentView: imageView)
 
 		filtersCollection.register(FilterCell.self, forCellWithReuseIdentifier: FilterCell.cellReuseIdentifier)
-		instrumentsCollection.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "instrumentCell")
+		instrumentsCollection.register(InstrumentCell.self, forCellWithReuseIdentifier: InstrumentCell.cellReuseIdentifier)
+
+		createSliders()
 
 		setDelegates()
 		let doubleTap = UITapGestureRecognizer(target: self, action: #selector(defaultZoom))
@@ -216,6 +235,35 @@ private extension ImageEditorViewController
 		undoButton?.isEnabled = false
 		let barButtonItems = [saveButton, undoButton].compactMap{ $0 }
 		self.navigationItem.setRightBarButtonItems(barButtonItems, animated: true)
+	}
+
+	func createSliders() {
+		presenter.instrumentsList.forEach { instrument in
+			instrument.parameters.forEach { parameter in
+				if sliders[instrument.name] == nil {
+					sliders[instrument.name] = []
+				}
+				sliders[instrument.name]?.append(EditorControlsCreator.createSlider(parentView: parametersStackView,
+																					defaultValue: parameter.defaultValue,
+																					minValue: parameter.minValue,
+																					maxValue: parameter.maxValue,
+																					parameterName: parameter.name))
+			}
+		}
+		showSliders()
+	}
+//Если на вход ничего не пришло скрываем все
+	func showSliders(instrumentIndex: Int? = nil) {
+		if let index = instrumentIndex {
+			for (key, _) in sliders {
+				sliders[key]?.forEach{ slider in slider.isHidden = (key != presenter.instrumentsList[index].name) }
+			}
+		}
+		else {
+			for (key, _) in sliders {
+				sliders[key]?.forEach{ slider in slider.isHidden = true }
+			}
+		}
 	}
 
 	@objc func defaultZoom() {

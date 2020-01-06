@@ -24,6 +24,7 @@ protocol IImageEditorPresenter: AnyObject
 	func triggerViewReadyEvent()
 	func applyFilter(filterIndex: Int)
 	func undoAction()
+	func getCurrentInstrumentParameters(instrumentIndex: Int) -> [FilterParameter]
 
 	func saveImage()
 	func moveBack()

@@ -10,6 +10,9 @@ import Foundation
 
 struct FilterParameter
 {
-	let parameterName: String
+	let name: String
+	let code: String
 	let defaultValue: NSNumber
+	let minValue: NSNumber
+	let maxValue: NSNumber
 }

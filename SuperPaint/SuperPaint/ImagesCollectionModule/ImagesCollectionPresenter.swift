@@ -47,7 +47,7 @@ extension ImagesCollectionPresenter: IImagesCollectionPresenter
 	func deleteImages(_ indexes: [IndexPath]) {
 		var selectedImages: [ImageModel] = []
 		indexes.forEach { indexPath in
-			selectedImages.append(self.imageModels[indexPath.row - ViewConstants.firstCell])
+			selectedImages.append(self.imageModels[indexPath.row - UIConstants.firstCell])
 		}
 		let imagesIds = selectedImages.map { return $0.id }
 		let imagesAfterDeletion = self.imageModels.filter { imageModel -> Bool in
@@ -62,7 +62,7 @@ extension ImagesCollectionPresenter: IImagesCollectionPresenter
 	}
 
 	func getNumberOfImages() -> Int {
-		return self.imageModels.count + ViewConstants.firstCell
+		return self.imageModels.count + UIConstants.firstCell
 	}
 
 	func getImageModelAt(index: Int) -> ImageModel {

@@ -16,7 +16,7 @@ final class FilterCell: UICollectionViewCell
 
 	override var isSelected: Bool {
 		didSet {
-			self.label.textColor = isSelected ? ViewConstants.systemButtonColor : .black
+			self.label.textColor = isSelected ? UIConstants.systemButtonColor : .black
 		}
 	}
 

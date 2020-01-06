@@ -103,6 +103,10 @@ extension ImageEditorPresenter: IImageEditorPresenter
 		self.view = view
 	}
 
+	func getCurrentInstrumentParameters(instrumentIndex: Int) -> [FilterParameter] {
+		return instrumentsList[instrumentIndex].parameters
+	}
+
 	func saveImage() {
 		guard let imageData = editingImage.pngData() else { return }
 		if isNewImage {
@@ -122,7 +126,7 @@ extension ImageEditorPresenter: IImageEditorPresenter
 private extension ImageEditorPresenter
 {
 	func createFilteredImageCollection() {
-		guard let preview = sourceImage.resizeImage(to: 100) else { return }
+		guard let preview = sourceImage.resizeImage(to: UIConstants.collectionViewCellWidth) else { return }
 		filtersList.forEach{ preview.setFilter($0) { filteredImage in self.filteredPreviews.append(filteredImage) }
 		}
 	}
