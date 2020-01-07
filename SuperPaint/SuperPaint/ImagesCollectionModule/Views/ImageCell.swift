@@ -17,6 +17,8 @@ final class ImageCell: UICollectionViewCell
 	override init(frame: CGRect) {
 		super.init(frame: frame)
 		self.clipsToBounds = true
+		self.layer.borderWidth = 0.3
+		self.layer.borderColor = UIColor.lightGray.cgColor
 		self.setupImageView()
 		self.setupSelectionImageView()
 	}
