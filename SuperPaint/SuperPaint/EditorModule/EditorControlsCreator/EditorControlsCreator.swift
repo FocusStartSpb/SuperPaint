@@ -18,7 +18,7 @@ enum EditorControlsCreator
 	static func setButtonProperties(_ button: UIButton, parentView: UIView) {
 		button.setTitleColor(.black, for: .normal)
 		button.setTitleColor(.lightGray, for: .highlighted)
-		button.setTitleColor(ViewConstants.systemButtonColor, for: .selected)
+		button.setTitleColor(UIConstants.systemButtonColor, for: .selected)
 		button.translatesAutoresizingMaskIntoConstraints = false
 		parentView.addSubview(button)
 	}
@@ -40,22 +40,6 @@ enum EditorControlsCreator
 		])
 	}
 // MARK: - Настройка imageView
-//	static func setupImageView(imageView: UIImageView,
-//							   image: UIImage,
-//							   parentView: UIView,
-//							   safeArea: UILayoutGuide,
-//							   verticalStack: UIStackView) {
-//		imageView.image = image
-//		imageView.contentMode = .scaleAspectFit
-//		imageView.translatesAutoresizingMaskIntoConstraints = false
-//		parentView.addSubview(imageView)
-//		NSLayoutConstraint.activate([
-//			imageView.topAnchor.constraint(equalTo: safeArea.topAnchor),
-//			imageView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
-//			imageView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor),
-//			imageView.bottomAnchor.constraint(equalTo: verticalStack.topAnchor, constant: -10),
-//		])
-//	}
 	static func setupImageView(imageView: UIImageView,
 							   image: UIImage,
 							   parentView: UIView) {
@@ -80,32 +64,37 @@ enum EditorControlsCreator
 							   safeArea: UILayoutGuide) {
 		verticalStack.addArrangedSubview(topActionsView)
 		verticalStack.addArrangedSubview(bottomActionsView)
-		verticalStack.axis = .vertical
-		verticalStack.distribution = .fill
-		verticalStack.alignment = .fill
-		verticalStack.spacing = 0.0
-		verticalStack.translatesAutoresizingMaskIntoConstraints = false
+		setDefaultStackProperties(stackView: verticalStack)
 		parentView.addSubview(verticalStack)
 		NSLayoutConstraint.activate([
 			verticalStack.leadingAnchor.constraint(equalTo: parentView.leadingAnchor),
 			verticalStack.trailingAnchor.constraint(equalTo: parentView.trailingAnchor),
 			verticalStack.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor),
-			bottomActionsView.heightAnchor.constraint(equalToConstant: 35),
-			topActionsView.heightAnchor.constraint(equalTo: bottomActionsView.heightAnchor, multiplier: 3),
+			bottomActionsView.heightAnchor.constraint(equalToConstant: UIConstants.instrumentCollectionViewCellHeight),
 		])
 	}
 
 // MARK: - Настройка collectionView
-	static func setupCollectionViews(parentView: UIView,
+	static func setupCollectionViews(parentView: UIStackView,
 									 filtersCollection: UICollectionView,
-									 instrumentsCollection: UICollectionView) {
-
-		parentView.isHidden = true
-		setCollectionViewProperties(filtersCollection, parentView: parentView)
-		setCollectionViewProperties(instrumentsCollection, parentView: parentView)
+									 instrumentsCollection: UICollectionView,
+									 parametersStackView: UIStackView) {
+		setCollectionViewProperties(filtersCollection,
+									parentView: parentView,
+									heightConstraint: UIConstants.filterCollectionViewCellHeight)
+		setCollectionViewProperties(instrumentsCollection,
+									parentView: parentView,
+									heightConstraint: UIConstants.instrumentCollectionViewCellHeight)
+		setDefaultStackProperties(stackView: parametersStackView)
+		parentView.addArrangedSubview(parametersStackView)
+		parentView.addArrangedSubview(filtersCollection)
+		parentView.addArrangedSubview(instrumentsCollection)
+		setDefaultStackProperties(stackView: parentView)
 	}
 
-	static func setCollectionViewProperties(_ collectionView: UICollectionView, parentView: UIView) {
+	static func setCollectionViewProperties(_ collectionView: UICollectionView,
+											parentView: UIView,
+											heightConstraint: CGFloat) {
 		let layout = UICollectionViewFlowLayout()
 		layout.scrollDirection = .horizontal
 		collectionView.setCollectionViewLayout(layout, animated: true)
@@ -114,13 +103,10 @@ enum EditorControlsCreator
 		collectionView.isHidden = true
 		parentView.addSubview(collectionView)
 		NSLayoutConstraint.activate([
-			collectionView.topAnchor.constraint(equalTo: parentView.topAnchor),
-			collectionView.bottomAnchor.constraint(equalTo: parentView.bottomAnchor),
-			collectionView.leadingAnchor.constraint(equalTo: parentView.leadingAnchor),
-			collectionView.trailingAnchor.constraint(equalTo: parentView.trailingAnchor),
+			collectionView.heightAnchor.constraint(equalToConstant: heightConstraint),
 		])
 	}
-
+// MARK: - Настройка activityIndicator
 	static func setupSpinner(spinner: UIActivityIndicatorView, parentView: UIView) {
 		spinner.style = .whiteLarge
 		spinner.translatesAutoresizingMaskIntoConstraints = false
@@ -130,7 +116,7 @@ enum EditorControlsCreator
 			spinner.centerYAnchor.constraint(equalTo: parentView.centerYAnchor),
 		])
 	}
-
+// MARK: - Настройка scrollView для зума картинки
 	static func setupScrollView(scrollView: UIScrollView, parentView: UIView, verticalStack: UIStackView) {
 		scrollView.minimumZoomScale = 1.0
 		scrollView.maximumZoomScale = 4.0
@@ -142,5 +128,24 @@ enum EditorControlsCreator
 			scrollView.trailingAnchor.constraint(equalTo: parentView.trailingAnchor),
 			scrollView.bottomAnchor.constraint(equalTo: verticalStack.topAnchor, constant: -10),
 		])
+	}
+// MARK: - Настройка слайдеров для инструментов
+	static func createSlider(parentView: UIStackView,
+							 presenter: IImageEditorPresenter,
+							 instrument: Filter,
+							 parameter: FilterParameter) -> UIView {
+		let view = SliderView(presenter: presenter, instrument: instrument, parameter: parameter)
+		parentView.addArrangedSubview(view)
+		view.heightAnchor.constraint(equalToConstant: UIConstants.instrumentCollectionViewCellHeight * 2).isActive = true
+		return view
+	}
+
+// MARK: - Настройка стандартных параметров для Stack view
+	static func setDefaultStackProperties(stackView: UIStackView) {
+		stackView.axis = .vertical
+		stackView.distribution = .fill
+		stackView.alignment = .fill
+		stackView.spacing = 0.0
+		stackView.translatesAutoresizingMaskIntoConstraints = false
 	}
 }

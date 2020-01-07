@@ -11,6 +11,7 @@ import UIKit
 final class ImageEditorPresenter
 {
 	let filtersList: [Filter]
+	let instrumentsList: [Filter]
 	var filteredPreviews: [UIImage] = []
 	private var imageStack = ImagesStack()
 	private let router: IImageEditorRouter
@@ -28,11 +29,12 @@ final class ImageEditorPresenter
 		self.id = id
 		self.sourceImage = image
 		self.editingImage = image
-		filtersList = FiltersList.allCases.map{ $0.getFilter() }
+		filtersList = FiltersList.allCases.filter{ $0.getFilter().parameters.isEmpty }.map{ $0.getFilter() }
+		instrumentsList = FiltersList.allCases.filter{ $0.getFilter().parameters.isEmpty == false }.map{ $0.getFilter() }
 		self.isNewImage = isNewImage
 	}
 }
-
+// MARK: - IImageEditorPresenter
 extension ImageEditorPresenter: IImageEditorPresenter
 {
 	func undoAction() {
@@ -69,6 +71,22 @@ extension ImageEditorPresenter: IImageEditorPresenter
 		}
 	}
 
+	func applyInstrument(instrument: Filter, parameter: FilterParameter, newValue: Float) {
+		view?.startSpinner()
+		imageStack.push(sourceImage)
+		view?.refreshButtonsState(imagesStackIsEmpty: imageStack.isEmpty)
+		let instrumentQueue = DispatchQueue(label: "FilterQueue", qos: .userInteractive, attributes: .concurrent)
+		instrumentQueue.async { [weak self] in
+			self?.sourceImage.setFilter(instrument, parameter: parameter, newValue: NSNumber(value: newValue)) { filteredImage in
+				self?.editingImage = filteredImage
+				DispatchQueue.main.async {
+					self?.view?.setImage(image: filteredImage)
+					self?.view?.stopSpinner()
+				}
+			}
+		}
+	}
+
 	var currentId: String {
 		return id
 	}
@@ -79,6 +97,10 @@ extension ImageEditorPresenter: IImageEditorPresenter
 
 	var numberOfPreviews: Int {
 		return filteredPreviews.count
+	}
+
+	var numberOfInstruments: Int {
+		return instrumentsList.count
 	}
 
 	var newImage: Bool {
@@ -97,6 +119,10 @@ extension ImageEditorPresenter: IImageEditorPresenter
 		self.view = view
 	}
 
+	func getCurrentInstrumentParameters(instrumentIndex: Int) -> [FilterParameter] {
+		return instrumentsList[instrumentIndex].parameters
+	}
+
 	func saveImage() {
 		guard let imageData = editingImage.pngData() else { return }
 		if isNewImage {
@@ -112,11 +138,11 @@ extension ImageEditorPresenter: IImageEditorPresenter
 		self.router.moveBack()
 	}
 }
-
+// MARK: - private extension
 private extension ImageEditorPresenter
 {
 	func createFilteredImageCollection() {
-		guard let preview = sourceImage.resizeImage(to: 100) else { return }
+		guard let preview = sourceImage.resizeImage(to: UIConstants.collectionViewCellWidth) else { return }
 		filtersList.forEach{ preview.setFilter($0) { filteredImage in self.filteredPreviews.append(filteredImage) }
 		}
 	}

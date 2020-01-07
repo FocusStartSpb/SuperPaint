@@ -14,8 +14,8 @@ final class ImagesCollectionViewController: UIViewController
 	private let collectionView: UICollectionView = {
 		let layout = UICollectionViewFlowLayout()
 		layout.scrollDirection = .vertical
-		layout.minimumLineSpacing = ViewConstants.spacingBetweenCells
-		layout.minimumInteritemSpacing = ViewConstants.spacingBetweenCells
+		layout.minimumLineSpacing = UIConstants.spacingBetweenCells
+		layout.minimumInteritemSpacing = UIConstants.spacingBetweenCells
 		let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
 		return collectionView
 	}()
@@ -244,16 +244,16 @@ extension ImagesCollectionViewController: UICollectionViewDelegateFlowLayout
 	func collectionView(_ collectionView: UICollectionView,
 						layout collectionViewLayout: UICollectionViewLayout,
 						sizeForItemAt indexPath: IndexPath) -> CGSize {
-		let totalSpacing = (2 * ViewConstants.spacing) + ((ViewConstants.numberOfItemsPerRow - 1) *
-			ViewConstants.spacingBetweenCells)
-		let width = (self.collectionView.bounds.width - totalSpacing) / ViewConstants.numberOfItemsPerRow
+		let totalSpacing = (2 * UIConstants.spacing) + ((UIConstants.numberOfItemsPerRow - 1) *
+			UIConstants.spacingBetweenCells)
+		let width = (self.collectionView.bounds.width - totalSpacing) / UIConstants.numberOfItemsPerRow
 		return CGSize(width: width, height: width)
 	}
 
 	func collectionView(_ collectionView: UICollectionView,
 						layout collectionViewLayout: UICollectionViewLayout,
 						insetForSectionAt section: Int) -> UIEdgeInsets {
-		let spacing = ViewConstants.spacing
+		let spacing = UIConstants.spacing
 			return UIEdgeInsets(top: spacing, left: spacing, bottom: spacing, right: spacing)
 	}
 }
