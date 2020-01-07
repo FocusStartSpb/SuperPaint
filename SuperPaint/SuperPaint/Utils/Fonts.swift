@@ -10,5 +10,5 @@ import UIKit
 
 enum Fonts
 {
-	static let verdanaBold20 = UIFont(name: "Verdana-Bold", size: 20)
+	static let chalkduster20 = UIFont(name: "Chalkduster", size: 20)
 }

@@ -95,6 +95,7 @@ private extension ImagesCollectionViewController
 									 forCellWithReuseIdentifier: ImageCell.cellReuseIdentifier)
 		self.view.addSubview(self.collectionView)
 		self.collectionView.translatesAutoresizingMaskIntoConstraints = false
+		self.collectionView.alwaysBounceVertical = true
 		self.collectionView.backgroundColor = .white
 		NSLayoutConstraint.activate([
 			self.collectionView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
@@ -106,12 +107,12 @@ private extension ImagesCollectionViewController
 
 	// MARK: - Настройки navigation bar
 	func setupSettingsForNavigationBar() {
-		self.title = "Gallery"
+		self.title = "Super Paint"
 		self.navigationItem.leftBarButtonItem = editButtonItem
 		self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add,
 																 target: self,
 																 action: #selector(addNewImage))
-		guard let font = Fonts.verdanaBold20 else { return }
+		guard let font = Fonts.chalkduster20 else { return }
 		self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: font]
 	}
 
