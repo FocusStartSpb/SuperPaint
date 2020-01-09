@@ -36,13 +36,13 @@ private extension SliderView
 {
 	func setupInitialState() {
 		safeArea = self.layoutMarginsGuide
-		slider.isContinuous = false
 		slider.translatesAutoresizingMaskIntoConstraints = false
 		nameLabel.translatesAutoresizingMaskIntoConstraints = false
 		valueLabel.translatesAutoresizingMaskIntoConstraints = false
 		slider.addTarget(self, action: #selector(moveSlider), for: .valueChanged)
-		nameLabel.font = UIFont.systemFont(ofSize: 13)
-		valueLabel.font = UIFont.systemFont(ofSize: 13)
+		nameLabel.font = Fonts.sliderFont
+		valueLabel.font = Fonts.sliderFont
+		valueLabel.textAlignment = .right
 		self.addSubview(nameLabel)
 		self.addSubview(slider)
 		self.addSubview(valueLabel)
@@ -67,11 +67,19 @@ private extension SliderView
 		valueLabel.text = String(format: "%.1f", parameter.defaultValue.floatValue)
 	}
 
-	@objc func moveSlider(_ sender: UISlider) {
+	@objc func moveSlider(slider: UISlider, event: UIEvent) {
 		let step: Float = 0.1
-		let roundedValue = round(sender.value / step) * step
-		sender.value = roundedValue
-		valueLabel.text = String(format: "%.1f", sender.value)
-		presenter.applyInstrument(instrument: instrument, parameter: parameter, newValue: roundedValue)
+		let roundedValue = round(slider.value / step) * step
+		if let touchEvent = event.allTouches?.first {
+			switch touchEvent.phase {
+			case .moved:
+				slider.value = roundedValue
+				valueLabel.text = String(format: "%.1f", slider.value)
+			case .ended:
+				presenter.applyInstrument(instrument: instrument, parameter: parameter, newValue: roundedValue)
+			default:
+				break
+			}
+		}
 	}
 }
