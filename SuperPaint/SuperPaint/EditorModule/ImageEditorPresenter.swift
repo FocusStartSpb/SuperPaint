@@ -47,16 +47,16 @@ extension ImageEditorPresenter: IImageEditorPresenter
 		view?.refreshButtonsState(imagesStackIsEmpty: imageStack.isEmpty)
 		previousAppliedFilterIndex = nil
 		if let lastChangedParameter = filtersStack.pop() {
-			for instrument in instrumentsList where instrument.code == lastChangedParameter.instrumenCode {
-				for (index, parameter) in instrument.parameters.enumerated()
+			for (index, instrument) in instrumentsList.enumerated() where instrument.code == lastChangedParameter.instrumenCode {
+				for (indexP, parameter) in instrument.parameters.enumerated()
 					where parameter.code == lastChangedParameter.parameterCode {
-					instrument.parameters[index].currentValue = lastChangedParameter.parameterValue
+					instrumentsList[index].parameters[indexP].currentValue = lastChangedParameter.parameterValue
 				}
 			}
 			view?.refreshSlidersValues()
 		}
 	}
-
+// MARK: - Фильтр
 	func applyFilter(filterIndex: Int) {
 		//Если фильтр уже применен не применяем снова
 		var currentFilterAlreadyApplied = false
@@ -81,13 +81,13 @@ extension ImageEditorPresenter: IImageEditorPresenter
 			}
 		}
 	}
-
+// MARK: - Инструмент
 	func applyInstrument(instrument: Filter, instrumentIndex: Int, parameter: FilterParameter, newValue: Float) {
 		view?.startSpinner()
 		imageStack.push(self.editingImage)
 //Запомним текущее значение параметра и сложим в стэк
-		for param in instrument.parameters where param.code == parameter.code {
-			filtersStack.push((instrument.code, param.code, param.currentValue))
+		for param in instrumentsList[instrumentIndex].parameters where param.code == parameter.code {
+			filtersStack.push((instrumentsList[instrumentIndex].code, param.code, param.currentValue))
 		}
 		view?.refreshButtonsState(imagesStackIsEmpty: imageStack.isEmpty)
 //Если применяем инструмент повторно, берем исходную картинку, иначе применям на текущую
@@ -95,11 +95,11 @@ extension ImageEditorPresenter: IImageEditorPresenter
 		if let previousIndex = previousAppliedInstrumentIndex, previousIndex == instrumentIndex {
 			currentInstrumentAlreadyApplied = true
 		}
-		instrument.setValueForParameter(parameter: parameter.code, newValue: parameter.currentValue)
-		let instrumentQueue = DispatchQueue(label: "FilterQueue", qos: .userInteractive, attributes: .concurrent)
+		instrumentsList[instrumentIndex].setValueForParameter(parameter: parameter.code, newValue: parameter.currentValue)
+		let instrumentQueue = DispatchQueue(label: "InstrumentQueue", qos: .userInteractive, attributes: .concurrent)
 		instrumentQueue.async { [weak self] in
 			let imageForApply = currentInstrumentAlreadyApplied ? self?.sourceImage : self?.editingImage
-			imageForApply?.setFilter(instrument) { filteredImage in
+			imageForApply?.setFilter(self?.instrumentsList[instrumentIndex]) { filteredImage in
 				self?.editingImage = filteredImage
 				DispatchQueue.main.async {
 					self?.view?.setImage(image: filteredImage)
