@@ -77,7 +77,9 @@ extension ImageEditorPresenter: IImageEditorPresenter
 		view?.refreshButtonsState(imagesStackIsEmpty: imageStack.isEmpty)
 		let instrumentQueue = DispatchQueue(label: "FilterQueue", qos: .userInteractive, attributes: .concurrent)
 		instrumentQueue.async { [weak self] in
-			self?.sourceImage.setFilter(instrument, parameter: parameter, newValue: NSNumber(value: newValue)) { filteredImage in
+			self?.editingImage.setFilter(instrument,
+										 parameter: parameter,
+										 newValue: NSNumber(value: newValue)) { filteredImage in
 				self?.editingImage = filteredImage
 				DispatchQueue.main.async {
 					self?.view?.setImage(image: filteredImage)
