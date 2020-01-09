@@ -127,13 +127,13 @@ enum FiltersList: CaseIterable
 				FilterParameter(name: "Levels",
 								code: "inputLevels",
 								defaultValue: 6,
-								minValue: 0,
+								minValue: 2,
 								maxValue: 20),
 			])
 		case .vignette:
 			return Filter(with: "Vignette", code: "CIVignette", parameters: [
-				FilterParameter(name: "Radius", code: "inputRadius", defaultValue: 1, minValue: 0, maxValue: 10),
-				FilterParameter(name: "Intensity", code: "inputIntensity", defaultValue: 0, minValue: 0, maxValue: 100),
+				FilterParameter(name: "Radius", code: "inputRadius", defaultValue: 1, minValue: 0, maxValue: 2),
+				FilterParameter(name: "Intensity", code: "inputIntensity", defaultValue: 0, minValue: 0, maxValue: 30),
 			])
 		case .sharpenLuminance:
 			return Filter(with: "Sharpen Luminance", code: "CISharpenLuminance", parameters: [
@@ -153,7 +153,7 @@ enum FiltersList: CaseIterable
 				FilterParameter(name: "Intensity",
 								code: "inputIntensity",
 								defaultValue: 1,
-								minValue: 0,
+								minValue: 0.4,
 								maxValue: 2),
 			])
 		case .gloom:

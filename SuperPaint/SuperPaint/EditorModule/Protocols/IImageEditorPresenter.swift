@@ -23,7 +23,7 @@ protocol IImageEditorPresenter: AnyObject
 	func inject(view: IImageEditorViewController)
 	func triggerViewReadyEvent()
 	func applyFilter(filterIndex: Int)
-	func applyInstrument(instrument: Filter, parameter: FilterParameter, newValue: Float)
+	func applyInstrument(instrument: Filter, instrumentIndex: Int, parameter: FilterParameter, newValue: Float)
 	func undoAction()
 	func getCurrentInstrumentParameters(instrumentIndex: Int) -> [FilterParameter]
 

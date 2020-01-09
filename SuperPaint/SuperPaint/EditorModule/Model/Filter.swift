@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Filter
+final class Filter
 {
 	let name: String
 	let code: String
@@ -18,5 +18,11 @@ struct Filter
 		self.name = name
 		self.code = code
 		self.parameters = parameters
+	}
+
+	func setValueForParameter(parameter code: String, newValue: NSNumber) {
+		for index in parameters.indices where parameters[index].code == code {
+			parameters[index].currentValue = newValue
+		}
 	}
 }

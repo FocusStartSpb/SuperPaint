@@ -99,6 +99,18 @@ extension ImageEditorViewController: IImageEditorViewController
 	var navController: UINavigationController? {
 		return self.navigationController
 	}
+
+	//Обновить значения слайдеров текущими значениями
+	func refreshSlidersValues() {
+		presenter.instrumentsList.forEach { instrument in
+			for (index, parameter) in instrument.parameters.enumerated() {
+				if let sliderViewArray = sliders[instrument.name],
+					let sliderView = sliderViewArray[index] as? SliderView {
+					sliderView.setSliderValue(value: parameter.currentValue.floatValue)
+				}
+			}
+		}
+	}
 }
 // MARK: - UIScrollViewDelegate
 extension ImageEditorViewController: UIScrollViewDelegate
@@ -237,7 +249,7 @@ private extension ImageEditorViewController
 //генерим вью со слайдерами для всех возможных инструметов
 //в итоге скрываем их
 	func createSliders() {
-		presenter.instrumentsList.forEach { instrument in
+		for (index, instrument) in presenter.instrumentsList.enumerated() {
 			instrument.parameters.forEach { parameter in
 				if sliders[instrument.name] == nil {
 					sliders[instrument.name] = []
@@ -245,9 +257,11 @@ private extension ImageEditorViewController
 				sliders[instrument.name]?.append(EditorControlsCreator.createSlider(parentView: parametersStackView,
 																					presenter: presenter,
 																					instrument: instrument,
-																					parameter: parameter))
+																					parameter: parameter,
+																					instrumentIndex: index))
 			}
 		}
+		refreshSlidersValues()
 		showSliders()
 	}
 //Отображаем вью с параметрами для текущего инструмента

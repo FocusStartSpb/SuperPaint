@@ -31,6 +31,7 @@
 		720A390823B223100026EFC9 /* ICDImageModelManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A390723B223100026EFC9 /* ICDImageModelManager.swift */; };
 		720A390A23B3BF6A0026EFC9 /* UIImage+orientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A390923B3BF690026EFC9 /* UIImage+orientation.swift */; };
 		8511E6ED23AA936A0032B588 /* ModuleFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8511E6EC23AA936A0032B588 /* ModuleFactory.swift */; };
+		85121CAC23C79B6000DD4020 /* FiltersStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85121CAB23C79B6000DD4020 /* FiltersStack.swift */; };
 		85612AFB23ACE8140082DC95 /* ImageEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85612AFA23ACE8140082DC95 /* ImageEditorViewController.swift */; };
 		85612AFD23ACE8410082DC95 /* ImageEditorPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85612AFC23ACE8410082DC95 /* ImageEditorPresenter.swift */; };
 		85612AFF23ACE86E0082DC95 /* ImageEditorRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85612AFE23ACE86E0082DC95 /* ImageEditorRouter.swift */; };
@@ -76,6 +77,7 @@
 		720A390723B223100026EFC9 /* ICDImageModelManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ICDImageModelManager.swift; sourceTree = "<group>"; };
 		720A390923B3BF690026EFC9 /* UIImage+orientation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+orientation.swift"; sourceTree = "<group>"; };
 		8511E6EC23AA936A0032B588 /* ModuleFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleFactory.swift; sourceTree = "<group>"; };
+		85121CAB23C79B6000DD4020 /* FiltersStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiltersStack.swift; sourceTree = "<group>"; };
 		85612AFA23ACE8140082DC95 /* ImageEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageEditorViewController.swift; sourceTree = "<group>"; };
 		85612AFC23ACE8410082DC95 /* ImageEditorPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageEditorPresenter.swift; sourceTree = "<group>"; };
 		85612AFE23ACE86E0082DC95 /* ImageEditorRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageEditorRouter.swift; sourceTree = "<group>"; };
@@ -189,6 +191,7 @@
 				859BCCE623B0F4DD00553048 /* UIImage+setFilter.swift */,
 				720A390923B3BF690026EFC9 /* UIImage+orientation.swift */,
 				8577DDA323B24E0B00BE86E2 /* ImagesStack.swift */,
+				85121CAB23C79B6000DD4020 /* FiltersStack.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -408,6 +411,7 @@
 				858F4AAD23C1EF6A002C0BAB /* InstrumentCell.swift in Sources */,
 				859BCCD123AE99C600553048 /* EditorControlsCreator.swift in Sources */,
 				85612B0223ACE8AC0082DC95 /* IImageEditorViewController.swift in Sources */,
+				85121CAC23C79B6000DD4020 /* FiltersStack.swift in Sources */,
 				858F4A8B23C1D5CE002C0BAB /* FilterParameter.swift in Sources */,
 				720A38FE23B21E070026EFC9 /* CDImageModelManager.swift in Sources */,
 				720A38B823AA9A050026EFC9 /* NetworkRepository.swift in Sources */,
