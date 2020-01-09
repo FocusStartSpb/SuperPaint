@@ -73,7 +73,7 @@ extension ImageEditorPresenter: IImageEditorPresenter
 
 	func applyInstrument(instrument: Filter, parameter: FilterParameter, newValue: Float) {
 		view?.startSpinner()
-		imageStack.push(sourceImage)
+		imageStack.push(self.editingImage)
 		view?.refreshButtonsState(imagesStackIsEmpty: imageStack.isEmpty)
 		let instrumentQueue = DispatchQueue(label: "FilterQueue", qos: .userInteractive, attributes: .concurrent)
 		instrumentQueue.async { [weak self] in
