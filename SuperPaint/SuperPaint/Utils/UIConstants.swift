@@ -24,5 +24,4 @@ enum UIConstants
 	static let highlighedTextColor: UIColor = .lightGray
 	static let backgroundColor: UIColor = .white
 	static let borderColor: UIColor = .lightGray
-
 }
