@@ -20,7 +20,7 @@ extension UIImage
 		else {
 			newSize = CGSize(width: dimension * aspectRatio, height: dimension)
 		}
-		UIGraphicsBeginImageContextWithOptions(newSize, true, 1.0)
+		UIGraphicsBeginImageContextWithOptions(newSize, false, 1.0)
 		self.draw(in: CGRect(origin: .zero, size: newSize))
 		defer { UIGraphicsEndImageContext() }
 		return UIGraphicsGetImageFromCurrentImageContext()
