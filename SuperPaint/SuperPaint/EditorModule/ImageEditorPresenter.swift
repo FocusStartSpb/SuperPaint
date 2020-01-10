@@ -95,7 +95,7 @@ extension ImageEditorPresenter: IImageEditorPresenter
 		if let previousIndex = previousAppliedInstrumentIndex, previousIndex == instrumentIndex {
 			currentInstrumentAlreadyApplied = true
 		}
-		instrumentsList[instrumentIndex].setValueForParameter(parameter: parameter.code, newValue: parameter.currentValue)
+		instrumentsList[instrumentIndex].setValueForParameter(parameterCode: parameter.code, newValue: parameter.currentValue)
 		let instrumentQueue = DispatchQueue(label: "InstrumentQueue", qos: .userInteractive, attributes: .concurrent)
 		instrumentQueue.async { [weak self] in
 			let imageForApply = currentInstrumentAlreadyApplied ? self?.sourceImage : self?.editingImage

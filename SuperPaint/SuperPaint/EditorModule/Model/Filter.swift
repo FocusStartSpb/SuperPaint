@@ -20,8 +20,8 @@ struct Filter
 		self.parameters = parameters
 	}
 
-	mutating func setValueForParameter(parameter code: String, newValue: NSNumber) {
-		for index in parameters.indices where parameters[index].code == code {
+	mutating func setValueForParameter(parameterCode: String, newValue: NSNumber) {
+		for index in parameters.indices where parameters[index].code == parameterCode {
 			parameters[index].currentValue = newValue
 		}
 	}
