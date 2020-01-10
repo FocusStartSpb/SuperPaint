@@ -41,6 +41,7 @@ private extension FilterCell
 		label.translatesAutoresizingMaskIntoConstraints = false
 		label.font = UIFont.systemFont(ofSize: 13)
 		label.textAlignment = .center
+		label.textColor = UIConstants.textColor
 		self.addSubview(imageView)
 		self.addSubview(label)
 		NSLayoutConstraint.activate([

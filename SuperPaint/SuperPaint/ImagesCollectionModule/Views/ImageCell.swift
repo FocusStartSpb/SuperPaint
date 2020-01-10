@@ -18,7 +18,7 @@ final class ImageCell: UICollectionViewCell
 		super.init(frame: frame)
 		self.clipsToBounds = true
 		self.layer.borderWidth = 0.3
-		self.layer.borderColor = UIColor.lightGray.cgColor
+		self.layer.borderColor = UIConstants.borderColor.cgColor
 		self.setupImageView()
 		self.setupSelectionImageView()
 	}
@@ -61,7 +61,7 @@ private extension ImageCell
 			self.imageView.topAnchor.constraint(equalTo: self.contentView.topAnchor),
 			self.imageView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor),
 		])
-		self.imageView.backgroundColor = .lightGray
+		self.imageView.backgroundColor = UIConstants.borderColor
 	}
 
 	func setupSelectionImageView() {

@@ -19,4 +19,10 @@ enum UIConstants
 	static let filterCollectionViewCellHeight: CGFloat = 105
 	static let instrumentCollectionViewCellHeight: CGFloat = 35
 	static let collectionViewCellWidth: CGFloat = 105
+	static let textColor: UIColor = .black
+	static let valueColor: UIColor = .systemBlue
+	static let highlighedTextColor: UIColor = .lightGray
+	static let backgroundColor: UIColor = .white
+	static let borderColor: UIColor = .lightGray
+
 }

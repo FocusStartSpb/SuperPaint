@@ -173,7 +173,7 @@ private extension ImageEditorViewController
 {
 	func setupInitialState() {
 		safeArea = self.view.layoutMarginsGuide
-		self.view.backgroundColor = .white
+		self.view.backgroundColor = UIConstants.backgroundColor
 		setupNavigationBarItems()
 
 		EditorControlsCreator.setupActionsView(actionsView: topActionsStackView, parentView: self.view)
