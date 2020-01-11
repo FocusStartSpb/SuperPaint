@@ -70,12 +70,6 @@ final class ImageEditorViewController: UIViewController
 		setupInitialState()
 		presenter.triggerViewReadyEvent()
 	}
-
-	override func didMove(toParent parent: UIViewController?) {
-		if parent == nil {
-			back()
-		}
-	}
 }
 // MARK: - IImageEditorViewController
 extension ImageEditorViewController: IImageEditorViewController
