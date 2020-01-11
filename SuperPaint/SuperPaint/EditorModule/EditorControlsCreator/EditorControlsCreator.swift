@@ -16,8 +16,8 @@ enum EditorControlsCreator
 	}
 
 	static func setButtonProperties(_ button: UIButton, parentView: UIView) {
-		button.setTitleColor(.black, for: .normal)
-		button.setTitleColor(.lightGray, for: .highlighted)
+		button.setTitleColor(UIConstants.textColor, for: .normal)
+		button.setTitleColor(UIConstants.highlighedTextColor, for: .highlighted)
 		button.setTitleColor(UIConstants.systemButtonColor, for: .selected)
 		button.translatesAutoresizingMaskIntoConstraints = false
 		parentView.addSubview(button)

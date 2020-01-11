@@ -41,7 +41,9 @@ private extension SliderView
 		valueLabel.translatesAutoresizingMaskIntoConstraints = false
 		slider.addTarget(self, action: #selector(moveSlider), for: .valueChanged)
 		nameLabel.font = Fonts.sliderFont
+		nameLabel.textColor = UIConstants.textColor
 		valueLabel.font = Fonts.sliderFont
+		valueLabel.textColor = UIConstants.valueColor
 		valueLabel.textAlignment = .right
 		self.addSubview(nameLabel)
 		self.addSubview(slider)

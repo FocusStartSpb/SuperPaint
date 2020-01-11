@@ -33,7 +33,7 @@ final class ImagesCollectionViewController: UIViewController
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		self.view.backgroundColor = .white
+		self.view.backgroundColor = UIConstants.backgroundColor
 		self.safeArea = self.view.layoutMarginsGuide
 		self.setupSettingsForNavigationBar()
 		self.setupCollectionView()
@@ -96,7 +96,7 @@ private extension ImagesCollectionViewController
 		self.view.addSubview(self.collectionView)
 		self.collectionView.translatesAutoresizingMaskIntoConstraints = false
 		self.collectionView.alwaysBounceVertical = true
-		self.collectionView.backgroundColor = .white
+		self.collectionView.backgroundColor = UIConstants.backgroundColor
 		NSLayoutConstraint.activate([
 			self.collectionView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
 			self.collectionView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
@@ -113,7 +113,11 @@ private extension ImagesCollectionViewController
 																 target: self,
 																 action: #selector(addNewImage))
 		guard let font = Fonts.chalkduster20 else { return }
-		self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: font]
+		self.navigationController?.navigationBar.titleTextAttributes = [
+			NSAttributedString.Key.font: font,
+			NSAttributedString.Key.foregroundColor: UIConstants.textColor,
+		]
+		self.navigationController?.navigationBar.barTintColor = UIConstants.backgroundColor
 	}
 
 	// MARK: - Создаем и показываем Alert Controller на экране
