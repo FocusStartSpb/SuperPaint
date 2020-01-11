@@ -133,8 +133,12 @@ enum EditorControlsCreator
 	static func createSlider(parentView: UIStackView,
 							 presenter: IImageEditorPresenter,
 							 instrument: Filter,
-							 parameter: FilterParameter) -> UIView {
-		let view = SliderView(presenter: presenter, instrument: instrument, parameter: parameter)
+							 parameter: FilterParameter,
+							 instrumentIndex: Int) -> UIView {
+		let view = SliderView(presenter: presenter,
+							  instrument: instrument,
+							  parameter: parameter,
+							  instrumentIndex: instrumentIndex)
 		parentView.addArrangedSubview(view)
 		view.heightAnchor.constraint(equalToConstant: UIConstants.instrumentCollectionViewCellHeight * 2).isActive = true
 		return view
