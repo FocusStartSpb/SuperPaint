@@ -175,7 +175,15 @@ private extension ImageEditorPresenter
 {
 	func createFilteredImageCollection() {
 		guard let preview = sourceImage.resizeImage(to: UIConstants.collectionViewCellWidth) else { return }
-		filtersList.forEach{ preview.setFilter($0) { filteredImage in self.filteredPreviews.append(filteredImage) }
+		let filterQueue = DispatchQueue(label: "FilterQueue", qos: .userInteractive, attributes: .concurrent)
+		filterQueue.async { [weak self] in
+			self?.filtersList.forEach{
+				preview.setFilter($0) { filteredImage in self?.filteredPreviews.append(filteredImage) }
+			}
+			DispatchQueue.main.async {
+				self?.view?.refreshButtonsState(imagesStackIsEmpty: self?.imageStack.isEmpty ?? true)
+				self?.view?.reloadFilterPreviews()
+			}
 		}
 	}
 }
