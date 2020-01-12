@@ -34,6 +34,7 @@ private extension InstrumentCell
 {
 	func setupInitialState() {
 		label.font = UIFont.systemFont(ofSize: 13)
+		label.textColor = UIConstants.textColor
 		label.textAlignment = .center
 		label.translatesAutoresizingMaskIntoConstraints = false
 		self.addSubview(label)
