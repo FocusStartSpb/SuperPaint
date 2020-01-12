@@ -72,8 +72,6 @@ private extension SliderView
 		slider.maximumValue = parameter.maxValue.floatValue
 		slider.minimumValue = parameter.minValue.floatValue
 		nameLabel.text = parameter.name
-//		slider.value = parameter.defaultValue.floatValue
-//		valueLabel.text = String(format: "%.1f", slider.value)
 	}
 
 	@objc func moveSlider(slider: UISlider, event: UIEvent) {

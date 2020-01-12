@@ -152,6 +152,10 @@ extension ImageEditorViewController: IImageEditorViewController
 			}
 		}
 	}
+
+	func reloadFilterPreviews() {
+		filtersCollection.reloadData()
+	}
 }
 // MARK: - UIScrollViewDelegate
 extension ImageEditorViewController: UIScrollViewDelegate

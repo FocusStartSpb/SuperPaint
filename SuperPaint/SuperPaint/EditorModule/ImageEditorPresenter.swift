@@ -24,6 +24,7 @@ final class ImageEditorPresenter
 	private var editingImage: UIImage
 	private var previousAppliedFilterIndex: Int?
 	private var previousAppliedInstrumentIndex: Int?
+	private var currentApplyingFilterIndex: Int?
 
 	init(router: IImageEditorRouter, repository: IDatabaseRepository, id: String, image: UIImage, isNewImage: Bool) {
 		self.router = router
@@ -58,6 +59,7 @@ extension ImageEditorPresenter: IImageEditorPresenter
 	}
 // MARK: - Фильтр
 	func applyFilter(filterIndex: Int) {
+		currentApplyingFilterIndex = filterIndex
 		//Если фильтр уже применен не применяем снова
 		var currentFilterAlreadyApplied = false
 		if let previousIndex = previousAppliedFilterIndex, previousIndex == filterIndex {
@@ -73,9 +75,12 @@ extension ImageEditorPresenter: IImageEditorPresenter
 				self?.sourceImage.setFilter(self?.filtersList[filterIndex]) { filteredImage in
 					self?.editingImage = filteredImage
 					DispatchQueue.main.async {
-						self?.view?.setImage(image: filteredImage)
-						self?.view?.stopSpinner()
-						self?.previousAppliedFilterIndex = filterIndex
+						//применять будем только последний нажатый фильтр
+						if let currentIndex = self?.currentApplyingFilterIndex, currentIndex == filterIndex {
+							self?.view?.setImage(image: filteredImage)
+							self?.view?.stopSpinner()
+							self?.previousAppliedFilterIndex = filterIndex
+						}
 					}
 				}
 			}
@@ -166,7 +171,6 @@ extension ImageEditorPresenter: IImageEditorPresenter
 		imageStack.push(self.editingImage)
 		view?.refreshButtonsState(imagesStackIsEmpty: imageStack.isEmpty)
 		editingImage = croppedImage
-		sourceImage = croppedImage
 		view?.setImage(image: editingImage)
 	}
 }
@@ -175,7 +179,15 @@ private extension ImageEditorPresenter
 {
 	func createFilteredImageCollection() {
 		guard let preview = sourceImage.resizeImage(to: UIConstants.collectionViewCellWidth) else { return }
-		filtersList.forEach{ preview.setFilter($0) { filteredImage in self.filteredPreviews.append(filteredImage) }
+		let filterQueue = DispatchQueue(label: "FilterQueue", qos: .userInteractive, attributes: .concurrent)
+		filterQueue.async { [weak self] in
+			self?.filtersList.forEach{
+				preview.setFilter($0) { filteredImage in self?.filteredPreviews.append(filteredImage) }
+			}
+			DispatchQueue.main.async {
+				self?.view?.refreshButtonsState(imagesStackIsEmpty: self?.imageStack.isEmpty ?? true)
+				self?.view?.reloadFilterPreviews()
+			}
 		}
 	}
 }
