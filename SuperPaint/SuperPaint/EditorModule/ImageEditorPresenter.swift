@@ -24,6 +24,7 @@ final class ImageEditorPresenter
 	private var editingImage: UIImage
 	private var previousAppliedFilterIndex: Int?
 	private var previousAppliedInstrumentIndex: Int?
+	private var currentApplyingFilterIndex: Int?
 
 	init(router: IImageEditorRouter, repository: IDatabaseRepository, id: String, image: UIImage, isNewImage: Bool) {
 		self.router = router
@@ -58,6 +59,7 @@ extension ImageEditorPresenter: IImageEditorPresenter
 	}
 // MARK: - Фильтр
 	func applyFilter(filterIndex: Int) {
+		currentApplyingFilterIndex = filterIndex
 		//Если фильтр уже применен не применяем снова
 		var currentFilterAlreadyApplied = false
 		if let previousIndex = previousAppliedFilterIndex, previousIndex == filterIndex {
@@ -73,9 +75,12 @@ extension ImageEditorPresenter: IImageEditorPresenter
 				self?.sourceImage.setFilter(self?.filtersList[filterIndex]) { filteredImage in
 					self?.editingImage = filteredImage
 					DispatchQueue.main.async {
-						self?.view?.setImage(image: filteredImage)
-						self?.view?.stopSpinner()
-						self?.previousAppliedFilterIndex = filterIndex
+						//применять будем только последний нажатый фильтр
+						if let currentIndex = self?.currentApplyingFilterIndex, currentIndex == filterIndex {
+							self?.view?.setImage(image: filteredImage)
+							self?.view?.stopSpinner()
+							self?.previousAppliedFilterIndex = filterIndex
+						}
 					}
 				}
 			}
