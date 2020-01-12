@@ -25,4 +25,5 @@ enum UIConstants
 	static let backgroundColor: UIColor = .white
 	static let borderColor: UIColor = .lightGray
 	static let cropTouchPrecision: CGFloat = 40.0
+	static let defaultInstrumentIndex = 0
 }
