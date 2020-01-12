@@ -166,7 +166,6 @@ extension ImageEditorPresenter: IImageEditorPresenter
 		imageStack.push(self.editingImage)
 		view?.refreshButtonsState(imagesStackIsEmpty: imageStack.isEmpty)
 		editingImage = croppedImage
-		sourceImage = croppedImage
 		view?.setImage(image: editingImage)
 	}
 }

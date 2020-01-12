@@ -70,21 +70,21 @@ final class CropView: UIView
 
 			switch currentSide {
 			case .top:
-				if originalFrame.height > self.frame.size.height - deltaHeight {
+				if originalFrame.origin.y < self.frame.origin.y + deltaHeight {
 					self.frame.size.height -= deltaHeight
 					self.frame.origin.y += deltaHeight
 				}
 			case .left:
-				if originalFrame.width > self.frame.size.width - deltaWidth {
+				if originalFrame.origin.x < self.frame.origin.x + deltaWidth {
 					self.frame.size.width -= deltaWidth
 					self.frame.origin.x += deltaWidth
 				}
 			case .right:
-				if originalFrame.width > self.frame.size.width + deltaWidth {
+				if originalFrame.origin.x + originalFrame.width > self.frame.origin.x + self.frame.size.width + deltaWidth {
 					self.frame.size.width += deltaWidth
 				}
 			case .bottom:
-				if originalFrame.height > self.frame.size.height + deltaHeight {
+				if originalFrame.origin.y + originalFrame.height > self.frame.origin.y + self.frame.size.height + deltaHeight {
 					self.frame.size.height += deltaHeight
 				}
 			default:
