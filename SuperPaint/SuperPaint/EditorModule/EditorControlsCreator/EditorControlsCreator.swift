@@ -17,8 +17,8 @@ enum EditorControlsCreator
 
 	static func setButtonProperties(_ button: UIButton, parentView: UIView) {
 		button.setTitleColor(UIConstants.textColor, for: .normal)
-		button.setTitleColor(UIConstants.highlighedTextColor, for: .highlighted)
 		button.setTitleColor(UIConstants.systemButtonColor, for: .selected)
+		button.setTitleColor(UIConstants.disabledButtonColor, for: .disabled)
 		button.translatesAutoresizingMaskIntoConstraints = false
 		parentView.addSubview(button)
 	}
@@ -117,15 +117,18 @@ enum EditorControlsCreator
 		])
 	}
 // MARK: - Настройка scrollView для зума картинки
-	static func setupScrollView(scrollView: UIScrollView, parentView: UIView, verticalStack: UIStackView) {
+	static func setupScrollView(scrollView: UIScrollView,
+								parentView: UIView,
+								verticalStack: UIStackView,
+								safeArea: UILayoutGuide) {
 		scrollView.minimumZoomScale = 1.0
 		scrollView.maximumZoomScale = 4.0
 		scrollView.translatesAutoresizingMaskIntoConstraints = false
 		parentView.addSubview(scrollView)
 		NSLayoutConstraint.activate([
-			scrollView.topAnchor.constraint(equalTo: parentView.topAnchor),
-			scrollView.leadingAnchor.constraint(equalTo: parentView.leadingAnchor),
-			scrollView.trailingAnchor.constraint(equalTo: parentView.trailingAnchor),
+			scrollView.topAnchor.constraint(equalTo: safeArea.topAnchor),
+			scrollView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
+			scrollView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor),
 			scrollView.bottomAnchor.constraint(equalTo: verticalStack.topAnchor, constant: -10),
 		])
 	}

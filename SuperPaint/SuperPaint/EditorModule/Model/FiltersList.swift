@@ -82,7 +82,7 @@ enum FiltersList: CaseIterable
 						])
 		case .exposure:
 			return Filter(with: "Exposure", code: "CIExposureAdjust", parameters: [
-				FilterParameter(name: "EV",
+				FilterParameter(name: "Value",
 								code: "inputEV",
 								defaultValue: 0.5,
 								minValue: 0,
