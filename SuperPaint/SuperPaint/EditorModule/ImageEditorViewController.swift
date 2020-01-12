@@ -32,6 +32,7 @@ final class ImageEditorViewController: UIViewController
 
 	private var sliders: [String: [UIView]] = [:]
 	private var safeArea = UILayoutGuide()
+	private var firstInstrumentToggle = true
 
 	private var showFilters: Bool {
 		get {
@@ -57,6 +58,10 @@ final class ImageEditorViewController: UIViewController
 			parametersStackView.isHidden = (newValue == false)
 			instrumentsButton.isSelected = newValue
 			filtersButton.isSelected = instrumentsButton.isSelected ? false : filtersButton.isSelected
+			if firstInstrumentToggle {
+				showSliders(instrumentIndex: UIConstants.defaultInstrumentIndex)
+				firstInstrumentToggle = false
+			}
 		}
 	}
 // MARK: - cropMode
@@ -265,6 +270,10 @@ private extension ImageEditorViewController
 		let doubleTap = UITapGestureRecognizer(target: self, action: #selector(defaultZoom))
 		doubleTap.numberOfTapsRequired = 2
 		scrollView.addGestureRecognizer(doubleTap)
+
+		instrumentsCollection.selectItem(at: IndexPath(row: UIConstants.defaultInstrumentIndex, section: 0),
+										 animated: true,
+										 scrollPosition: .centeredHorizontally)
 	}
 
 	func setDelegates() {

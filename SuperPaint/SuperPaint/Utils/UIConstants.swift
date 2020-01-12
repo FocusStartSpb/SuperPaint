@@ -24,4 +24,5 @@ enum UIConstants
 	static let disabledButtonColor: UIColor = .lightGray
 	static let backgroundColor: UIColor = .white
 	static let borderColor: UIColor = .lightGray
+	static let defaultInstrumentIndex = 0
 }
