@@ -21,11 +21,7 @@ final class CropView: UIView
 	}
 
 	let originalFrame: CGRect
-
-	static var edgeSize: CGFloat = 50.0
-	static var touchPrecision: CGFloat = 20.0
-
-	var currentEdge: Edge = .none
+	static var touchPrecision: CGFloat = UIConstants.cropTouchPrecision
 	var currentSide: Side = .none
 	var touchLocation = CGPoint.zero
 
