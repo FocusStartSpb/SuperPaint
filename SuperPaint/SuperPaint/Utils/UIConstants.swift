@@ -25,4 +25,11 @@ enum UIConstants
 	static let activityIndicatorSize: CGFloat = 64
 	static let imagePlaceholderSize: CGFloat = 150
 	static let notFoundImageSize: CGFloat = 150
+	static let textColor: UIColor = .black
+	static let valueColor: UIColor = .systemBlue
+	static let disabledButtonColor: UIColor = .lightGray
+	static let backgroundColor: UIColor = .white
+	static let borderColor: UIColor = .lightGray
+	static let cropTouchPrecision: CGFloat = 40.0
+	static let defaultInstrumentIndex = 0
 }
