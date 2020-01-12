@@ -131,11 +131,15 @@ extension ImageEditorPresenter: IImageEditorPresenter
 		else {
 			self.repository.updateImage(id: id, data: imageData as NSData)
 		}
-		moveBack()
+		self.moveToMain()
 	}
 
 	func moveBack() {
 		self.router.moveBack()
+	}
+
+	func moveToMain() {
+		self.router.moveToMain()
 	}
 }
 // MARK: - private extension

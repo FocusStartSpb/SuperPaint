@@ -29,4 +29,9 @@ extension ImagesCollectionRouter: IImagesCollectionRouter
 		let vc = self.factory.createImageEditorModule(id: id, image: image, isNewImage: isNewImage)
 		self.imagesCollectionView?.navController?.pushViewController(vc, animated: true)
 	}
+
+	func pushWebSearchModule() {
+		let vc = self.factory.createWebSearchModule()
+		self.imagesCollectionView?.navController?.pushViewController(vc, animated: true)
+	}
 }

@@ -10,4 +10,5 @@ import Foundation
 
 protocol INetworkRepository: AnyObject
 {
+	func loadImages(withSearchText text: String?, page: Int, completion: @escaping (UnsplashImagesResult) -> Void)
 }

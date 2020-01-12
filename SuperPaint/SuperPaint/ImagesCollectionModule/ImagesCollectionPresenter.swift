@@ -72,4 +72,8 @@ extension ImagesCollectionPresenter: IImagesCollectionPresenter
 	func onCellPressed(id: String, data: NSData, isNewImage: Bool) {
 		self.imagesCollectionRouter.pushEditorModule(id: id, data: data, isNewImage: isNewImage)
 	}
+
+	func pushWebSearchModule() {
+		self.imagesCollectionRouter.pushWebSearchModule()
+	}
 }

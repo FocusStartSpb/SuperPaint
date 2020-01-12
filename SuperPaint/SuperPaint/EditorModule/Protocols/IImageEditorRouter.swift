@@ -12,4 +12,5 @@ protocol IImageEditorRouter: AnyObject
 {
 	func inject(view: IImageEditorViewController)
 	func moveBack()
+	func moveToMain()
 }

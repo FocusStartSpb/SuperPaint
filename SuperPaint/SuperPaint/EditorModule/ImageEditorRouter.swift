@@ -27,4 +27,8 @@ extension ImageEditorRouter: IImageEditorRouter
 	func moveBack() {
 		self.view?.navController?.popViewController(animated: true)
 	}
+
+	func moveToMain() {
+		self.view?.navController?.popToRootViewController(animated: true)
+	}
 }
