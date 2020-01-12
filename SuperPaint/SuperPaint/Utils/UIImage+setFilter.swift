@@ -21,7 +21,9 @@ extension UIImage
 			ciFilter?.setValue(parameter.currentValue, forKey: parameter.code)
 		}
 		guard let ciOutputImage = ciFilter?.outputImage else { return }
-		guard let cgImage = context.createCGImage(ciOutputImage, from: ciOutputImage.extent)  else { return }
+		guard let rect = ciImage?.extent else { return }
+
+		guard let cgImage = context.createCGImage(ciOutputImage, from: rect)  else { return }
 		completion(UIImage(cgImage: cgImage))
 	}
 }
