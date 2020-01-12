@@ -10,6 +10,7 @@ import UIKit
 
 final class ImageEditorViewController: UIViewController
 {
+// MARK: - Variables
 	private let presenter: IImageEditorPresenter
 	private let filtersCollection = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
 	private let instrumentsCollection = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
@@ -25,6 +26,10 @@ final class ImageEditorViewController: UIViewController
 
 	private var saveButton: UIBarButtonItem?
 	private var undoButton: UIBarButtonItem?
+	private var cropButton: UIBarButtonItem?
+	private var backButton: UIBarButtonItem?
+	private var croppingView: CropView?
+
 	private var sliders: [String: [UIView]] = [:]
 	private var safeArea = UILayoutGuide()
 
@@ -54,9 +59,46 @@ final class ImageEditorViewController: UIViewController
 			filtersButton.isSelected = instrumentsButton.isSelected ? false : filtersButton.isSelected
 		}
 	}
+// MARK: - cropMode
+	private var cropMode: Bool {
+		didSet {
+			let normalMode = (cropMode == false)
+			let imageRect = imageView.getImageRect()
+			filtersButton.isEnabled = normalMode
+			instrumentsButton.isEnabled = normalMode
+			saveButton?.isEnabled = normalMode
+			undoButton?.isEnabled = normalMode
+			backButton?.isEnabled = normalMode
+			//Переходим в режим кропа
+			if cropMode {
+				croppingView = CropView(frame: imageRect)
+				if let cropView = croppingView {
+					scrollView.addSubview(cropView)
+				}
+			}
+			// при возврате из кроп мода кропаем картинку
+			else {
+				if let cropView = croppingView {
+					guard let image = imageView.image else { return }
+					var cropRect = cropView.frame
+					let imageWidth = image.size.width
+					let imageHeight = image.size.height
+					let widthScale = imageWidth / imageRect.width
+					let heightScale = imageHeight / imageRect.height
+					cropRect.origin.x = (cropRect.origin.x - imageRect.origin.x) * widthScale
+					cropRect.origin.y = (cropRect.origin.y - imageRect.origin.y) * heightScale
+					cropRect.size.width *= widthScale
+					cropRect.size.height *= heightScale
+					presenter.cropImage(cropRect: cropRect)
+					cropView.removeFromSuperview()
+				}
+			}
+		}
+	}
 
 	init(presenter: IImageEditorPresenter) {
 		self.presenter = presenter
+		self.cropMode = false
 		super.init(nibName: nil, bundle: nil)
 	}
 
@@ -110,6 +152,7 @@ extension ImageEditorViewController: IImageEditorViewController
 extension ImageEditorViewController: UIScrollViewDelegate
 {
 	func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+		guard cropMode == false else { return nil }
 		return imageView
 	}
 }
@@ -174,9 +217,10 @@ extension ImageEditorViewController: UICollectionViewDelegateFlowLayout
 		}
 	}
 }
-// MARK: - private extension
+
 private extension ImageEditorViewController
 {
+// MARK: - Initial state
 	func setupInitialState() {
 		safeArea = self.view.layoutMarginsGuide
 		self.view.backgroundColor = UIConstants.backgroundColor
@@ -196,7 +240,11 @@ private extension ImageEditorViewController
 									   parentView: self.view,
 									   safeArea: safeArea)
 
-		EditorControlsCreator.setupScrollView(scrollView: scrollView, parentView: self.view, verticalStack: verticalStack)
+		EditorControlsCreator.setupScrollView(scrollView: scrollView,
+											  parentView: self.view,
+											  verticalStack: verticalStack,
+											  safeArea: safeArea)
+
 		EditorControlsCreator.setupImageView(imageView: imageView,
 											 image: presenter.currentImage,
 											 parentView: scrollView)
@@ -229,17 +277,22 @@ private extension ImageEditorViewController
 
 	func setupNavigationBarItems() {
 		self.navigationItem.hidesBackButton = true
-		let newBackButton = UIBarButtonItem(title: "❮ Back",
+		backButton = UIBarButtonItem(title: "❮ Back",
 											style: .plain,
 											target: self,
 											action: #selector(back))
-		self.navigationItem.leftBarButtonItem = newBackButton
+		self.navigationItem.leftBarButtonItem = backButton
 		saveButton = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(savePressed))
 		undoButton = UIBarButtonItem(barButtonSystemItem: .reply, target: self, action: #selector(undoPressed))
-		undoButton?.isEnabled = false
-		let barButtonItems = [saveButton, undoButton].compactMap{ $0 }
+		cropButton = UIBarButtonItem(image: UIImage(named: "crop"),
+									 landscapeImagePhone: UIImage(named: "crop"),
+									 style: .plain,
+									 target: self,
+									 action: #selector(toggleCropMode))
+		let barButtonItems = [saveButton, undoButton, cropButton].compactMap{ $0 }
 		self.navigationItem.setRightBarButtonItems(barButtonItems, animated: true)
 	}
+// MARK: - createSliders
 //генерим вью со слайдерами для всех возможных инструметов
 //в итоге скрываем их
 	func createSliders() {
@@ -258,6 +311,7 @@ private extension ImageEditorViewController
 		refreshSlidersValues()
 		showSliders()
 	}
+// MARK: - showSliders
 //Отображаем вью с параметрами для текущего инструмента
 //Если на вход ничего не пришло скрываем все
 	func showSliders(instrumentIndex: Int? = nil) {
@@ -272,9 +326,11 @@ private extension ImageEditorViewController
 			}
 		}
 	}
+// MARK: - defaultZoom
 //По двойному тапу на картинке увеличиваем ее в 2 раза
 //По следующему двойному тапу возвращаем исходный масштаб
 	@objc func defaultZoom() {
+		guard cropMode == false else { return }
 		if scrollView.zoomScale == 1.0 {
 			scrollView.setZoomScale(2, animated: true)
 		}
@@ -282,6 +338,7 @@ private extension ImageEditorViewController
 			scrollView.setZoomScale(1.0, animated: true)
 		}
 	}
+// MARK: - back
 //По кнопке назад спрашиваем сохранить или нет
 	@objc func back() {
 		if presenter.imageEdited {
@@ -316,5 +373,10 @@ private extension ImageEditorViewController
 
 	@objc func undoPressed(_ sender: UIBarButtonItem) {
 		presenter.undoAction()
+	}
+// MARK: - Crop mode
+	@objc func toggleCropMode(_ sender: UIBarButtonItem) {
+		scrollView.setZoomScale(1.0, animated: true)
+		cropMode = (cropMode == false)
 	}
 }

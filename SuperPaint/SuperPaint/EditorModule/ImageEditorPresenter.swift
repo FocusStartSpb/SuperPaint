@@ -160,6 +160,15 @@ extension ImageEditorPresenter: IImageEditorPresenter
 	func moveBack() {
 		self.router.moveBack()
 	}
+
+	func cropImage(cropRect: CGRect) {
+		guard let croppedImage = editingImage.cropImage(to: cropRect) else { return }
+		imageStack.push(self.editingImage)
+		view?.refreshButtonsState(imagesStackIsEmpty: imageStack.isEmpty)
+		editingImage = croppedImage
+		sourceImage = croppedImage
+		view?.setImage(image: editingImage)
+	}
 }
 // MARK: - private extension
 private extension ImageEditorPresenter

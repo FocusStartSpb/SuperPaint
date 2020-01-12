@@ -21,7 +21,7 @@ enum UIConstants
 	static let collectionViewCellWidth: CGFloat = 105
 	static let textColor: UIColor = .black
 	static let valueColor: UIColor = .systemBlue
-	static let highlighedTextColor: UIColor = .lightGray
+	static let disabledButtonColor: UIColor = .lightGray
 	static let backgroundColor: UIColor = .white
 	static let borderColor: UIColor = .lightGray
 }
