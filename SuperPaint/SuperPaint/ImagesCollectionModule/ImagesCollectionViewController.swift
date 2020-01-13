@@ -134,7 +134,8 @@ private extension ImagesCollectionViewController
 		libraryAction.setValue(Images.libraryIcon, forKey: "image")
 		libraryAction.setValue(CATextLayerAlignmentMode.left, forKey: "titleTextAlignment")
 		let webAction = UIAlertAction(title: "Web search", style: .default) { _ in
-			// TODO: - move to web search QIS-27
+			self.imagesCollectionPresenter.pushWebSearchModule()
+			actionSheet.dismiss(animated: true)
 		}
 		webAction.setValue(Images.webIcon, forKey: "image")
 		webAction.setValue(CATextLayerAlignmentMode.left, forKey: "titleTextAlignment")

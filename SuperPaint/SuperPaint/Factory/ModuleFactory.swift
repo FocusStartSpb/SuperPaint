@@ -44,4 +44,13 @@ struct ModuleFactory
 		router.inject(view: view)
 		return view
 	}
+
+	func createWebSearchModule() -> UIViewController {
+		let router = WebSearchRouter(factory: self)
+		let presenter = WebSearchPresenter(router: router, repository: self.networkRepository)
+		let view = WebSearchViewController(presenter: presenter)
+		presenter.inject(view: view)
+		router.inject(view: view)
+		return view
+	}
 }

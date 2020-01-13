@@ -30,6 +30,19 @@
 		720A390523B220EE0026EFC9 /* ImageModel+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A390323B220EE0026EFC9 /* ImageModel+CoreDataProperties.swift */; };
 		720A390823B223100026EFC9 /* ICDImageModelManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A390723B223100026EFC9 /* ICDImageModelManager.swift */; };
 		720A390A23B3BF6A0026EFC9 /* UIImage+orientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A390923B3BF690026EFC9 /* UIImage+orientation.swift */; };
+		720A390D23C63B430026EFC9 /* WebSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A390C23C63B420026EFC9 /* WebSearchViewController.swift */; };
+		720A390F23C63B580026EFC9 /* WebSearchPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A390E23C63B580026EFC9 /* WebSearchPresenter.swift */; };
+		720A391123C63B690026EFC9 /* WebSearchRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A391023C63B690026EFC9 /* WebSearchRouter.swift */; };
+		720A391423C63C430026EFC9 /* IWebSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A391323C63C430026EFC9 /* IWebSearchViewController.swift */; };
+		720A391623C63CA90026EFC9 /* IWebSearchPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A391523C63CA90026EFC9 /* IWebSearchPresenter.swift */; };
+		720A391823C63CCF0026EFC9 /* IWebSearchRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A391723C63CCF0026EFC9 /* IWebSearchRouter.swift */; };
+		720A391B23C76D3D0026EFC9 /* WebImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A391A23C76D3D0026EFC9 /* WebImageCell.swift */; };
+		720A391E23CA29120026EFC9 /* UnsplashAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A391D23CA29120026EFC9 /* UnsplashAPI.swift */; };
+		720A392323CA2A5E0026EFC9 /* UnsplashImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A392223CA2A5E0026EFC9 /* UnsplashImage.swift */; };
+		720A392523CA2D1F0026EFC9 /* NetworkErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A392423CA2D1F0026EFC9 /* NetworkErrors.swift */; };
+		720A392723CB57A60026EFC9 /* CollectionViewActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A392623CB57A50026EFC9 /* CollectionViewActivityIndicator.swift */; };
+		720A392923CBC6C10026EFC9 /* CropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85747C7823CB14E60014EA4B /* CropView.swift */; };
+		720A392A23CBC78E0026EFC9 /* UIImage+cropImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85747C7623CB10930014EA4B /* UIImage+cropImage.swift */; };
 		8511E6ED23AA936A0032B588 /* ModuleFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8511E6EC23AA936A0032B588 /* ModuleFactory.swift */; };
 		85121CAC23C79B6000DD4020 /* FiltersStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85121CAB23C79B6000DD4020 /* FiltersStack.swift */; };
 		85612AFB23ACE8140082DC95 /* ImageEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85612AFA23ACE8140082DC95 /* ImageEditorViewController.swift */; };
@@ -38,8 +51,6 @@
 		85612B0223ACE8AC0082DC95 /* IImageEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85612B0123ACE8AC0082DC95 /* IImageEditorViewController.swift */; };
 		85612B0423ACE8DC0082DC95 /* IImageEditorPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85612B0323ACE8DC0082DC95 /* IImageEditorPresenter.swift */; };
 		85612B0623ACE8FC0082DC95 /* IImageEditorRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85612B0523ACE8FC0082DC95 /* IImageEditorRouter.swift */; };
-		85747C7723CB10930014EA4B /* UIImage+cropImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85747C7623CB10930014EA4B /* UIImage+cropImage.swift */; };
-		85747C7923CB14E60014EA4B /* CropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85747C7823CB14E60014EA4B /* CropView.swift */; };
 		8577DDA023B10D3100BE86E2 /* FilterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8577DD9F23B10D3100BE86E2 /* FilterCell.swift */; };
 		8577DDA223B22D3C00BE86E2 /* FiltersList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8577DDA123B22D3C00BE86E2 /* FiltersList.swift */; };
 		8577DDA423B24E0B00BE86E2 /* ImagesStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8577DDA323B24E0B00BE86E2 /* ImagesStack.swift */; };
@@ -79,6 +90,17 @@
 		720A390323B220EE0026EFC9 /* ImageModel+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImageModel+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		720A390723B223100026EFC9 /* ICDImageModelManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ICDImageModelManager.swift; sourceTree = "<group>"; };
 		720A390923B3BF690026EFC9 /* UIImage+orientation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+orientation.swift"; sourceTree = "<group>"; };
+		720A390C23C63B420026EFC9 /* WebSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSearchViewController.swift; sourceTree = "<group>"; };
+		720A390E23C63B580026EFC9 /* WebSearchPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSearchPresenter.swift; sourceTree = "<group>"; };
+		720A391023C63B690026EFC9 /* WebSearchRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSearchRouter.swift; sourceTree = "<group>"; };
+		720A391323C63C430026EFC9 /* IWebSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IWebSearchViewController.swift; sourceTree = "<group>"; };
+		720A391523C63CA90026EFC9 /* IWebSearchPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IWebSearchPresenter.swift; sourceTree = "<group>"; };
+		720A391723C63CCF0026EFC9 /* IWebSearchRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IWebSearchRouter.swift; sourceTree = "<group>"; };
+		720A391A23C76D3D0026EFC9 /* WebImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebImageCell.swift; sourceTree = "<group>"; };
+		720A391D23CA29120026EFC9 /* UnsplashAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsplashAPI.swift; sourceTree = "<group>"; };
+		720A392223CA2A5E0026EFC9 /* UnsplashImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsplashImage.swift; sourceTree = "<group>"; };
+		720A392423CA2D1F0026EFC9 /* NetworkErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkErrors.swift; sourceTree = "<group>"; };
+		720A392623CB57A50026EFC9 /* CollectionViewActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewActivityIndicator.swift; sourceTree = "<group>"; };
 		8511E6EC23AA936A0032B588 /* ModuleFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleFactory.swift; sourceTree = "<group>"; };
 		85121CAB23C79B6000DD4020 /* FiltersStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiltersStack.swift; sourceTree = "<group>"; };
 		85612AFA23ACE8140082DC95 /* ImageEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageEditorViewController.swift; sourceTree = "<group>"; };
@@ -132,10 +154,12 @@
 		720A389423A7F8E20026EFC9 /* SuperPaint */ = {
 			isa = PBXGroup;
 			children = (
+				720A390B23C63AFC0026EFC9 /* WebSearchModule */,
 				720A38FC23B21D460026EFC9 /* DatabaseManagers */,
 				720A38FB23B21C090026EFC9 /* CoreData */,
 				720A38BE23AD09340026EFC9 /* Utils */,
 				85612AF923ACE7E70082DC95 /* EditorModule */,
+				720A391C23CA28DD0026EFC9 /* UnsplashAPI */,
 				720A38B623AA99EA0026EFC9 /* NetworkRepository */,
 				720A38F323B14FCC0026EFC9 /* DatabaseRepository */,
 				720A38A723AA91C50026EFC9 /* ImagesCollectionModule */,
@@ -173,6 +197,7 @@
 		720A38B623AA99EA0026EFC9 /* NetworkRepository */ = {
 			isa = PBXGroup;
 			children = (
+				720A392423CA2D1F0026EFC9 /* NetworkErrors.swift */,
 				720A38B723AA9A050026EFC9 /* NetworkRepository.swift */,
 				720A38B923AA9A170026EFC9 /* INetworkRepository.swift */,
 			);
@@ -238,6 +263,46 @@
 				720A390723B223100026EFC9 /* ICDImageModelManager.swift */,
 			);
 			path = Protocols;
+			sourceTree = "<group>";
+		};
+		720A390B23C63AFC0026EFC9 /* WebSearchModule */ = {
+			isa = PBXGroup;
+			children = (
+				720A391923C76D180026EFC9 /* Views */,
+				720A391223C63B6C0026EFC9 /* Protocols */,
+				720A390C23C63B420026EFC9 /* WebSearchViewController.swift */,
+				720A390E23C63B580026EFC9 /* WebSearchPresenter.swift */,
+				720A391023C63B690026EFC9 /* WebSearchRouter.swift */,
+			);
+			path = WebSearchModule;
+			sourceTree = "<group>";
+		};
+		720A391223C63B6C0026EFC9 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				720A391323C63C430026EFC9 /* IWebSearchViewController.swift */,
+				720A391523C63CA90026EFC9 /* IWebSearchPresenter.swift */,
+				720A391723C63CCF0026EFC9 /* IWebSearchRouter.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		720A391923C76D180026EFC9 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				720A391A23C76D3D0026EFC9 /* WebImageCell.swift */,
+				720A392623CB57A50026EFC9 /* CollectionViewActivityIndicator.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		720A391C23CA28DD0026EFC9 /* UnsplashAPI */ = {
+			isa = PBXGroup;
+			children = (
+				720A391D23CA29120026EFC9 /* UnsplashAPI.swift */,
+				720A392223CA2A5E0026EFC9 /* UnsplashImage.swift */,
+			);
+			path = UnsplashAPI;
 			sourceTree = "<group>";
 		};
 		8511E6EB23AA93550032B588 /* Factory */ = {
@@ -397,28 +462,38 @@
 				720A38B323AA92C80026EFC9 /* IImagesCollectionPresenter.swift in Sources */,
 				720A390523B220EE0026EFC9 /* ImageModel+CoreDataProperties.swift in Sources */,
 				720A390423B220EE0026EFC9 /* ImageModel+CoreDataClass.swift in Sources */,
-				85747C7723CB10930014EA4B /* UIImage+cropImage.swift in Sources */,
+				720A392523CA2D1F0026EFC9 /* NetworkErrors.swift in Sources */,
 				720A38C223AD6D5E0026EFC9 /* Fonts.swift in Sources */,
 				8577DDA023B10D3100BE86E2 /* FilterCell.swift in Sources */,
 				720A38BD23ACF27B0026EFC9 /* ImageCell.swift in Sources */,
 				720A38A923AA920A0026EFC9 /* ImagesCollectionViewController.swift in Sources */,
 				720A38B523AA92E10026EFC9 /* IImagesCollectionRouter.swift in Sources */,
+				720A391E23CA29120026EFC9 /* UnsplashAPI.swift in Sources */,
 				720A38F723B14FEE0026EFC9 /* IDatabaseRepository.swift in Sources */,
 				720A38F223AF8C030026EFC9 /* Images.swift in Sources */,
+				720A390D23C63B430026EFC9 /* WebSearchViewController.swift in Sources */,
 				859BCCE723B0F4DD00553048 /* UIImage+setFilter.swift in Sources */,
 				8577DDA423B24E0B00BE86E2 /* ImagesStack.swift in Sources */,
+				720A390F23C63B580026EFC9 /* WebSearchPresenter.swift in Sources */,
 				85612AFB23ACE8140082DC95 /* ImageEditorViewController.swift in Sources */,
 				8511E6ED23AA936A0032B588 /* ModuleFactory.swift in Sources */,
 				85612B0623ACE8FC0082DC95 /* IImageEditorRouter.swift in Sources */,
+				720A391623C63CA90026EFC9 /* IWebSearchPresenter.swift in Sources */,
+				720A391123C63B690026EFC9 /* WebSearchRouter.swift in Sources */,
 				720A389623A7F8E20026EFC9 /* AppDelegate.swift in Sources */,
+				720A392923CBC6C10026EFC9 /* CropView.swift in Sources */,
 				720A38FA23B21C010026EFC9 /* ImageModel.xcdatamodeld in Sources */,
 				720A38B123AA92BA0026EFC9 /* IImagesCollectionViewController.swift in Sources */,
 				85612AFF23ACE86E0082DC95 /* ImageEditorRouter.swift in Sources */,
 				720A390823B223100026EFC9 /* ICDImageModelManager.swift in Sources */,
+				720A391423C63C430026EFC9 /* IWebSearchViewController.swift in Sources */,
+				720A392323CA2A5E0026EFC9 /* UnsplashImage.swift in Sources */,
 				8577DDA223B22D3C00BE86E2 /* FiltersList.swift in Sources */,
 				720A38F523B14FE00026EFC9 /* DatabaseRepository.swift in Sources */,
 				720A38AE23AA922D0026EFC9 /* ImagesCollectionRouter.swift in Sources */,
 				858F4AAD23C1EF6A002C0BAB /* InstrumentCell.swift in Sources */,
+				720A391823C63CCF0026EFC9 /* IWebSearchRouter.swift in Sources */,
+				720A392A23CBC78E0026EFC9 /* UIImage+cropImage.swift in Sources */,
 				859BCCD123AE99C600553048 /* EditorControlsCreator.swift in Sources */,
 				85612B0223ACE8AC0082DC95 /* IImageEditorViewController.swift in Sources */,
 				85121CAC23C79B6000DD4020 /* FiltersStack.swift in Sources */,
@@ -427,10 +502,11 @@
 				720A38B823AA9A050026EFC9 /* NetworkRepository.swift in Sources */,
 				720A390A23B3BF6A0026EFC9 /* UIImage+orientation.swift in Sources */,
 				859BCCE523B0F4D100553048 /* UIImage+resize.swift in Sources */,
+				720A392723CB57A60026EFC9 /* CollectionViewActivityIndicator.swift in Sources */,
 				720A38BA23AA9A170026EFC9 /* INetworkRepository.swift in Sources */,
 				85612AFD23ACE8410082DC95 /* ImageEditorPresenter.swift in Sources */,
 				859BCCDC23AF725B00553048 /* Filter.swift in Sources */,
-				85747C7923CB14E60014EA4B /* CropView.swift in Sources */,
+				720A391B23C76D3D0026EFC9 /* WebImageCell.swift in Sources */,
 				720A38C023AD093E0026EFC9 /* UIConstants.swift in Sources */,
 				85F61CC123CA2DE500E2C8FF /* UIImageView+getImageRectangle.swift in Sources */,
 				858F4AAF23C2230A002C0BAB /* SliderView.swift in Sources */,
