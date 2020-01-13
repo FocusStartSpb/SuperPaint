@@ -70,21 +70,25 @@ final class CropView: UIView
 
 			switch currentSide {
 			case .top:
-				if originalFrame.origin.y < self.frame.origin.y + deltaHeight {
+				if self.frame.origin.y + deltaHeight > originalFrame.origin.y ,
+				self.frame.height - deltaHeight > UIConstants.minimumCropViewSize {
 					self.frame.size.height -= deltaHeight
 					self.frame.origin.y += deltaHeight
 				}
 			case .left:
-				if originalFrame.origin.x < self.frame.origin.x + deltaWidth {
+				if originalFrame.origin.x < self.frame.origin.x + deltaWidth,
+				self.frame.width - deltaWidth > UIConstants.minimumCropViewSize {
 					self.frame.size.width -= deltaWidth
 					self.frame.origin.x += deltaWidth
 				}
 			case .right:
-				if originalFrame.origin.x + originalFrame.width > self.frame.origin.x + self.frame.size.width + deltaWidth {
+				if originalFrame.origin.x + originalFrame.width > self.frame.origin.x + self.frame.size.width + deltaWidth,
+				self.frame.width + deltaWidth > UIConstants.minimumCropViewSize{
 					self.frame.size.width += deltaWidth
 				}
 			case .bottom:
-				if originalFrame.origin.y + originalFrame.height > self.frame.origin.y + self.frame.size.height + deltaHeight {
+				if originalFrame.origin.y + originalFrame.height > self.frame.origin.y + self.frame.size.height + deltaHeight,
+					self.frame.size.height + deltaHeight > UIConstants.minimumCropViewSize {
 					self.frame.size.height += deltaHeight
 				}
 			default:
