@@ -33,6 +33,7 @@ final class ImageEditorViewController: UIViewController
 	var sliders: [String: [UIView]] = [:]
 	private var safeArea = UILayoutGuide()
 	private var firstInstrumentToggle = true
+	private var scrollViewDefaultBounds: CGRect = .zero
 // MARK: - toggling panels
 	private var showFilters: Bool {
 		get {
@@ -68,7 +69,6 @@ final class ImageEditorViewController: UIViewController
 	var cropMode: Bool {
 		didSet {
 			let normalMode = (cropMode == false)
-			let imageRect = imageView.getImageRect()
 			filtersButton.isEnabled = normalMode
 			instrumentsButton.isEnabled = normalMode
 			saveButton?.isEnabled = normalMode
@@ -76,6 +76,10 @@ final class ImageEditorViewController: UIViewController
 			backButton?.isEnabled = normalMode
 			//Переходим в режим кропа
 			if cropMode {
+				instrumentsCollection.isHidden = true
+				filtersCollection.isHidden = true
+				showSliders()
+				let imageRect = imageView.getImageRect(insideRect: scrollViewDefaultBounds)
 				croppingView = CropView(frame: imageRect)
 				if let cropView = croppingView {
 					scrollView.addSubview(cropView)
@@ -84,6 +88,7 @@ final class ImageEditorViewController: UIViewController
 			// при возврате из кроп мода кропаем картинку
 			else {
 				if let cropView = croppingView {
+					let imageRect = imageView.getImageRect(insideRect: scrollViewDefaultBounds)
 					guard let image = imageView.image else { return }
 					var cropRect = cropView.frame
 					let imageWidth = image.size.width
@@ -118,6 +123,10 @@ final class ImageEditorViewController: UIViewController
 		presenter.triggerViewReadyEvent()
 	}
 
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
+		scrollViewDefaultBounds = scrollView.bounds
+	}
 // MARK: - showSliders
 	//Отображаем вью с параметрами для текущего инструмента
 	//Если на вход ничего не пришло скрываем все

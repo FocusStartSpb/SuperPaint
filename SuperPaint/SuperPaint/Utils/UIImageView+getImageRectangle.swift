@@ -11,9 +11,10 @@ import AVFoundation
 
 extension UIImageView
 {
-	func getImageRect() -> CGRect {
+	func getImageRect(insideRect: CGRect) -> CGRect {
 		guard let imageSize = self.image?.size else { return CGRect.zero }
-		let imageRect = AVMakeRect(aspectRatio: imageSize, insideRect: self.bounds)
+		let imageRect = AVMakeRect(aspectRatio: imageSize, insideRect: insideRect)
+
 		return imageRect
 	}
 }
