@@ -219,6 +219,7 @@ private extension ImageEditorViewController
 									 style: .plain,
 									 target: self,
 									 action: #selector(toggleCropMode))
+		cropButton?.tintColor = UIConstants.systemButtonColor
 		let barButtonItems = [saveButton, undoButton, cropButton].compactMap{ $0 }
 		self.navigationItem.setRightBarButtonItems(barButtonItems, animated: true)
 	}
