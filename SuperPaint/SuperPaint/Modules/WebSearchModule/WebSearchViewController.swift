@@ -75,6 +75,9 @@ private extension WebSearchViewController
 		self.searchController.searchBar.delegate = self
 		self.searchController.obscuresBackgroundDuringPresentation = false
 		self.definesPresentationContext = true
+
+		let searchBar = self.searchController.searchBar.value(forKey: "searchField") as? UITextField
+		searchBar?.textColor = UIConstants.searchBarTextColorWebScreen
 	}
 
 	// MARK: Настраиваем collection view
