@@ -45,6 +45,11 @@
 		720A392A23CBC78E0026EFC9 /* UIImage+cropImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85747C7623CB10930014EA4B /* UIImage+cropImage.swift */; };
 		8511E6ED23AA936A0032B588 /* ModuleFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8511E6EC23AA936A0032B588 /* ModuleFactory.swift */; };
 		85121CAC23C79B6000DD4020 /* FiltersStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85121CAB23C79B6000DD4020 /* FiltersStack.swift */; };
+		8546B83B23CC5FFB00F4B33C /* ImageEditorViewController+IImageEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8546B83A23CC5FFB00F4B33C /* ImageEditorViewController+IImageEditorViewController.swift */; };
+		8546B83D23CC60E600F4B33C /* ImageEditorViewController+UIScrollViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8546B83C23CC60E600F4B33C /* ImageEditorViewController+UIScrollViewDelegate.swift */; };
+		8546B83F23CC60F900F4B33C /* ImageEditorViewController+UICollectionViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8546B83E23CC60F900F4B33C /* ImageEditorViewController+UICollectionViewDataSource.swift */; };
+		8546B84123CC611100F4B33C /* ImageEditorViewController+UICollectionViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8546B84023CC611100F4B33C /* ImageEditorViewController+UICollectionViewDelegate.swift */; };
+		8546B84323CC613000F4B33C /* ImageEditorViewController+UICollectionViewDelegateFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8546B84223CC613000F4B33C /* ImageEditorViewController+UICollectionViewDelegateFlowLayout.swift */; };
 		85612AFB23ACE8140082DC95 /* ImageEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85612AFA23ACE8140082DC95 /* ImageEditorViewController.swift */; };
 		85612AFD23ACE8410082DC95 /* ImageEditorPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85612AFC23ACE8410082DC95 /* ImageEditorPresenter.swift */; };
 		85612AFF23ACE86E0082DC95 /* ImageEditorRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85612AFE23ACE86E0082DC95 /* ImageEditorRouter.swift */; };
@@ -103,6 +108,11 @@
 		720A392623CB57A50026EFC9 /* CollectionViewActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewActivityIndicator.swift; sourceTree = "<group>"; };
 		8511E6EC23AA936A0032B588 /* ModuleFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleFactory.swift; sourceTree = "<group>"; };
 		85121CAB23C79B6000DD4020 /* FiltersStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiltersStack.swift; sourceTree = "<group>"; };
+		8546B83A23CC5FFB00F4B33C /* ImageEditorViewController+IImageEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImageEditorViewController+IImageEditorViewController.swift"; sourceTree = "<group>"; };
+		8546B83C23CC60E600F4B33C /* ImageEditorViewController+UIScrollViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImageEditorViewController+UIScrollViewDelegate.swift"; sourceTree = "<group>"; };
+		8546B83E23CC60F900F4B33C /* ImageEditorViewController+UICollectionViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImageEditorViewController+UICollectionViewDataSource.swift"; sourceTree = "<group>"; };
+		8546B84023CC611100F4B33C /* ImageEditorViewController+UICollectionViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImageEditorViewController+UICollectionViewDelegate.swift"; sourceTree = "<group>"; };
+		8546B84223CC613000F4B33C /* ImageEditorViewController+UICollectionViewDelegateFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImageEditorViewController+UICollectionViewDelegateFlowLayout.swift"; sourceTree = "<group>"; };
 		85612AFA23ACE8140082DC95 /* ImageEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageEditorViewController.swift; sourceTree = "<group>"; };
 		85612AFC23ACE8410082DC95 /* ImageEditorPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageEditorPresenter.swift; sourceTree = "<group>"; };
 		85612AFE23ACE86E0082DC95 /* ImageEditorRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageEditorRouter.swift; sourceTree = "<group>"; };
@@ -154,15 +164,10 @@
 		720A389423A7F8E20026EFC9 /* SuperPaint */ = {
 			isa = PBXGroup;
 			children = (
-				720A390B23C63AFC0026EFC9 /* WebSearchModule */,
-				720A38FC23B21D460026EFC9 /* DatabaseManagers */,
-				720A38FB23B21C090026EFC9 /* CoreData */,
+				8546B84523CC648400F4B33C /* Modules */,
 				720A38BE23AD09340026EFC9 /* Utils */,
-				85612AF923ACE7E70082DC95 /* EditorModule */,
-				720A391C23CA28DD0026EFC9 /* UnsplashAPI */,
 				720A38B623AA99EA0026EFC9 /* NetworkRepository */,
 				720A38F323B14FCC0026EFC9 /* DatabaseRepository */,
-				720A38A723AA91C50026EFC9 /* ImagesCollectionModule */,
 				8511E6EB23AA93550032B588 /* Factory */,
 				720A389523A7F8E20026EFC9 /* AppDelegate.swift */,
 				720A389C23A7F8E60026EFC9 /* Assets.xcassets */,
@@ -197,6 +202,7 @@
 		720A38B623AA99EA0026EFC9 /* NetworkRepository */ = {
 			isa = PBXGroup;
 			children = (
+				720A391C23CA28DD0026EFC9 /* UnsplashAPI */,
 				720A392423CA2D1F0026EFC9 /* NetworkErrors.swift */,
 				720A38B723AA9A050026EFC9 /* NetworkRepository.swift */,
 				720A38B923AA9A170026EFC9 /* INetworkRepository.swift */,
@@ -232,6 +238,8 @@
 		720A38F323B14FCC0026EFC9 /* DatabaseRepository */ = {
 			isa = PBXGroup;
 			children = (
+				720A38FC23B21D460026EFC9 /* DatabaseManagers */,
+				720A38FB23B21C090026EFC9 /* CoreData */,
 				720A38F423B14FE00026EFC9 /* DatabaseRepository.swift */,
 				720A38F623B14FEE0026EFC9 /* IDatabaseRepository.swift */,
 			);
@@ -313,18 +321,41 @@
 			path = Factory;
 			sourceTree = "<group>";
 		};
-		85612AF923ACE7E70082DC95 /* EditorModule */ = {
+		8546B84423CC627300F4B33C /* ViewControllerExtensions */ = {
+			isa = PBXGroup;
+			children = (
+				8546B83A23CC5FFB00F4B33C /* ImageEditorViewController+IImageEditorViewController.swift */,
+				8546B83C23CC60E600F4B33C /* ImageEditorViewController+UIScrollViewDelegate.swift */,
+				8546B83E23CC60F900F4B33C /* ImageEditorViewController+UICollectionViewDataSource.swift */,
+				8546B84023CC611100F4B33C /* ImageEditorViewController+UICollectionViewDelegate.swift */,
+				8546B84223CC613000F4B33C /* ImageEditorViewController+UICollectionViewDelegateFlowLayout.swift */,
+			);
+			path = ViewControllerExtensions;
+			sourceTree = "<group>";
+		};
+		8546B84523CC648400F4B33C /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				720A390B23C63AFC0026EFC9 /* WebSearchModule */,
+				720A38A723AA91C50026EFC9 /* ImagesCollectionModule */,
+				85612AF923ACE7E70082DC95 /* ImageEditorModule */,
+			);
+			path = Modules;
+			sourceTree = "<group>";
+		};
+		85612AF923ACE7E70082DC95 /* ImageEditorModule */ = {
 			isa = PBXGroup;
 			children = (
 				859BCCEA23B0F94400553048 /* Views */,
 				859BCCE323AFF6C000553048 /* Model */,
 				859BCCCF23AE999B00553048 /* EditorControlsCreator */,
 				85612B0023ACE8950082DC95 /* Protocols */,
-				85612AFA23ACE8140082DC95 /* ImageEditorViewController.swift */,
+				8546B84423CC627300F4B33C /* ViewControllerExtensions */,
 				85612AFC23ACE8410082DC95 /* ImageEditorPresenter.swift */,
+				85612AFA23ACE8140082DC95 /* ImageEditorViewController.swift */,
 				85612AFE23ACE86E0082DC95 /* ImageEditorRouter.swift */,
 			);
-			path = EditorModule;
+			path = ImageEditorModule;
 			sourceTree = "<group>";
 		};
 		85612B0023ACE8950082DC95 /* Protocols */ = {
@@ -468,6 +499,7 @@
 				720A38BD23ACF27B0026EFC9 /* ImageCell.swift in Sources */,
 				720A38A923AA920A0026EFC9 /* ImagesCollectionViewController.swift in Sources */,
 				720A38B523AA92E10026EFC9 /* IImagesCollectionRouter.swift in Sources */,
+				8546B83D23CC60E600F4B33C /* ImageEditorViewController+UIScrollViewDelegate.swift in Sources */,
 				720A391E23CA29120026EFC9 /* UnsplashAPI.swift in Sources */,
 				720A38F723B14FEE0026EFC9 /* IDatabaseRepository.swift in Sources */,
 				720A38F223AF8C030026EFC9 /* Images.swift in Sources */,
@@ -475,6 +507,7 @@
 				859BCCE723B0F4DD00553048 /* UIImage+setFilter.swift in Sources */,
 				8577DDA423B24E0B00BE86E2 /* ImagesStack.swift in Sources */,
 				720A390F23C63B580026EFC9 /* WebSearchPresenter.swift in Sources */,
+				8546B84123CC611100F4B33C /* ImageEditorViewController+UICollectionViewDelegate.swift in Sources */,
 				85612AFB23ACE8140082DC95 /* ImageEditorViewController.swift in Sources */,
 				8511E6ED23AA936A0032B588 /* ModuleFactory.swift in Sources */,
 				85612B0623ACE8FC0082DC95 /* IImageEditorRouter.swift in Sources */,
@@ -489,6 +522,7 @@
 				720A391423C63C430026EFC9 /* IWebSearchViewController.swift in Sources */,
 				720A392323CA2A5E0026EFC9 /* UnsplashImage.swift in Sources */,
 				8577DDA223B22D3C00BE86E2 /* FiltersList.swift in Sources */,
+				8546B83F23CC60F900F4B33C /* ImageEditorViewController+UICollectionViewDataSource.swift in Sources */,
 				720A38F523B14FE00026EFC9 /* DatabaseRepository.swift in Sources */,
 				720A38AE23AA922D0026EFC9 /* ImagesCollectionRouter.swift in Sources */,
 				858F4AAD23C1EF6A002C0BAB /* InstrumentCell.swift in Sources */,
@@ -499,6 +533,7 @@
 				85121CAC23C79B6000DD4020 /* FiltersStack.swift in Sources */,
 				858F4A8B23C1D5CE002C0BAB /* FilterParameter.swift in Sources */,
 				720A38FE23B21E070026EFC9 /* CDImageModelManager.swift in Sources */,
+				8546B84323CC613000F4B33C /* ImageEditorViewController+UICollectionViewDelegateFlowLayout.swift in Sources */,
 				720A38B823AA9A050026EFC9 /* NetworkRepository.swift in Sources */,
 				720A390A23B3BF6A0026EFC9 /* UIImage+orientation.swift in Sources */,
 				859BCCE523B0F4D100553048 /* UIImage+resize.swift in Sources */,
@@ -508,6 +543,7 @@
 				859BCCDC23AF725B00553048 /* Filter.swift in Sources */,
 				720A391B23C76D3D0026EFC9 /* WebImageCell.swift in Sources */,
 				720A38C023AD093E0026EFC9 /* UIConstants.swift in Sources */,
+				8546B83B23CC5FFB00F4B33C /* ImageEditorViewController+IImageEditorViewController.swift in Sources */,
 				85F61CC123CA2DE500E2C8FF /* UIImageView+getImageRectangle.swift in Sources */,
 				858F4AAF23C2230A002C0BAB /* SliderView.swift in Sources */,
 			);

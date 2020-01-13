@@ -11,29 +11,29 @@ import UIKit
 final class ImageEditorViewController: UIViewController
 {
 // MARK: - Variables
-	private let presenter: IImageEditorPresenter
-	private let filtersCollection = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
-	private let instrumentsCollection = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
-	private let imageView = UIImageView()
+	let presenter: IImageEditorPresenter
+	let filtersCollection = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+	let instrumentsCollection = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+	let imageView = UIImageView()
+	let spinner = UIActivityIndicatorView()
 	private let filtersButton = UIButton()
 	private let instrumentsButton = UIButton()
 	private let topActionsStackView = UIStackView()
 	private let parametersStackView = UIStackView()
 	private let bottomActionsView = UIView()
 	private let verticalStack = UIStackView()
-	private let spinner = UIActivityIndicatorView()
 	private let scrollView = UIScrollView()
 
+	var undoButton: UIBarButtonItem?
 	private var saveButton: UIBarButtonItem?
-	private var undoButton: UIBarButtonItem?
 	private var cropButton: UIBarButtonItem?
 	private var backButton: UIBarButtonItem?
 	private var croppingView: CropView?
 
-	private var sliders: [String: [UIView]] = [:]
+	var sliders: [String: [UIView]] = [:]
 	private var safeArea = UILayoutGuide()
 	private var firstInstrumentToggle = true
-
+// MARK: - toggling panels
 	private var showFilters: Bool {
 		get {
 			return filtersCollection.isHidden == false
@@ -65,7 +65,7 @@ final class ImageEditorViewController: UIViewController
 		}
 	}
 // MARK: - cropMode
-	private var cropMode: Bool {
+	var cropMode: Bool {
 		didSet {
 			let normalMode = (cropMode == false)
 			let imageRect = imageView.getImageRect()
@@ -100,7 +100,7 @@ final class ImageEditorViewController: UIViewController
 			}
 		}
 	}
-
+// MARK: - init
 	init(presenter: IImageEditorPresenter) {
 		self.presenter = presenter
 		self.cropMode = false
@@ -117,112 +117,20 @@ final class ImageEditorViewController: UIViewController
 		setupInitialState()
 		presenter.triggerViewReadyEvent()
 	}
-}
-// MARK: - IImageEditorViewController
-extension ImageEditorViewController: IImageEditorViewController
-{
-	func stopSpinner() {
-		spinner.stopAnimating()
-	}
 
-	func startSpinner() {
-		spinner.startAnimating()
-	}
-
-	func refreshButtonsState(imagesStackIsEmpty: Bool) {
-		undoButton?.isEnabled = imagesStackIsEmpty ? false : true
-	}
-
-	func setImage(image: UIImage) {
-		imageView.image = image
-	}
-
-	var navController: UINavigationController? {
-		return self.navigationController
-	}
-
-	//Обновить значения слайдеров текущими значениями
-	func refreshSlidersValues() {
-		presenter.instrumentsList.forEach { instrument in
-			for (index, parameter) in instrument.parameters.enumerated() {
-				if let sliderViewArray = sliders[instrument.name],
-					let sliderView = sliderViewArray[index] as? SliderView {
-					sliderView.setSliderValue(value: parameter.currentValue.floatValue)
-				}
+// MARK: - showSliders
+	//Отображаем вью с параметрами для текущего инструмента
+	//Если на вход ничего не пришло скрываем все
+	func showSliders(instrumentIndex: Int? = nil) {
+		if let index = instrumentIndex {
+			for (key, _) in sliders {
+				sliders[key]?.forEach{ slider in slider.isHidden = (key != presenter.instrumentsList[index].name) }
 			}
 		}
-	}
-
-	func reloadFilterPreviews() {
-		filtersCollection.reloadData()
-	}
-}
-// MARK: - UIScrollViewDelegate
-extension ImageEditorViewController: UIScrollViewDelegate
-{
-	func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-		guard cropMode == false else { return nil }
-		return imageView
-	}
-}
-
-// MARK: - UICollectionViewDataSource
-extension ImageEditorViewController: UICollectionViewDataSource
-{
-	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-		if collectionView == filtersCollection {
-			return presenter.numberOfPreviews
-		}
 		else {
-// TODO: - количество инструментов из презентера QIS-16
-			return presenter.numberOfInstruments
-		}
-	}
-
-	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-		if collectionView == filtersCollection {
-			let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FilterCell.cellReuseIdentifier,
-														  for: indexPath) as? FilterCell ?? FilterCell(frame: .zero)
-			cell.imageView.image = presenter.filteredPreviews[indexPath.row]
-			cell.label.text = presenter.filtersList[indexPath.row].name
-			return cell
-		}
-		else {
-//TODO: - добавить новый класс для кастомной ячейки для инструментов, и использовать его тут QIS-22
-			let cell = collectionView.dequeueReusableCell(withReuseIdentifier: InstrumentCell.cellReuseIdentifier,
-														  for: indexPath) as? InstrumentCell ?? InstrumentCell(frame: .zero)
-			cell.label.text = presenter.instrumentsList[indexPath.row].name
-			return cell
-		}
-	}
-}
-// MARK: - UICollectionViewDelegate
-extension ImageEditorViewController: UICollectionViewDelegate
-{
-// TODO: - обработка кликов по фильтрам и вызов применения фильтров из презентера QIS-21
-	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-		collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
-		if collectionView == filtersCollection {
-			presenter.applyFilter(filterIndex: indexPath.row)
-		}
-		else {
-			showSliders(instrumentIndex: indexPath.row)
-		}
-	}
-}
-// MARK: - UICollectionViewDelegateFlowLayout
-extension ImageEditorViewController: UICollectionViewDelegateFlowLayout
-{
-	func collectionView(_ collectionView: UICollectionView,
-						layout collectionViewLayout: UICollectionViewLayout,
-						sizeForItemAt indexPath: IndexPath) -> CGSize {
-		if collectionView == filtersCollection {
-			return CGSize(width: UIConstants.collectionViewCellWidth * 0.7,
-						  height: UIConstants.filterCollectionViewCellHeight * 0.7)
-		}
-		else {
-			return CGSize(width: UIConstants.collectionViewCellWidth,
-						  height: UIConstants.instrumentCollectionViewCellHeight * 0.9)
+			for (key, _) in sliders {
+				sliders[key]?.forEach{ slider in slider.isHidden = true }
+			}
 		}
 	}
 }
@@ -287,7 +195,7 @@ private extension ImageEditorViewController
 		instrumentsCollection.dataSource = self
 		instrumentsCollection.delegate = self
 	}
-
+// MARK: - setupNavigationBarItems
 	func setupNavigationBarItems() {
 		self.navigationItem.hidesBackButton = true
 		backButton = UIBarButtonItem(title: "❮ Back",
@@ -324,21 +232,7 @@ private extension ImageEditorViewController
 		refreshSlidersValues()
 		showSliders()
 	}
-// MARK: - showSliders
-//Отображаем вью с параметрами для текущего инструмента
-//Если на вход ничего не пришло скрываем все
-	func showSliders(instrumentIndex: Int? = nil) {
-		if let index = instrumentIndex {
-			for (key, _) in sliders {
-				sliders[key]?.forEach{ slider in slider.isHidden = (key != presenter.instrumentsList[index].name) }
-			}
-		}
-		else {
-			for (key, _) in sliders {
-				sliders[key]?.forEach{ slider in slider.isHidden = true }
-			}
-		}
-	}
+
 // MARK: - defaultZoom
 //По двойному тапу на картинке увеличиваем ее в 2 раза
 //По следующему двойному тапу возвращаем исходный масштаб
@@ -371,7 +265,7 @@ private extension ImageEditorViewController
 			presenter.moveBack()
 		}
 	}
-
+// MARK: - bar button actions
 	@objc func toggleFiltersCollection(_ sender: UIButton) {
 		showFilters = (showFilters == false)
 	}
