@@ -68,6 +68,7 @@ final class ImageEditorViewController: UIViewController
 // MARK: - cropMode
 	var cropMode: Bool {
 		didSet {
+			let imageRect = imageView.getImageRect(insideRect: scrollViewDefaultBounds)
 			let normalMode = (cropMode == false)
 			filtersButton.isEnabled = normalMode
 			instrumentsButton.isEnabled = normalMode
@@ -79,7 +80,6 @@ final class ImageEditorViewController: UIViewController
 				instrumentsCollection.isHidden = true
 				filtersCollection.isHidden = true
 				showSliders()
-				let imageRect = imageView.getImageRect(insideRect: scrollViewDefaultBounds)
 				croppingView = CropView(frame: imageRect)
 				if let cropView = croppingView {
 					scrollView.addSubview(cropView)
@@ -88,7 +88,6 @@ final class ImageEditorViewController: UIViewController
 			// при возврате из кроп мода кропаем картинку
 			else {
 				if let cropView = croppingView {
-					let imageRect = imageView.getImageRect(insideRect: scrollViewDefaultBounds)
 					guard let image = imageView.image else { return }
 					var cropRect = cropView.frame
 					let imageWidth = image.size.width
