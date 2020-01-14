@@ -20,7 +20,6 @@ final class ImagesCollectionViewController: UIViewController
 		return collectionView
 	}()
 	private var safeArea = UILayoutGuide()
-	private var imagePickerEnable = true
 
 	init(presenter: IImagesCollectionPresenter) {
 		self.imagesCollectionPresenter = presenter
@@ -43,7 +42,6 @@ final class ImagesCollectionViewController: UIViewController
 
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		self.imagePickerEnable = true
 		self.loadImages()
 	}
 
