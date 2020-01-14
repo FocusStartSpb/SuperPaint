@@ -54,11 +54,7 @@ final class WebSearchViewController: UIViewController
 		self.setupImagePlaceholderStack()
 		self.setupNotFoundStack()
 		self.setupActivityIndicator()
-	}
-
-	override func viewDidAppear(_ animated: Bool) {
-		super.viewDidAppear(animated)
-		self.searchController.isActive = true
+		self.navigationItem.hidesSearchBarWhenScrolling = false
 	}
 }
 
@@ -71,7 +67,6 @@ private extension WebSearchViewController
 
 	// MARK: Настраиваем search controller
 	func setupSearchController() {
-		self.searchController.delegate = self
 		self.searchController.searchBar.delegate = self
 		self.searchController.obscuresBackgroundDuringPresentation = false
 		self.definesPresentationContext = true
@@ -194,16 +189,6 @@ private extension WebSearchViewController
 			self.activityIndicator.centerXAnchor.constraint(equalTo: self.activityIndicatorContainer.centerXAnchor),
 			self.activityIndicator.centerYAnchor.constraint(equalTo: self.activityIndicatorContainer.centerYAnchor),
 		])
-	}
-}
-
-// MARK: - UISearchControllerDelegate
-extension WebSearchViewController: UISearchControllerDelegate
-{
-	func didPresentSearchController(_ searchController: UISearchController) {
-		DispatchQueue.main.async {
-			self.searchController.searchBar.becomeFirstResponder()
-		}
 	}
 }
 

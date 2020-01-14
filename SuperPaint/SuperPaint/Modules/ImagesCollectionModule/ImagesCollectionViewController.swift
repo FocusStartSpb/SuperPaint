@@ -20,6 +20,7 @@ final class ImagesCollectionViewController: UIViewController
 		return collectionView
 	}()
 	private var safeArea = UILayoutGuide()
+	private var imagePickerCounter = 1
 
 	init(presenter: IImagesCollectionPresenter) {
 		self.imagesCollectionPresenter = presenter
@@ -42,6 +43,7 @@ final class ImagesCollectionViewController: UIViewController
 
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
+		self.imagePickerCounter = 1
 		self.loadImages()
 	}
 
@@ -270,6 +272,7 @@ extension ImagesCollectionViewController: UIImagePickerControllerDelegate, UINav
 	func chooseImagePicker(source: UIImagePickerController.SourceType) {
 		if UIImagePickerController.isSourceTypeAvailable(source) {
 			let imagePicker = UIImagePickerController()
+//			imagePicker.allowsEditing = true
 			imagePicker.delegate = self
 			imagePicker.sourceType = source
 			present(imagePicker, animated: true)
@@ -278,16 +281,19 @@ extension ImagesCollectionViewController: UIImagePickerControllerDelegate, UINav
 
 	func imagePickerController(_ picker: UIImagePickerController,
 							   didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
-		guard let image = (info[.originalImage] as? UIImage)?.verticalOrientationImage(),
-			let imageData = image.pngData() else {
-			dismiss(animated: true, completion: nil)
-			return
-		}
+		dismiss(animated: true) { [weak self] in
+			guard let image = (info[.originalImage] as? UIImage)?.verticalOrientationImage(),
+				let imageData = image.pngData(), let self = self else {
+				return
+			}
 
-		let id = UUID().uuidString
-		let data = imageData as NSData
-		self.imagesCollectionPresenter.onCellPressed(id: id, data: data, isNewImage: true)
-		dismiss(animated: true, completion: nil)
+			if self.imagePickerCounter > 0 {
+				let id = UUID().uuidString
+				let data = imageData as NSData
+				self.imagesCollectionPresenter.onCellPressed(id: id, data: data, isNewImage: true)
+				self.imagePickerCounter -= 1
+			}
+		}
 	}
 }
 
