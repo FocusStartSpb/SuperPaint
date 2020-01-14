@@ -20,7 +20,7 @@ final class ImagesCollectionViewController: UIViewController
 		return collectionView
 	}()
 	private var safeArea = UILayoutGuide()
-	private var imagePickerCounter = 1
+	private var imagePickerEnable = true
 
 	init(presenter: IImagesCollectionPresenter) {
 		self.imagesCollectionPresenter = presenter
@@ -43,7 +43,7 @@ final class ImagesCollectionViewController: UIViewController
 
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		self.imagePickerCounter = 1
+		self.imagePickerEnable = true
 		self.loadImages()
 	}
 
@@ -287,11 +287,11 @@ extension ImagesCollectionViewController: UIImagePickerControllerDelegate, UINav
 				return
 			}
 
-			if self.imagePickerCounter > 0 {
+			if self.imagePickerEnable {
 				let id = UUID().uuidString
 				let data = imageData as NSData
 				self.imagesCollectionPresenter.onCellPressed(id: id, data: data, isNewImage: true)
-				self.imagePickerCounter -= 1
+				self.imagePickerEnable = false
 			}
 		}
 	}
