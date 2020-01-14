@@ -10,6 +10,6 @@ import UIKit
 
 protocol IImagesCollectionRouter: AnyObject
 {
-	func pushEditorModule(id: String, data: NSData, isNewImage: Bool)
+	func pushEditorModule(id: String, image: UIImage, isNewImage: Bool)
 	func pushWebSearchModule()
 }

@@ -187,8 +187,9 @@ extension ImagesCollectionViewController: UICollectionViewDelegate
 		else if indexPath.row != 0 && self.isEditing == false {
 			self.collectionView.deselectItem(at: indexPath, animated: false)
 			let imageModel = self.imagesCollectionPresenter.getImageModelAt(index: indexPath.row - 1)
-			guard let id = imageModel.id, let imageData = imageModel.imageData else { return }
-			self.imagesCollectionPresenter.onCellPressed(id: id, data: imageData, isNewImage: false)
+			guard let id = imageModel.id, let imageData = imageModel.imageData,
+				let image = UIImage(data: imageData as Data) else { return }
+			self.imagesCollectionPresenter.onCellPressed(id: id, image: image, isNewImage: false)
 		}
 		else if indexPath.row != 0 && self.isEditing {
 			self.navigationItem.rightBarButtonItem?.isEnabled = true
@@ -280,18 +281,12 @@ extension ImagesCollectionViewController: UIImagePickerControllerDelegate, UINav
 
 	func imagePickerController(_ picker: UIImagePickerController,
 							   didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
-		dismiss(animated: true) { [weak self] in
-			guard let image = (info[.originalImage] as? UIImage)?.verticalOrientationImage(),
-				let imageData = image.pngData(), let self = self else {
-				return
-			}
+		picker.delegate = nil
+		picker.dismiss(animated: true) { [weak self] in
+			guard let image = (info[.originalImage] as? UIImage)?.verticalOrientationImage() else { return }
 
-			if self.imagePickerEnable {
-				let id = UUID().uuidString
-				let data = imageData as NSData
-				self.imagesCollectionPresenter.onCellPressed(id: id, data: data, isNewImage: true)
-				self.imagePickerEnable = false
-			}
+			let id = UUID().uuidString
+			self?.imagesCollectionPresenter.onCellPressed(id: id, image: image, isNewImage: true)
 		}
 	}
 }

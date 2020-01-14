@@ -16,6 +16,6 @@ protocol IImagesCollectionPresenter: AnyObject
 	func getImages() -> [ImageModel]
 	func getNumberOfImages() -> Int
 	func getImageModelAt(index: Int) -> ImageModel
-	func onCellPressed(id: String, data: NSData, isNewImage: Bool)
+	func onCellPressed(id: String, image: UIImage, isNewImage: Bool)
 	func pushWebSearchModule()
 }
