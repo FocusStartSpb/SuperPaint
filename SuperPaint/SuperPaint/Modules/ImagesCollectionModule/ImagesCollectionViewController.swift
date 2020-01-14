@@ -146,6 +146,7 @@ private extension ImagesCollectionViewController
 		actionSheet.addAction(libraryAction)
 		actionSheet.addAction(webAction)
 		actionSheet.addAction(cancelAction)
+		actionSheet.removeBrokenConstraint()
 		present(actionSheet, animated: true)
 	}
 
