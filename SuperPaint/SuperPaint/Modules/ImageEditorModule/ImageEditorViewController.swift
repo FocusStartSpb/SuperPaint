@@ -213,11 +213,13 @@ private extension ImageEditorViewController
 		self.navigationItem.leftBarButtonItem = backButton
 		saveButton = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(savePressed))
 		undoButton = UIBarButtonItem(barButtonSystemItem: .reply, target: self, action: #selector(undoPressed))
+		undoButton?.isEnabled = false
 		cropButton = UIBarButtonItem(image: UIImage(named: "crop"),
 									 landscapeImagePhone: UIImage(named: "crop"),
 									 style: .plain,
 									 target: self,
 									 action: #selector(toggleCropMode))
+		cropButton?.tintColor = UIConstants.systemButtonColor
 		let barButtonItems = [saveButton, undoButton, cropButton].compactMap{ $0 }
 		self.navigationItem.setRightBarButtonItems(barButtonItems, animated: true)
 	}
