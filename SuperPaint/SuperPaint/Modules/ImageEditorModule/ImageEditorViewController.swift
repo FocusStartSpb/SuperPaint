@@ -33,6 +33,7 @@ final class ImageEditorViewController: UIViewController
 	var sliders: [String: [UIView]] = [:]
 	private var safeArea = UILayoutGuide()
 	private var firstInstrumentToggle = true
+	private var scrollViewDefaultBounds: CGRect = .zero
 // MARK: - toggling panels
 	private var showFilters: Bool {
 		get {
@@ -67,8 +68,8 @@ final class ImageEditorViewController: UIViewController
 // MARK: - cropMode
 	var cropMode: Bool {
 		didSet {
+			let imageRect = imageView.getImageRect(insideRect: scrollViewDefaultBounds)
 			let normalMode = (cropMode == false)
-			let imageRect = imageView.getImageRect()
 			filtersButton.isEnabled = normalMode
 			instrumentsButton.isEnabled = normalMode
 			saveButton?.isEnabled = normalMode
@@ -76,6 +77,9 @@ final class ImageEditorViewController: UIViewController
 			backButton?.isEnabled = normalMode
 			//Переходим в режим кропа
 			if cropMode {
+				instrumentsCollection.isHidden = true
+				filtersCollection.isHidden = true
+				showSliders()
 				croppingView = CropView(frame: imageRect)
 				if let cropView = croppingView {
 					scrollView.addSubview(cropView)
@@ -118,6 +122,10 @@ final class ImageEditorViewController: UIViewController
 		presenter.triggerViewReadyEvent()
 	}
 
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
+		scrollViewDefaultBounds = scrollView.bounds
+	}
 // MARK: - showSliders
 	//Отображаем вью с параметрами для текущего инструмента
 	//Если на вход ничего не пришло скрываем все
@@ -205,11 +213,13 @@ private extension ImageEditorViewController
 		self.navigationItem.leftBarButtonItem = backButton
 		saveButton = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(savePressed))
 		undoButton = UIBarButtonItem(barButtonSystemItem: .reply, target: self, action: #selector(undoPressed))
+		undoButton?.isEnabled = false
 		cropButton = UIBarButtonItem(image: UIImage(named: "crop"),
 									 landscapeImagePhone: UIImage(named: "crop"),
 									 style: .plain,
 									 target: self,
 									 action: #selector(toggleCropMode))
+		cropButton?.tintColor = UIConstants.systemButtonColor
 		let barButtonItems = [saveButton, undoButton, cropButton].compactMap{ $0 }
 		self.navigationItem.setRightBarButtonItems(barButtonItems, animated: true)
 	}
