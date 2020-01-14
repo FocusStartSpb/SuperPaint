@@ -24,8 +24,7 @@ final class ImagesCollectionRouter
 
 extension ImagesCollectionRouter: IImagesCollectionRouter
 {
-	func pushEditorModule(id: String, data: NSData, isNewImage: Bool) {
-		guard let image = UIImage(data: data as Data) else { return }
+	func pushEditorModule(id: String, image: UIImage, isNewImage: Bool) {
 		let vc = self.factory.createImageEditorModule(id: id, image: image, isNewImage: isNewImage)
 		self.imagesCollectionView?.navController?.pushViewController(vc, animated: true)
 	}
