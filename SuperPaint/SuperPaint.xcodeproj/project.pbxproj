@@ -67,6 +67,7 @@
 		859BCCDC23AF725B00553048 /* Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859BCCDB23AF725B00553048 /* Filter.swift */; };
 		859BCCE523B0F4D100553048 /* UIImage+resize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859BCCE423B0F4D100553048 /* UIImage+resize.swift */; };
 		859BCCE723B0F4DD00553048 /* UIImage+setFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859BCCE623B0F4DD00553048 /* UIImage+setFilter.swift */; };
+		85E6154923CE658A00CD618B /* ImagesState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85E6154823CE658A00CD618B /* ImagesState.swift */; };
 		85F61CC123CA2DE500E2C8FF /* UIImageView+getImageRectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85F61CC023CA2DE500E2C8FF /* UIImageView+getImageRectangle.swift */; };
 /* End PBXBuildFile section */
 
@@ -133,6 +134,7 @@
 		859BCCDB23AF725B00553048 /* Filter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Filter.swift; sourceTree = "<group>"; };
 		859BCCE423B0F4D100553048 /* UIImage+resize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+resize.swift"; sourceTree = "<group>"; };
 		859BCCE623B0F4DD00553048 /* UIImage+setFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+setFilter.swift"; sourceTree = "<group>"; };
+		85E6154823CE658A00CD618B /* ImagesState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesState.swift; sourceTree = "<group>"; };
 		85F61CC023CA2DE500E2C8FF /* UIImageView+getImageRectangle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+getImageRectangle.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -385,6 +387,7 @@
 				8577DDA123B22D3C00BE86E2 /* FiltersList.swift */,
 				859BCCDB23AF725B00553048 /* Filter.swift */,
 				858F4A8A23C1D5CE002C0BAB /* FilterParameter.swift */,
+				85E6154823CE658A00CD618B /* ImagesState.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -514,6 +517,7 @@
 				85612AFB23ACE8140082DC95 /* ImageEditorViewController.swift in Sources */,
 				8511E6ED23AA936A0032B588 /* ModuleFactory.swift in Sources */,
 				85612B0623ACE8FC0082DC95 /* IImageEditorRouter.swift in Sources */,
+				85E6154923CE658A00CD618B /* ImagesState.swift in Sources */,
 				720A391623C63CA90026EFC9 /* IWebSearchPresenter.swift in Sources */,
 				720A391123C63B690026EFC9 /* WebSearchRouter.swift in Sources */,
 				720A389623A7F8E20026EFC9 /* AppDelegate.swift in Sources */,

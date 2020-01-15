@@ -20,6 +20,7 @@ extension ImageEditorViewController: IImageEditorViewController
 
 	func refreshButtonsState(imagesStackIsEmpty: Bool) {
 		undoButton?.isEnabled = imagesStackIsEmpty ? false : true
+		saveButton?.isEnabled = imagesStackIsEmpty ? false : true
 	}
 
 	func setImage(image: UIImage) {

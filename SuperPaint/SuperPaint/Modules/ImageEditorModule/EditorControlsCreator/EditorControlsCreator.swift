@@ -41,9 +41,7 @@ enum EditorControlsCreator
 	}
 // MARK: - Настройка imageView
 	static func setupImageView(imageView: UIImageView,
-							   image: UIImage,
 							   parentView: UIView) {
-		imageView.image = image
 		imageView.contentMode = .scaleAspectFit
 		imageView.translatesAutoresizingMaskIntoConstraints = false
 		parentView.addSubview(imageView)

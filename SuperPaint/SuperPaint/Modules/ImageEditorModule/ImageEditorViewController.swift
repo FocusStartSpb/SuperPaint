@@ -25,7 +25,7 @@ final class ImageEditorViewController: UIViewController
 	private let scrollView = UIScrollView()
 
 	var undoButton: UIBarButtonItem?
-	private var saveButton: UIBarButtonItem?
+	var saveButton: UIBarButtonItem?
 	private var cropButton: UIBarButtonItem?
 	private var backButton: UIBarButtonItem?
 	private var croppingView: CropView?
@@ -171,7 +171,6 @@ private extension ImageEditorViewController
 											  safeArea: safeArea)
 
 		EditorControlsCreator.setupImageView(imageView: imageView,
-											 image: presenter.currentImage,
 											 parentView: scrollView)
 
 		EditorControlsCreator.setupCollectionViews(parentView: topActionsStackView,
@@ -213,12 +212,13 @@ private extension ImageEditorViewController
 		self.navigationItem.leftBarButtonItem = backButton
 		saveButton = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(savePressed))
 		undoButton = UIBarButtonItem(barButtonSystemItem: .reply, target: self, action: #selector(undoPressed))
-		undoButton?.isEnabled = false
 		cropButton = UIBarButtonItem(image: UIImage(named: "crop"),
 									 landscapeImagePhone: UIImage(named: "crop"),
 									 style: .plain,
 									 target: self,
 									 action: #selector(toggleCropMode))
+		saveButton?.isEnabled = false
+		undoButton?.isEnabled = false
 		cropButton?.tintColor = UIConstants.systemButtonColor
 		let barButtonItems = [saveButton, undoButton, cropButton].compactMap{ $0 }
 		self.navigationItem.setRightBarButtonItems(barButtonItems, animated: true)
