@@ -10,7 +10,7 @@ import UIKit
 
 enum EditorControlsCreator
 {
-	static func setupActionsView(actionsView: UIView, parentView: UIView) {
+	static func setupButtonsView(actionsView: UIView, parentView: UIView) {
 		actionsView.translatesAutoresizingMaskIntoConstraints = false
 		parentView.addSubview(actionsView)
 	}
@@ -56,14 +56,12 @@ enum EditorControlsCreator
 	}
 // MARK: - Настройка stackView
 	static func setupStackView(verticalStack: UIStackView,
-							   topActionsView: UIView,
 							   bottomActionsView: UIView,
 							   parentView: UIView,
 							   safeArea: UILayoutGuide) {
-		verticalStack.addArrangedSubview(topActionsView)
-		verticalStack.addArrangedSubview(bottomActionsView)
 		setDefaultStackProperties(stackView: verticalStack)
 		parentView.addSubview(verticalStack)
+		verticalStack.addArrangedSubview(bottomActionsView)
 		NSLayoutConstraint.activate([
 			verticalStack.leadingAnchor.constraint(equalTo: parentView.leadingAnchor),
 			verticalStack.trailingAnchor.constraint(equalTo: parentView.trailingAnchor),
@@ -71,23 +69,18 @@ enum EditorControlsCreator
 			bottomActionsView.heightAnchor.constraint(equalToConstant: UIConstants.instrumentCollectionViewCellHeight),
 		])
 	}
-
 // MARK: - Настройка collectionView
-	static func setupCollectionViews(parentView: UIStackView,
+	static func setupCollectionViews(verticalStack: UIStackView,
 									 filtersCollection: UICollectionView,
-									 instrumentsCollection: UICollectionView,
-									 parametersStackView: UIStackView) {
+									 instrumentsCollection: UICollectionView) {
 		setCollectionViewProperties(filtersCollection,
-									parentView: parentView,
+									parentView: verticalStack,
 									heightConstraint: UIConstants.filterCollectionViewCellHeight)
 		setCollectionViewProperties(instrumentsCollection,
-									parentView: parentView,
+									parentView: verticalStack,
 									heightConstraint: UIConstants.instrumentCollectionViewCellHeight)
-		setDefaultStackProperties(stackView: parametersStackView)
-		parentView.addArrangedSubview(parametersStackView)
-		parentView.addArrangedSubview(filtersCollection)
-		parentView.addArrangedSubview(instrumentsCollection)
-		setDefaultStackProperties(stackView: parentView)
+		verticalStack.insertArrangedSubview(filtersCollection, at: 0)
+		verticalStack.insertArrangedSubview(instrumentsCollection, at: 0)
 	}
 
 	static func setCollectionViewProperties(_ collectionView: UICollectionView,
@@ -125,13 +118,13 @@ enum EditorControlsCreator
 		parentView.addSubview(scrollView)
 		NSLayoutConstraint.activate([
 			scrollView.topAnchor.constraint(equalTo: safeArea.topAnchor),
-			scrollView.leadingAnchor.constraint(equalTo: parentView.leadingAnchor),
-			scrollView.trailingAnchor.constraint(equalTo: parentView.trailingAnchor),
+			scrollView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
+			scrollView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor),
 			scrollView.bottomAnchor.constraint(equalTo: verticalStack.topAnchor, constant: -10),
 		])
 	}
 // MARK: - Настройка слайдеров для инструментов
-	static func createSlider(parentView: UIStackView,
+	static func createSlider(verticalStack: UIStackView,
 							 presenter: IImageEditorPresenter,
 							 instrument: Filter,
 							 parameter: FilterParameter,
@@ -140,7 +133,7 @@ enum EditorControlsCreator
 							  instrument: instrument,
 							  parameter: parameter,
 							  instrumentIndex: instrumentIndex)
-		parentView.addArrangedSubview(view)
+		verticalStack.insertArrangedSubview(view, at: 0)
 		view.heightAnchor.constraint(equalToConstant: UIConstants.instrumentCollectionViewCellHeight * 2).isActive = true
 		return view
 	}
