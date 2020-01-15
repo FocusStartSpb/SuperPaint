@@ -61,11 +61,6 @@ extension ImageEditorPresenter: IImageEditorPresenter
 			view?.refreshSlidersValues()
 		}
 	}
-	final class Xclass
-	{
-		let name = "image"
-		var image = UIImage()
-	}
 // MARK: - Фильтр
 	func applyFilter(filterIndex: Int) {
 		let isFilter = true
