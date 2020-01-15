@@ -41,9 +41,7 @@ enum EditorControlsCreator
 	}
 // MARK: - Настройка imageView
 	static func setupImageView(imageView: UIImageView,
-							   image: UIImage,
 							   parentView: UIView) {
-		imageView.image = image
 		imageView.contentMode = .scaleAspectFit
 		imageView.translatesAutoresizingMaskIntoConstraints = false
 		parentView.addSubview(imageView)
@@ -127,8 +125,8 @@ enum EditorControlsCreator
 		parentView.addSubview(scrollView)
 		NSLayoutConstraint.activate([
 			scrollView.topAnchor.constraint(equalTo: safeArea.topAnchor),
-			scrollView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
-			scrollView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor),
+			scrollView.leadingAnchor.constraint(equalTo: parentView.leadingAnchor),
+			scrollView.trailingAnchor.constraint(equalTo: parentView.trailingAnchor),
 			scrollView.bottomAnchor.constraint(equalTo: verticalStack.topAnchor, constant: -10),
 		])
 	}

@@ -92,7 +92,7 @@ enum FiltersList: CaseIterable
 			return Filter(with: "Gaussian Blur", code: "CIGaussianBlur", parameters: [
 				FilterParameter(name: "Radius",
 								code: "inputRadius",
-								defaultValue: 10.0,
+								defaultValue: 0,
 								minValue: 0,
 								maxValue: 20),
 			])
@@ -103,7 +103,7 @@ enum FiltersList: CaseIterable
 			])
 		case .motionBlur:
 			return Filter(with: "Motion Blur", code: "CIMotionBlur", parameters: [
-				FilterParameter(name: "Radius", code: "inputRadius", defaultValue: 20, minValue: 0, maxValue: 100),
+				FilterParameter(name: "Radius", code: "inputRadius", defaultValue: 0, minValue: 0, maxValue: 20),
 				FilterParameter(name: "Angle", code: "inputAngle", defaultValue: 0, minValue: 0, maxValue: 100),
 			])
 		case .gammaAdjust:
@@ -120,7 +120,7 @@ enum FiltersList: CaseIterable
 								code: "inputAngle",
 								defaultValue: 0,
 								minValue: 0,
-								maxValue: 100),
+								maxValue: 2),
 			])
 		case .colorPosterize:
 			return Filter(with: "Posterize", code: "CIColorPosterize", parameters: [

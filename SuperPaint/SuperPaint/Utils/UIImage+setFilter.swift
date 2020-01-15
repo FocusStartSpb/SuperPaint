@@ -10,20 +10,30 @@ import UIKit
 
 extension UIImage
 {
-	func setFilter(_ filter: Filter?,
-				   completion: @escaping (UIImage) -> Void) {
-		guard let filter = filter else { return }
-		let context = CIContext(options: nil)
-		let ciFilter = CIFilter(name: filter.code)
-		let ciImage = CIImage(image: self)
-		ciFilter?.setValue(ciImage, forKey: kCIInputImageKey)
-		filter.parameters.forEach{ parameter in
-			ciFilter?.setValue(parameter.currentValue, forKey: parameter.code)
+	func setFiltersList(filtersList: [Filter]?,
+						isFilter: Bool,
+						 completion: @escaping (CIImage, CGRect) -> Void) {
+		guard let filtersList = filtersList else { return }
+		var ciImage = CIImage(image: self)
+		guard let ciRect = ciImage?.extent else { return }
+		var filters: [CIFilter?] = []
+		filtersList.forEach { filter in
+			var parameters: [String: Any] = [:]
+			filter.parameters.forEach { parameter in
+				if parameter.currentValue != parameter.defaultValue {
+					parameters[parameter.code] = parameter.currentValue
+				}
+			}
+			if parameters.isEmpty == false || isFilter {
+				filters.append(CIFilter(name: filter.code, parameters: parameters))
+			}
 		}
-		guard let ciOutputImage = ciFilter?.outputImage else { return }
-		guard let rect = ciImage?.extent else { return }
-
-		guard let cgImage = context.createCGImage(ciOutputImage, from: rect)  else { return }
-		completion(UIImage(cgImage: cgImage))
+		//применим фильтры
+		filters.compactMap{ $0 }.forEach { filter in
+			filter.setValue(ciImage, forKey: kCIInputImageKey)
+			ciImage = filter.outputImage
+		}
+		guard let outputImage = ciImage else { return }
+		completion(outputImage, ciRect)
 	}
 }

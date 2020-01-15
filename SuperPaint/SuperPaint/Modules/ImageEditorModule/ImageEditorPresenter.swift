@@ -18,23 +18,27 @@ final class ImageEditorPresenter
 	private let router: IImageEditorRouter
 	private let repository: IDatabaseRepository
 	private weak var view: IImageEditorViewController?
+	private let imagesState = ImagesState()
 	private let id: String
 	private let isNewImage: Bool
-	private var sourceImage: UIImage
-	private var editingImage: UIImage
 	private var previousAppliedFilterIndex: Int?
 	private var previousAppliedInstrumentIndex: Int?
 	private var currentApplyingFilterIndex: Int?
+	private let context = CIContext(options: nil)
+	private var lastApplyingFilter: Filter?
 
 	init(router: IImageEditorRouter, repository: IDatabaseRepository, id: String, image: UIImage, isNewImage: Bool) {
 		self.router = router
 		self.repository = repository
 		self.id = id
-		self.sourceImage = image
-		self.editingImage = image
+		self.imagesState.sourceImage = image
 		filtersList = FiltersList.allCases.filter{ $0.getFilter().parameters.isEmpty }.map{ $0.getFilter() }
 		instrumentsList = FiltersList.allCases.filter{ $0.getFilter().parameters.isEmpty == false }.map{ $0.getFilter() }
 		self.isNewImage = isNewImage
+		guard let resizedImage = image.resizeImage(to: 1000) else { return }
+		self.imagesState.editingImage = resizedImage
+		self.imagesState.instrumentSourceImage = resizedImage
+		self.imagesState.filterSourceImage = resizedImage
 	}
 }
 // MARK: - IImageEditorPresenter
@@ -42,7 +46,7 @@ extension ImageEditorPresenter: IImageEditorPresenter
 {
 	func undoAction() {
 		if let lastImage = imageStack.pop() {
-			self.editingImage = lastImage
+			self.imagesState.editingImage = lastImage
 			view?.setImage(image: lastImage)
 		}
 		view?.refreshButtonsState(imagesStackIsEmpty: imageStack.isEmpty)
@@ -59,27 +63,33 @@ extension ImageEditorPresenter: IImageEditorPresenter
 	}
 // MARK: - Фильтр
 	func applyFilter(filterIndex: Int) {
+		let isFilter = true
 		currentApplyingFilterIndex = filterIndex
 		//Если фильтр уже применен не применяем снова
 		var currentFilterAlreadyApplied = false
 		if let previousIndex = previousAppliedFilterIndex, previousIndex == filterIndex {
 			currentFilterAlreadyApplied = true
 		}
+		let filter = filtersList[filterIndex]
 		if currentFilterAlreadyApplied == false {
-			view?.startSpinner()
-			imageStack.clear()
-			imageStack.push(sourceImage)
-			view?.refreshButtonsState(imagesStackIsEmpty: imageStack.isEmpty)
+			filterApplyingPreparing(isFilter: isFilter)
 			let filterQueue = DispatchQueue(label: "FilterQueue", qos: .userInteractive, attributes: .concurrent)
 			filterQueue.async { [weak self] in
-				self?.sourceImage.setFilter(self?.filtersList[filterIndex]) { filteredImage in
-					self?.editingImage = filteredImage
-					DispatchQueue.main.async {
-						//применять будем только последний нажатый фильтр
-						if let currentIndex = self?.currentApplyingFilterIndex, currentIndex == filterIndex {
-							self?.view?.setImage(image: filteredImage)
+				self?.imagesState.filterSourceImage.setFiltersList(filtersList: [filter],
+																   isFilter: isFilter) { ciImage, rect in
+					//применять будем только последний нажатый фильтр
+					if let currentIndex = self?.currentApplyingFilterIndex,
+						currentIndex == filterIndex,
+						let cgImageOutput = self?.context.createCGImage(ciImage, from: rect) {
+						let image = UIImage(cgImage: cgImageOutput)
+						DispatchQueue.main.async {
+							self?.filterApplyingFinish(image: image, isFilter: isFilter, index: filterIndex)
+							self?.lastApplyingFilter = filter
+						}
+					}
+					else {
+						DispatchQueue.main.async {
 							self?.view?.stopSpinner()
-							self?.previousAppliedFilterIndex = filterIndex
 						}
 					}
 				}
@@ -88,28 +98,29 @@ extension ImageEditorPresenter: IImageEditorPresenter
 	}
 // MARK: - Инструмент
 	func applyInstrument(instrument: Filter, instrumentIndex: Int, parameter: FilterParameter, newValue: Float) {
-		view?.startSpinner()
-		imageStack.push(self.editingImage)
+		let isFilter = false
+		filterApplyingPreparing(isFilter: isFilter)
 //Запомним текущее значение параметра и сложим в стэк
 		for param in instrumentsList[instrumentIndex].parameters where param.code == parameter.code {
 			filtersStack.push((instrumentsList[instrumentIndex].code, param.code, param.currentValue))
 		}
-		view?.refreshButtonsState(imagesStackIsEmpty: imageStack.isEmpty)
-//Если применяем инструмент повторно, берем исходную картинку, иначе применям на текущую
-		var currentInstrumentAlreadyApplied = false
-		if let previousIndex = previousAppliedInstrumentIndex, previousIndex == instrumentIndex {
-			currentInstrumentAlreadyApplied = true
-		}
-		instrumentsList[instrumentIndex].setValueForParameter(parameterCode: parameter.code, newValue: parameter.currentValue)
+		instrumentsList[instrumentIndex].setValueForParameter(parameterCode: parameter.code,
+															  newValue: parameter.currentValue)
+
 		let instrumentQueue = DispatchQueue(label: "InstrumentQueue", qos: .userInteractive, attributes: .concurrent)
 		instrumentQueue.async { [weak self] in
-			let imageForApply = currentInstrumentAlreadyApplied ? self?.sourceImage : self?.editingImage
-			imageForApply?.setFilter(self?.instrumentsList[instrumentIndex]) { filteredImage in
-				self?.editingImage = filteredImage
-				DispatchQueue.main.async {
-					self?.view?.setImage(image: filteredImage)
-					self?.view?.stopSpinner()
-					self?.previousAppliedInstrumentIndex = instrumentIndex
+			self?.imagesState.instrumentSourceImage.setFiltersList(filtersList: self?.instrumentsList,
+																   isFilter: isFilter) { ciImage, rect in
+				if let cgImageOutput = self?.context.createCGImage(ciImage, from: rect) {
+					let image = UIImage(cgImage: cgImageOutput)
+					DispatchQueue.main.async {
+						self?.filterApplyingFinish(image: image, isFilter: isFilter, index: instrumentIndex)
+					}
+				}
+				else {
+					DispatchQueue.main.async {
+						self?.view?.stopSpinner()
+					}
 				}
 			}
 		}
@@ -117,10 +128,6 @@ extension ImageEditorPresenter: IImageEditorPresenter
 
 	var currentId: String {
 		return id
-	}
-
-	var currentImage: UIImage {
-		return sourceImage
 	}
 
 	var numberOfPreviews: Int {
@@ -136,10 +143,11 @@ extension ImageEditorPresenter: IImageEditorPresenter
 	}
 
 	var imageEdited: Bool {
-		return sourceImage != editingImage
+		return imageStack.isEmpty == false
 	}
 
 	func triggerViewReadyEvent() {
+		view?.setImage(image: imagesState.editingImage)
 		createFilteredImageCollection()
 	}
 
@@ -152,14 +160,16 @@ extension ImageEditorPresenter: IImageEditorPresenter
 	}
 
 	func saveImage() {
-		guard let imageData = editingImage.pngData() else { return }
-		if isNewImage {
-			self.repository.saveImage(id: id, data: imageData as NSData)
+		applyFiltersToOriginalImage { image in
+			guard let imageData = image.pngData() else { return }
+			if self.isNewImage {
+				self.repository.saveImage(id: self.id, data: imageData as NSData)
+			}
+			else {
+				self.repository.updateImage(id: self.id, data: imageData as NSData)
+			}
+			self.moveToMain()
 		}
-		else {
-			self.repository.updateImage(id: id, data: imageData as NSData)
-		}
-		self.moveToMain()
 	}
 
 	func moveBack() {
@@ -169,28 +179,80 @@ extension ImageEditorPresenter: IImageEditorPresenter
 	func moveToMain() {
 		self.router.moveToMain()
 	}
-
+// MARK: - Кроп
 	func cropImage(cropRect: CGRect) {
-		guard let croppedImage = editingImage.cropImage(to: cropRect) else { return }
-		imageStack.push(self.editingImage)
+		guard let croppedImage = imagesState.editingImage.cropImage(to: cropRect) else { return }
+		imageStack.push(self.imagesState.editingImage)
 		view?.refreshButtonsState(imagesStackIsEmpty: imageStack.isEmpty)
-		editingImage = croppedImage
-		view?.setImage(image: editingImage)
+		imagesState.editingImage = croppedImage
+		imagesState.filterSourceImage = croppedImage
+		imagesState.instrumentSourceImage = croppedImage
+		view?.setImage(image: imagesState.editingImage)
 	}
 }
 // MARK: - private extension
 private extension ImageEditorPresenter
 {
 	func createFilteredImageCollection() {
-		guard let preview = sourceImage.resizeImage(to: UIConstants.collectionViewCellWidth) else { return }
+		guard let preview = imagesState.sourceImage.resizeImage(to: UIConstants.collectionViewCellWidth) else { return }
 		let filterQueue = DispatchQueue(label: "FilterQueue", qos: .userInteractive, attributes: .concurrent)
 		filterQueue.async { [weak self] in
 			self?.filtersList.forEach{
-				preview.setFilter($0) { filteredImage in self?.filteredPreviews.append(filteredImage) }
+				preview.setFiltersList(filtersList: [$0], isFilter: true) { ciImage, rect in
+					if let cgImageOutput = self?.context.createCGImage(ciImage, from: rect) {
+						let image = UIImage(cgImage: cgImageOutput)
+						self?.filteredPreviews.append(image)
+					}
+				}
 			}
 			DispatchQueue.main.async {
 				self?.view?.refreshButtonsState(imagesStackIsEmpty: self?.imageStack.isEmpty ?? true)
 				self?.view?.reloadFilterPreviews()
+			}
+		}
+	}
+
+	func filterApplyingPreparing(isFilter: Bool) {
+		view?.startSpinner()
+		imageStack.push(imagesState.editingImage)
+		view?.refreshButtonsState(imagesStackIsEmpty: imageStack.isEmpty)
+	}
+
+	func filterApplyingFinish(image: UIImage, isFilter: Bool, index: Int) {
+		self.view?.setImage(image: image)
+		self.imagesState.editingImage = image
+		self.view?.stopSpinner()
+		if isFilter {
+			self.previousAppliedFilterIndex = index
+			self.imagesState.instrumentSourceImage = image
+		}
+		else {
+			self.previousAppliedInstrumentIndex = index
+			self.imagesState.filterSourceImage = image
+		}
+	}
+
+	func applyFiltersToOriginalImage(completion: @escaping (UIImage) -> Void) {
+		view?.startSpinner()
+		let filterQueue = DispatchQueue(label: "FilterQueue", qos: .userInteractive, attributes: .concurrent)
+		filterQueue.async {[weak self] in
+			if let filter = self?.lastApplyingFilter {
+				self?.imagesState.sourceImage.setFiltersList(filtersList: [filter], isFilter: true) { ciImage, rect in
+					if let cgImageOutput = self?.context.createCGImage(ciImage, from: rect) {
+						self?.imagesState.sourceImage = UIImage(cgImage: cgImageOutput)
+					}
+				}
+			}
+			self?.imagesState.sourceImage.setFiltersList(filtersList: self?.instrumentsList, isFilter: false) { ciImage, rect in
+				if let cgImageOutput = self?.context.createCGImage(ciImage, from: rect) {
+					self?.imagesState.sourceImage = UIImage(cgImage: cgImageOutput)
+				}
+			}
+			DispatchQueue.main.async {
+				self?.view?.stopSpinner()
+				if let image = self?.imagesState.sourceImage {
+					completion(image)
+				}
 			}
 		}
 	}
