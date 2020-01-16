@@ -17,6 +17,7 @@ extension ImageEditorViewController: UICollectionViewDelegate
 		}
 		else {
 			showSliders(instrumentIndex: indexPath.row)
+			selectedInstrumentIndex = indexPath.row
 		}
 	}
 }

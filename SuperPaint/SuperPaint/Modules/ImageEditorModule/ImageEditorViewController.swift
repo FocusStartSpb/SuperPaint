@@ -18,9 +18,7 @@ final class ImageEditorViewController: UIViewController
 	let spinner = UIActivityIndicatorView()
 	private let filtersButton = UIButton()
 	private let instrumentsButton = UIButton()
-	private let topActionsStackView = UIStackView()
-	private let parametersStackView = UIStackView()
-	private let bottomActionsView = UIView()
+	private let bottomButtonsView = UIView()
 	private let verticalStack = UIStackView()
 	private let scrollView = UIScrollView()
 
@@ -32,8 +30,8 @@ final class ImageEditorViewController: UIViewController
 
 	var sliders: [String: [UIView]] = [:]
 	private var safeArea = UILayoutGuide()
-	private var firstInstrumentToggle = true
 	private var scrollViewDefaultBounds: CGRect = .zero
+	var selectedInstrumentIndex: Int = UIConstants.defaultInstrumentIndex
 // MARK: - toggling panels
 	private var showFilters: Bool {
 		get {
@@ -41,8 +39,6 @@ final class ImageEditorViewController: UIViewController
 		}
 		set {
 			instrumentsCollection.isHidden = true
-			parametersStackView.isHidden = true
-			topActionsStackView.isHidden = (newValue == false)
 			filtersCollection.isHidden = (newValue == false)
 			filtersButton.isSelected = newValue
 			instrumentsButton.isSelected = filtersButton.isSelected ? false : instrumentsButton.isSelected
@@ -54,15 +50,15 @@ final class ImageEditorViewController: UIViewController
 		}
 		set {
 			filtersCollection.isHidden = true
-			topActionsStackView.isHidden = (newValue == false)
 			instrumentsCollection.isHidden = (newValue == false)
-			parametersStackView.isHidden = (newValue == false)
+			if newValue == false {
+				showSliders()
+			}
+			else {
+				showSliders(instrumentIndex: selectedInstrumentIndex)
+			}
 			instrumentsButton.isSelected = newValue
 			filtersButton.isSelected = instrumentsButton.isSelected ? false : filtersButton.isSelected
-			if firstInstrumentToggle {
-				showSliders(instrumentIndex: UIConstants.defaultInstrumentIndex)
-				firstInstrumentToggle = false
-			}
 		}
 	}
 // MARK: - cropMode
@@ -72,9 +68,13 @@ final class ImageEditorViewController: UIViewController
 			let normalMode = (cropMode == false)
 			filtersButton.isEnabled = normalMode
 			instrumentsButton.isEnabled = normalMode
+			filtersButton.isSelected = filtersButton.isSelected && normalMode
+			instrumentsButton.isSelected = instrumentsButton.isSelected && normalMode
 			saveButton?.isEnabled = normalMode
 			undoButton?.isEnabled = normalMode
 			backButton?.isEnabled = normalMode
+			instrumentsCollection.isHidden = true
+			filtersCollection.isHidden = true
 			//Переходим в режим кропа
 			if cropMode {
 				instrumentsCollection.isHidden = true
@@ -151,17 +151,15 @@ private extension ImageEditorViewController
 		self.view.backgroundColor = UIConstants.backgroundColor
 		setupNavigationBarItems()
 
-		EditorControlsCreator.setupActionsView(actionsView: topActionsStackView, parentView: self.view)
-		EditorControlsCreator.setupActionsView(actionsView: bottomActionsView, parentView: self.view)
+		EditorControlsCreator.setupButtonsView(actionsView: bottomButtonsView, parentView: self.view)
 		EditorControlsCreator.setupButtons(filtersButton: filtersButton,
 									 instrumentsButton: instrumentsButton,
-									 parentView: bottomActionsView)
+									 parentView: bottomButtonsView)
 		filtersButton.addTarget(self, action: #selector(toggleFiltersCollection), for: .touchUpInside)
 		instrumentsButton.addTarget(self, action: #selector(toggleInstrumentsCollection), for: .touchUpInside)
 
 		EditorControlsCreator.setupStackView(verticalStack: verticalStack,
-									   topActionsView: topActionsStackView,
-									   bottomActionsView: bottomActionsView,
+									   bottomActionsView: bottomButtonsView,
 									   parentView: self.view,
 									   safeArea: safeArea)
 
@@ -173,10 +171,9 @@ private extension ImageEditorViewController
 		EditorControlsCreator.setupImageView(imageView: imageView,
 											 parentView: scrollView)
 
-		EditorControlsCreator.setupCollectionViews(parentView: topActionsStackView,
+		EditorControlsCreator.setupCollectionViews(verticalStack: verticalStack,
 											 filtersCollection: filtersCollection,
-											 instrumentsCollection: instrumentsCollection,
-											 parametersStackView: parametersStackView)
+											 instrumentsCollection: instrumentsCollection)
 
 		EditorControlsCreator.setupSpinner(spinner: spinner, parentView: imageView)
 
@@ -232,7 +229,7 @@ private extension ImageEditorViewController
 				if sliders[instrument.name] == nil {
 					sliders[instrument.name] = []
 				}
-				sliders[instrument.name]?.append(EditorControlsCreator.createSlider(parentView: parametersStackView,
+				sliders[instrument.name]?.append(EditorControlsCreator.createSlider(verticalStack: verticalStack,
 																					presenter: presenter,
 																					instrument: instrument,
 																					parameter: parameter,
