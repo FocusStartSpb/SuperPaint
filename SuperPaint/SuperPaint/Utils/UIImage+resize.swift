@@ -25,14 +25,4 @@ extension UIImage
 		defer { UIGraphicsEndImageContext() }
 		return UIGraphicsGetImageFromCurrentImageContext()
 	}
-
-	func resizeImage(dimension: CGFloat, completion: (UIImage?) -> Void) {
-		let scale = dimension / self.size.height
-		let newWidth = self.size.width * scale
-		UIGraphicsBeginImageContext(CGSize(width: newWidth, height: dimension))
-		self.draw(in: CGRect(x: 0, y: 0, width: newWidth, height: dimension))
-		let newImage = UIGraphicsGetImageFromCurrentImageContext()
-		UIGraphicsEndImageContext()
-		completion(newImage)
-	}
 }

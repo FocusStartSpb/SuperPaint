@@ -31,9 +31,8 @@ private extension ImagesCollectionPresenter
 {
 	func getImage(imageModel: ImageModel, completion: @escaping (UIImage?) -> Void) {
 		if let data = imageModel.imageData as Data?, let image = UIImage(data: data) {
-			image.resizeImage(dimension: UIConstants.imageCellDimension) { resizedImage in
-				completion(resizedImage)
-			}
+			let resizedImage = image.resizeImage(to: UIConstants.imageCellDimension)
+			completion(resizedImage)
 		}
 	}
 }
