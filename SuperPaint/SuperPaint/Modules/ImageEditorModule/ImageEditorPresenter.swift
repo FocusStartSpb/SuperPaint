@@ -26,7 +26,6 @@ final class ImageEditorPresenter
 	private var currentApplyingFilterIndex: Int?
 	private let context = CIContext(options: nil)
 	private var lastApplyingFilter: Filter?
-	private let dispatchQueue = DispatchQueue(label: "saveImage", qos: .userInteractive, attributes: .concurrent)
 
 	init(router: IImageEditorRouter, repository: IDatabaseRepository, id: String, image: UIImage, isNewImage: Bool) {
 		self.router = router
@@ -163,8 +162,9 @@ extension ImageEditorPresenter: IImageEditorPresenter
 	func saveImage() {
 		applyFiltersToOriginalImage { [weak self] image in
 			guard let imageData = image.pngData(), let self = self else { return }
+			let savingImageQueue = DispatchQueue(label: "saveImage", qos: .userInteractive, attributes: .concurrent)
 			if self.isNewImage {
-				self.dispatchQueue.async {
+				savingImageQueue.async {
 					self.repository.saveImage(id: self.id, data: imageData as NSData) { object in
 						guard let imageModel = object as? ImageModel else { return }
 						DispatchQueue.main.async {
@@ -176,7 +176,7 @@ extension ImageEditorPresenter: IImageEditorPresenter
 				}
 			}
 			else {
-				self.dispatchQueue.async {
+				savingImageQueue.async {
 					self.repository.updateImage(id: self.id, data: imageData as NSData) { imageModel in
 						DispatchQueue.main.async {
 							guard let mainVC = (UIApplication.shared.windows.first?.rootViewController as?
@@ -206,10 +206,6 @@ extension ImageEditorPresenter: IImageEditorPresenter
 		imagesState.filterSourceImage = croppedImage
 		imagesState.instrumentSourceImage = croppedImage
 		view?.setImage(image: imagesState.editingImage)
-	}
-// MARK: - Выключить взаимодействие пользователя
-	func userInteractionEnabled(is value: Bool) {
-		self.view?.userInteractionEnabled(is: value)
 	}
 }
 // MARK: - private extension
@@ -255,7 +251,7 @@ private extension ImageEditorPresenter
 	}
 
 	func applyFiltersToOriginalImage(completion: @escaping (UIImage) -> Void) {
-		self.view?.userInteractionEnabled(is: false)
+		self.view?.userInteractionEnabled = false
 		view?.startSpinner()
 		let filterQueue = DispatchQueue(label: "FilterQueue", qos: .userInteractive, attributes: .concurrent)
 		filterQueue.async {[weak self] in
@@ -273,7 +269,7 @@ private extension ImageEditorPresenter
 			}
 			DispatchQueue.main.async {
 				self?.view?.stopSpinner()
-				self?.view?.userInteractionEnabled(is: true)
+				self?.view?.userInteractionEnabled = true
 				if let image = self?.imagesState.sourceImage {
 					completion(image)
 				}

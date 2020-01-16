@@ -16,7 +16,6 @@ final class ImagesCollectionPresenter
 
 	private var imageModels: [ImageModel] = []
 	private var images: [UIImage] = []
-	private let dispatchQueue = DispatchQueue(label: "resizeImage", qos: .userInteractive)
 
 	init(router: IImagesCollectionRouter, repository: IDatabaseRepository) {
 		self.imagesCollectionRouter = router
@@ -28,6 +27,17 @@ final class ImagesCollectionPresenter
 	}
 }
 
+private extension ImagesCollectionPresenter
+{
+	func getImage(imageModel: ImageModel, completion: @escaping (UIImage?) -> Void) {
+		if let data = imageModel.imageData as Data?, let image = UIImage(data: data) {
+			image.resizeImage(dimension: UIConstants.imageCellDimension) { resizedImage in
+				completion(resizedImage)
+			}
+		}
+	}
+}
+
 extension ImagesCollectionPresenter: IImagesCollectionPresenter
 {
 	func loadImages() {
@@ -36,9 +46,9 @@ extension ImagesCollectionPresenter: IImagesCollectionPresenter
 			case .success(let imagesResult):
 				self.imageModels = imagesResult
 				for imageModel in imagesResult {
-					self.getImage(imageModel: imageModel) { image in
+					self.getImage(imageModel: imageModel) { [weak self] image in
 						guard let image = image else { return }
-						self.images.append(image)
+						self?.images.append(image)
 					}
 				}
 				self.imagesCollectionViewController?.reloadView()
@@ -50,9 +60,9 @@ extension ImagesCollectionPresenter: IImagesCollectionPresenter
 
 	func saveNewImage(newImageModel: ImageModel) {
 		self.imageModels.append(newImageModel)
-		self.getImage(imageModel: newImageModel) { image in
+		self.getImage(imageModel: newImageModel) { [weak self] image in
 			guard let image = image else { return }
-			self.images.append(image)
+			self?.images.append(image)
 		}
 		self.imagesCollectionViewController?.reloadView()
 	}
@@ -60,9 +70,9 @@ extension ImagesCollectionPresenter: IImagesCollectionPresenter
 	func updateImage(imageModel: ImageModel) {
 		for (index, model) in self.imageModels.enumerated() where model.id == imageModel.id {
 			self.imageModels[index] = imageModel
-			self.getImage(imageModel: imageModel) { image in
+			self.getImage(imageModel: imageModel) { [weak self] image in
 				guard let image = image else { return }
-				self.images[index] = image
+				self?.images[index] = image
 			}
 		}
 		self.imagesCollectionViewController?.reloadView()
@@ -70,9 +80,19 @@ extension ImagesCollectionPresenter: IImagesCollectionPresenter
 
 	func deleteImages(_ indexes: [IndexPath]) {
 		var selectedImages: [ImageModel] = []
+		var selectedIndexes: [Int] = []
+		var notDeletedImages: [UIImage] = []
 		indexes.forEach { indexPath in
 			selectedImages.append(self.imageModels[indexPath.row - UIConstants.firstCell])
+			selectedIndexes.append(indexPath.row - UIConstants.firstCell)
 		}
+		for (index, image) in self.images.enumerated() {
+			if selectedIndexes.contains(index) == false {
+				notDeletedImages.append(image)
+			}
+		}
+		self.images = notDeletedImages
+
 		let imagesIds = selectedImages.map { return $0.id }
 		let imagesAfterDeletion = self.imageModels.filter { imageModel -> Bool in
 			return imagesIds.contains(imageModel.id) == false
@@ -91,14 +111,6 @@ extension ImagesCollectionPresenter: IImagesCollectionPresenter
 
 	func getImageModelAt(index: Int, completion: (ImageModel) -> Void) {
 		completion(self.imageModels[index])
-	}
-
-	func getImage(imageModel: ImageModel, completion: @escaping (UIImage?) -> Void) {
-		if let data = imageModel.imageData as Data?, let image = UIImage(data: data) {
-			image.resizeImage(newHeight: UIConstants.imageCellQuality) { resizedImage in
-				completion(resizedImage)
-			}
-		}
 	}
 
 	func getImage(index: Int, completion: @escaping (UIImage) -> Void) {

@@ -35,5 +35,5 @@ enum UIConstants
 	static let cropTouchPrecision: CGFloat = 40.0
 	static let defaultInstrumentIndex = 0
 	static let minimumCropViewSize: CGFloat = 10.0
-	static let imageCellQuality: CGFloat = 500
+	static let imageCellDimension: CGFloat = 500
 }
