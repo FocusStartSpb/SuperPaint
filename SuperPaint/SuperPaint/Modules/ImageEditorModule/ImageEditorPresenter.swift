@@ -35,7 +35,7 @@ final class ImageEditorPresenter
 		filtersList = FiltersList.allCases.filter{ $0.getFilter().parameters.isEmpty }.map{ $0.getFilter() }
 		instrumentsList = FiltersList.allCases.filter{ $0.getFilter().parameters.isEmpty == false }.map{ $0.getFilter() }
 		self.isNewImage = isNewImage
-		guard let resizedImage = image.resizeImage(to: 1000) else { return }
+		guard let resizedImage = image.resizeImage(to: UIConstants.editorImageDimension) else { return }
 		self.imagesState.editingImage = resizedImage
 		self.imagesState.instrumentSourceImage = resizedImage
 		self.imagesState.filterSourceImage = resizedImage

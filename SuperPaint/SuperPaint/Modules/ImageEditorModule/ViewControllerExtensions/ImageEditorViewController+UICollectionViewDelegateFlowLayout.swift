@@ -14,12 +14,12 @@ extension ImageEditorViewController: UICollectionViewDelegateFlowLayout
 						layout collectionViewLayout: UICollectionViewLayout,
 						sizeForItemAt indexPath: IndexPath) -> CGSize {
 		if collectionView == filtersCollection {
-			return CGSize(width: UIConstants.collectionViewCellWidth * 0.7,
-						  height: UIConstants.filterCollectionViewCellHeight * 0.7)
+			return CGSize(width: UIConstants.collectionViewCellWidth ,
+						  height: UIConstants.filterCollectionViewCellHeight )
 		}
 		else {
 			return CGSize(width: UIConstants.collectionViewCellWidth,
-						  height: UIConstants.instrumentCollectionViewCellHeight * 0.9)
+						  height: UIConstants.instrumentCollectionViewCellHeight )
 		}
 	}
 }

@@ -20,7 +20,8 @@ enum UIConstants
 	static let systemButtonColor = UIButton(type: .system).currentTitleColor
 	static let firstCell: Int = 1
 	static let filterCollectionViewCellHeight: CGFloat = 105
-	static let instrumentCollectionViewCellHeight: CGFloat = 35
+	static let instrumentCollectionViewCellHeight: CGFloat = 50
+	static let sliderViewHeight: CGFloat = 70
 	static let collectionViewCellWidth: CGFloat = 105
 	static let activityIndicatorSize: CGFloat = 64
 	static let imagePlaceholderSize: CGFloat = 150
@@ -35,5 +36,9 @@ enum UIConstants
 	static let cropTouchPrecision: CGFloat = 40.0
 	static let defaultInstrumentIndex = 0
 	static let minimumCropViewSize: CGFloat = 10.0
+	static let defaultZoomScale: CGFloat = 1.0
+	static let maximumZoomScale: CGFloat = 4.0
+	static let doubleTapZoomScale: CGFloat = 2.0
+	static let editorImageDimension: CGFloat = 1000
 	static let imageCellDimension: CGFloat = 500
 }
