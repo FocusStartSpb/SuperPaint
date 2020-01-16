@@ -120,7 +120,7 @@ enum EditorControlsCreator
 			scrollView.topAnchor.constraint(equalTo: safeArea.topAnchor),
 			scrollView.leadingAnchor.constraint(equalTo: parentView.leadingAnchor),
 			scrollView.trailingAnchor.constraint(equalTo: parentView.trailingAnchor),
-			scrollView.bottomAnchor.constraint(equalTo: verticalStack.topAnchor),
+			scrollView.bottomAnchor.constraint(equalTo: verticalStack.topAnchor, constant: UIConstants.spacing * (-1)),
 		])
 	}
 // MARK: - Настройка слайдеров для инструментов
