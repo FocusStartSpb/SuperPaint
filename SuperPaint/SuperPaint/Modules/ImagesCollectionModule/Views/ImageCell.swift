@@ -61,7 +61,7 @@ private extension ImageCell
 			self.imageView.topAnchor.constraint(equalTo: self.contentView.topAnchor),
 			self.imageView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor),
 		])
-		self.imageView.backgroundColor = UIConstants.borderColor
+		self.imageView.backgroundColor = UIConstants.backgroundCellColor
 	}
 
 	func setupSelectionImageView() {

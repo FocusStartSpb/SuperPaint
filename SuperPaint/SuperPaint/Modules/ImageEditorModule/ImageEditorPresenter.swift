@@ -160,13 +160,31 @@ extension ImageEditorPresenter: IImageEditorPresenter
 	}
 
 	func saveImage() {
-		applyFiltersToOriginalImage { image in
-			guard let imageData = image.pngData() else { return }
+		applyFiltersToOriginalImage { [weak self] image in
+			guard let imageData = image.pngData(), let self = self else { return }
+			let savingImageQueue = DispatchQueue(label: "saveImage", qos: .userInteractive, attributes: .concurrent)
 			if self.isNewImage {
-				self.repository.saveImage(id: self.id, data: imageData as NSData)
+				savingImageQueue.async {
+					self.repository.saveImage(id: self.id, data: imageData as NSData) { object in
+						guard let imageModel = object as? ImageModel else { return }
+						DispatchQueue.main.async {
+							guard let mainVC = (UIApplication.shared.windows.first?.rootViewController as?
+								UINavigationController)?.viewControllers.first as? IImagesCollectionViewController else { return }
+							mainVC.saveNewImage(newImageModel: imageModel)
+						}
+					}
+				}
 			}
 			else {
-				self.repository.updateImage(id: self.id, data: imageData as NSData)
+				savingImageQueue.async {
+					self.repository.updateImage(id: self.id, data: imageData as NSData) { imageModel in
+						DispatchQueue.main.async {
+							guard let mainVC = (UIApplication.shared.windows.first?.rootViewController as?
+								UINavigationController)?.viewControllers.first as? IImagesCollectionViewController else { return }
+							mainVC.updateImage(imageModel: imageModel)
+						}
+					}
+				}
 			}
 			self.moveToMain()
 		}
@@ -233,6 +251,7 @@ private extension ImageEditorPresenter
 	}
 
 	func applyFiltersToOriginalImage(completion: @escaping (UIImage) -> Void) {
+		self.view?.userInteractionEnabled = false
 		view?.startSpinner()
 		let filterQueue = DispatchQueue(label: "FilterQueue", qos: .userInteractive, attributes: .concurrent)
 		filterQueue.async {[weak self] in
@@ -250,6 +269,7 @@ private extension ImageEditorPresenter
 			}
 			DispatchQueue.main.async {
 				self?.view?.stopSpinner()
+				self?.view?.userInteractionEnabled = true
 				if let image = self?.imagesState.sourceImage {
 					completion(image)
 				}

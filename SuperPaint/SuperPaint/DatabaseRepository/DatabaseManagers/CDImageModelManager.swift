@@ -47,7 +47,7 @@ extension CDImageModelManager: ICDImageModelManager
 		}
 	}
 
-	func saveImage(id: String, data imageData: NSData) {
+	func saveImage(id: String, data imageData: NSData, completion: (NSManagedObject) -> Void) {
 		guard let imageEntity = NSEntityDescription.entity(forEntityName: ImageModelKeys.name,
 														   in: self.managedContext) else { return }
 		let imageModel = NSManagedObject(entity: imageEntity, insertInto: self.managedContext)
@@ -56,13 +56,14 @@ extension CDImageModelManager: ICDImageModelManager
 
 		do {
 			try self.managedContext.save()
+			completion(imageModel)
 		}
 		catch {
 			assertionFailure(error.localizedDescription)
 		}
 	}
 
-	func updateImage(id: String, data imageData: NSData) {
+	func updateImage(id: String, data imageData: NSData, completion: (ImageModel) -> Void) {
 		let fetchRequest = NSFetchRequest<ImageModel>(entityName: "ImageModel")
 		fetchRequest.predicate = NSPredicate(format: "id = %@", id)
 
@@ -72,6 +73,7 @@ extension CDImageModelManager: ICDImageModelManager
 			imageToUpdate.setValue(imageData, forKey: ImageModelKeys.imageData)
 			do {
 				try self.managedContext.save()
+				completion(imageToUpdate)
 			}
 			catch {
 				assertionFailure(error.localizedDescription)

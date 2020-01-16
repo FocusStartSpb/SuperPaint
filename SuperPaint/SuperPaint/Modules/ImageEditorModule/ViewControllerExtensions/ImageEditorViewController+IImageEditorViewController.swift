@@ -18,6 +18,16 @@ extension ImageEditorViewController: IImageEditorViewController
 		spinner.startAnimating()
 	}
 
+	var userInteractionEnabled: Bool {
+		get {
+			return self.view.isUserInteractionEnabled
+		}
+		set {
+			self.view.isUserInteractionEnabled = newValue
+			self.navigationController?.navigationBar.isUserInteractionEnabled = newValue
+		}
+	}
+
 	func refreshButtonsState(imagesStackIsEmpty: Bool) {
 		undoButton?.isEnabled = imagesStackIsEmpty ? false : true
 		saveButton?.isEnabled = imagesStackIsEmpty ? false : true

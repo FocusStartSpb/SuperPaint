@@ -13,4 +13,6 @@ protocol IImagesCollectionViewController: AnyObject
 	var navController: UINavigationController? { get }
 
 	func reloadView()
+	func saveNewImage(newImageModel: ImageModel)
+	func updateImage(imageModel: ImageModel)
 }
