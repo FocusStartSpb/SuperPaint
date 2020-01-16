@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreData
 
 final class DatabaseRepository
 {
@@ -30,12 +31,16 @@ extension DatabaseRepository: IDatabaseRepository
 		}
 	}
 
-	func saveImage(id: String, data imageData: NSData) {
-		self.imagesManager.saveImage(id: id, data: imageData)
+	func saveImage(id: String, data imageData: NSData, completion: (NSManagedObject) -> Void) {
+		self.imagesManager.saveImage(id: id, data: imageData) { object in
+			completion(object)
+		}
 	}
 
-	func updateImage(id: String, data imageData: NSData) {
-		self.imagesManager.updateImage(id: id, data: imageData)
+	func updateImage(id: String, data imageData: NSData, completion: (ImageModel) -> Void) {
+		self.imagesManager.updateImage(id: id, data: imageData) { imageModel in
+			completion(imageModel)
+		}
 	}
 
 	func deleteImages(_ images: [ImageModel]) {

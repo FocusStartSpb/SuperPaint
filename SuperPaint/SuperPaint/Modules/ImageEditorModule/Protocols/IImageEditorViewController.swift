@@ -16,6 +16,7 @@ protocol IImageEditorViewController: AnyObject
 	func setImage(image: UIImage)
 	func refreshSlidersValues()
 	func reloadFilterPreviews()
+	func userInteractionEnabled(is value: Bool)
 
 	var navController: UINavigationController? { get }
 }

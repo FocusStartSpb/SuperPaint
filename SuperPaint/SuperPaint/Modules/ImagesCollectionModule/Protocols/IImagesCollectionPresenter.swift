@@ -11,11 +11,13 @@ import UIKit
 protocol IImagesCollectionPresenter: AnyObject
 {
 	func loadImages()
-	func saveImage(id: String, data: NSData)
+	func saveNewImage(newImageModel: ImageModel)
+	func updateImage(imageModel: ImageModel)
 	func deleteImages(_ indexes: [IndexPath])
 	func getImages() -> [ImageModel]
 	func getNumberOfImages() -> Int
-	func getImageModelAt(index: Int) -> ImageModel
+	func getImageModelAt(index: Int, completion: (ImageModel) -> Void)
+	func getImage(index: Int, completion: @escaping (UIImage) -> Void)
 	func onCellPressed(id: String, image: UIImage, isNewImage: Bool)
 	func pushWebSearchModule()
 }

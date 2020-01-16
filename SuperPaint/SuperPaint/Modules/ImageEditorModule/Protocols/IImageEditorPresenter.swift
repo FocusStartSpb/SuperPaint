@@ -27,6 +27,7 @@ protocol IImageEditorPresenter: AnyObject
 	func getCurrentInstrumentParameters(instrumentIndex: Int) -> [FilterParameter]
 	func cropImage(cropRect: CGRect)
 
+	func userInteractionEnabled(is value: Bool)
 	func saveImage()
 	func moveBack()
 }

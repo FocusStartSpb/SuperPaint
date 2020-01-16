@@ -20,7 +20,6 @@ final class ImagesCollectionViewController: UIViewController
 		return collectionView
 	}()
 	private var safeArea = UILayoutGuide()
-	private var imagePickerEnable = true
 
 	init(presenter: IImagesCollectionPresenter) {
 		self.imagesCollectionPresenter = presenter
@@ -38,12 +37,6 @@ final class ImagesCollectionViewController: UIViewController
 		self.safeArea = self.view.layoutMarginsGuide
 		self.setupSettingsForNavigationBar()
 		self.setupCollectionView()
-		self.loadImages()
-	}
-
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		self.imagePickerEnable = true
 		self.loadImages()
 	}
 
@@ -187,10 +180,11 @@ extension ImagesCollectionViewController: UICollectionViewDelegate
 		}
 		else if indexPath.row != 0 && self.isEditing == false {
 			self.collectionView.deselectItem(at: indexPath, animated: false)
-			let imageModel = self.imagesCollectionPresenter.getImageModelAt(index: indexPath.row - 1)
-			guard let id = imageModel.id, let imageData = imageModel.imageData,
-				let image = UIImage(data: imageData as Data) else { return }
-			self.imagesCollectionPresenter.onCellPressed(id: id, image: image, isNewImage: false)
+			self.imagesCollectionPresenter.getImageModelAt(index: indexPath.row - 1, completion: { imageModel in
+				guard let id = imageModel.id, let imageData = imageModel.imageData,
+					let image = UIImage(data: imageData as Data) else { return }
+				self.imagesCollectionPresenter.onCellPressed(id: id, image: image, isNewImage: false)
+			})
 		}
 		else if indexPath.row != 0 && self.isEditing {
 			self.navigationItem.rightBarButtonItem?.isEnabled = true
@@ -239,10 +233,9 @@ extension ImagesCollectionViewController: UICollectionViewDataSource
 			}
 			cell.selectionImageView.image = cell.isSelected ? Images.selected : Images.notSelected
 
-			let imageModel = self.imagesCollectionPresenter.getImageModelAt(index: indexPath.row - 1)
-			if let data = imageModel.imageData as Data?, let image = UIImage(data: data) {
+			self.imagesCollectionPresenter.getImage(index: indexPath.row - 1, completion: { image in
 				cell.imageView.image = image
-			}
+			})
 		}
 		return cell
 	}
@@ -301,5 +294,13 @@ extension ImagesCollectionViewController: IImagesCollectionViewController
 
 	func reloadView() {
 		self.collectionView.reloadData()
+	}
+
+	func saveNewImage(newImageModel: ImageModel) {
+		self.imagesCollectionPresenter.saveNewImage(newImageModel: newImageModel)
+	}
+
+	func updateImage(imageModel: ImageModel) {
+		self.imagesCollectionPresenter.updateImage(imageModel: imageModel)
 	}
 }

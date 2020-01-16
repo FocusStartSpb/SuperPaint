@@ -44,6 +44,7 @@
 		720A392923CBC6C10026EFC9 /* CropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85747C7823CB14E60014EA4B /* CropView.swift */; };
 		720A392A23CBC78E0026EFC9 /* UIImage+cropImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85747C7623CB10930014EA4B /* UIImage+cropImage.swift */; };
 		72D1949D23CE492F00459D41 /* UIAlertController+removeBrokenConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72D1949C23CE492F00459D41 /* UIAlertController+removeBrokenConstraint.swift */; };
+		72EBB8AB23D05917009E1186 /* UIImage+resizeImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72EBB8AA23D05917009E1186 /* UIImage+resizeImage.swift */; };
 		8511E6ED23AA936A0032B588 /* ModuleFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8511E6EC23AA936A0032B588 /* ModuleFactory.swift */; };
 		85121CAC23C79B6000DD4020 /* FiltersStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85121CAB23C79B6000DD4020 /* FiltersStack.swift */; };
 		8546B83B23CC5FFB00F4B33C /* ImageEditorViewController+IImageEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8546B83A23CC5FFB00F4B33C /* ImageEditorViewController+IImageEditorViewController.swift */; };
@@ -109,6 +110,7 @@
 		720A392423CA2D1F0026EFC9 /* NetworkErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkErrors.swift; sourceTree = "<group>"; };
 		720A392623CB57A50026EFC9 /* CollectionViewActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewActivityIndicator.swift; sourceTree = "<group>"; };
 		72D1949C23CE492F00459D41 /* UIAlertController+removeBrokenConstraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIAlertController+removeBrokenConstraint.swift"; sourceTree = "<group>"; };
+		72EBB8AA23D05917009E1186 /* UIImage+resizeImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+resizeImage.swift"; sourceTree = "<group>"; };
 		8511E6EC23AA936A0032B588 /* ModuleFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleFactory.swift; sourceTree = "<group>"; };
 		85121CAB23C79B6000DD4020 /* FiltersStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiltersStack.swift; sourceTree = "<group>"; };
 		8546B83A23CC5FFB00F4B33C /* ImageEditorViewController+IImageEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImageEditorViewController+IImageEditorViewController.swift"; sourceTree = "<group>"; };
@@ -236,6 +238,7 @@
 				85121CAB23C79B6000DD4020 /* FiltersStack.swift */,
 				85F61CC023CA2DE500E2C8FF /* UIImageView+getImageRectangle.swift */,
 				72D1949C23CE492F00459D41 /* UIAlertController+removeBrokenConstraint.swift */,
+				72EBB8AA23D05917009E1186 /* UIImage+resizeImage.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -498,6 +501,7 @@
 				85612B0423ACE8DC0082DC95 /* IImageEditorPresenter.swift in Sources */,
 				720A38B323AA92C80026EFC9 /* IImagesCollectionPresenter.swift in Sources */,
 				720A390523B220EE0026EFC9 /* ImageModel+CoreDataProperties.swift in Sources */,
+				72EBB8AB23D05917009E1186 /* UIImage+resizeImage.swift in Sources */,
 				720A390423B220EE0026EFC9 /* ImageModel+CoreDataClass.swift in Sources */,
 				720A392523CA2D1F0026EFC9 /* NetworkErrors.swift in Sources */,
 				720A38C223AD6D5E0026EFC9 /* Fonts.swift in Sources */,

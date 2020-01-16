@@ -7,14 +7,15 @@
 //
 
 import Foundation
+import CoreData
 
 protocol IDatabaseRepository: AnyObject
 {
 	var imagesManager: ICDImageModelManager { get }
 
 	func loadImages(completion: (ImagesResult) -> Void)
-	func saveImage(id: String, data imageData: NSData)
-	func updateImage(id: String, data imageData: NSData)
+	func saveImage(id: String, data imageData: NSData, completion: (NSManagedObject) -> Void)
+	func updateImage(id: String, data imageData: NSData, completion: (ImageModel) -> Void)
 	func deleteImages(_ images: [ImageModel])
 	func saveContext()
 }
