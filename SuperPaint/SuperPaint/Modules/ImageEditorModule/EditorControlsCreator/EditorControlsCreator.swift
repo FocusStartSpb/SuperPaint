@@ -112,15 +112,15 @@ enum EditorControlsCreator
 								parentView: UIView,
 								verticalStack: UIStackView,
 								safeArea: UILayoutGuide) {
-		scrollView.minimumZoomScale = 1.0
-		scrollView.maximumZoomScale = 4.0
+		scrollView.minimumZoomScale = UIConstants.defaultZoomScale
+		scrollView.maximumZoomScale = UIConstants.maximumZoomScale
 		scrollView.translatesAutoresizingMaskIntoConstraints = false
 		parentView.addSubview(scrollView)
 		NSLayoutConstraint.activate([
 			scrollView.topAnchor.constraint(equalTo: safeArea.topAnchor),
-			scrollView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
-			scrollView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor),
-			scrollView.bottomAnchor.constraint(equalTo: verticalStack.topAnchor, constant: -10),
+			scrollView.leadingAnchor.constraint(equalTo: parentView.leadingAnchor),
+			scrollView.trailingAnchor.constraint(equalTo: parentView.trailingAnchor),
+			scrollView.bottomAnchor.constraint(equalTo: verticalStack.topAnchor),
 		])
 	}
 // MARK: - Настройка слайдеров для инструментов
@@ -134,7 +134,7 @@ enum EditorControlsCreator
 							  parameter: parameter,
 							  instrumentIndex: instrumentIndex)
 		verticalStack.insertArrangedSubview(view, at: 0)
-		view.heightAnchor.constraint(equalToConstant: UIConstants.instrumentCollectionViewCellHeight * 2).isActive = true
+		view.heightAnchor.constraint(equalToConstant: UIConstants.sliderViewHeight).isActive = true
 		return view
 	}
 

@@ -17,4 +17,5 @@ enum Images
 	static let cameraIcon = UIImage(named: "camera_icon")
 	static let libraryIcon = UIImage(named: "library_icon")
 	static let webIcon = UIImage(named: "web_icon")
+	static let cropIcon = UIImage(named: "crop")
 }

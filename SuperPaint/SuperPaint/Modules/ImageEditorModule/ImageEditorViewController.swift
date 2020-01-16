@@ -209,8 +209,8 @@ private extension ImageEditorViewController
 		self.navigationItem.leftBarButtonItem = backButton
 		saveButton = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(savePressed))
 		undoButton = UIBarButtonItem(barButtonSystemItem: .reply, target: self, action: #selector(undoPressed))
-		cropButton = UIBarButtonItem(image: UIImage(named: "crop"),
-									 landscapeImagePhone: UIImage(named: "crop"),
+		cropButton = UIBarButtonItem(image: Images.cropIcon,
+									 landscapeImagePhone: Images.cropIcon,
 									 style: .plain,
 									 target: self,
 									 action: #selector(toggleCropMode))
@@ -245,11 +245,11 @@ private extension ImageEditorViewController
 //По следующему двойному тапу возвращаем исходный масштаб
 	@objc func defaultZoom() {
 		guard cropMode == false else { return }
-		if scrollView.zoomScale == 1.0 {
-			scrollView.setZoomScale(2, animated: true)
+		if scrollView.zoomScale == UIConstants.defaultZoomScale {
+			scrollView.setZoomScale(UIConstants.doubleTapZoomScale, animated: true)
 		}
 		else {
-			scrollView.setZoomScale(1.0, animated: true)
+			scrollView.setZoomScale(UIConstants.defaultZoomScale, animated: true)
 		}
 	}
 // MARK: - back
@@ -290,7 +290,7 @@ private extension ImageEditorViewController
 	}
 // MARK: - Crop mode
 	@objc func toggleCropMode(_ sender: UIBarButtonItem) {
-		scrollView.setZoomScale(1.0, animated: true)
+		scrollView.setZoomScale(UIConstants.defaultZoomScale, animated: true)
 		cropMode = (cropMode == false)
 	}
 }
