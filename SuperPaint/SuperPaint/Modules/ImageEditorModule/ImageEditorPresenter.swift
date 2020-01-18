@@ -12,9 +12,11 @@ final class ImageEditorPresenter
 {
 	let filtersList: [Filter]
 	var instrumentsList: [Filter]
+	var cropFilter: Filter
 	var filteredPreviews: [UIImage] = []
 	private var imageStack = ImagesStack()
 	private var filtersStack = FiltersStack()
+	private var cropRectStack = CropRectStack()
 	private let router: IImageEditorRouter
 	private let repository: IDatabaseRepository
 	private weak var view: IImageEditorViewController?
@@ -26,14 +28,16 @@ final class ImageEditorPresenter
 	private var currentApplyingFilterIndex: Int?
 	private let context = CIContext(options: nil)
 	private var lastApplyingFilter: Filter?
+	private var currentCropRectForSourceImage: CGRect?
 
 	init(router: IImageEditorRouter, repository: IDatabaseRepository, id: String, image: UIImage, isNewImage: Bool) {
 		self.router = router
 		self.repository = repository
 		self.id = id
 		self.imagesState.sourceImage = image
-		filtersList = FiltersList.allCases.filter{ $0.getFilter().parameters.isEmpty }.map{ $0.getFilter() }
-		instrumentsList = FiltersList.allCases.filter{ $0.getFilter().parameters.isEmpty == false }.map{ $0.getFilter() }
+		filtersList = FiltersList.allCases.filter{ $0.getFilter().actionType == .filter }.map{ $0.getFilter() }
+		instrumentsList = FiltersList.allCases.filter{ $0.getFilter().actionType == .instrument }.map{ $0.getFilter() }
+		cropFilter = FiltersList.allCases.filter{ $0.getFilter().actionType == .crop }.map{ $0.getFilter() }[0]
 		self.isNewImage = isNewImage
 		guard let resizedImage = image.resizeImage(to: UIConstants.editorImageDimension) else { return }
 		self.imagesState.editingImage = resizedImage
@@ -41,9 +45,9 @@ final class ImageEditorPresenter
 		self.imagesState.filterSourceImage = resizedImage
 	}
 }
-// MARK: - IImageEditorPresenter
 extension ImageEditorPresenter: IImageEditorPresenter
 {
+	//MARK: - Undo
 	func undoAction() {
 		if let lastImage = imageStack.pop() {
 			self.imagesState.editingImage = lastImage
@@ -51,19 +55,23 @@ extension ImageEditorPresenter: IImageEditorPresenter
 		}
 		view?.refreshButtonsState(imagesStackIsEmpty: imageStack.isEmpty)
 		previousAppliedFilterIndex = nil
-		if let lastChangedParameter = filtersStack.pop() {
-			for (index, instrument) in instrumentsList.enumerated() where instrument.code == lastChangedParameter.instrumenCode {
-				for (indexP, parameter) in instrument.parameters.enumerated()
-					where parameter.code == lastChangedParameter.parameterCode {
-					instrumentsList[index].parameters[indexP].currentValue = lastChangedParameter.parameterValue
+		if let lastChangedInstrumentsList = filtersStack.pop(), lastChangedInstrumentsList.count > 0 {
+			switch lastChangedInstrumentsList[0].actionType {
+			case .instrument:
+				instrumentsList = lastChangedInstrumentsList
+				view?.refreshSlidersValues()
+			case .crop:
+				if let rect = cropRectStack.pop() {
+					currentCropRectForSourceImage = rect
 				}
+			default:
+				break
 			}
-			view?.refreshSlidersValues()
 		}
 	}
 // MARK: - Фильтр
 	func applyFilter(filterIndex: Int) {
-		let isFilter = true
+		let actionType: ActionType = .filter
 		currentApplyingFilterIndex = filterIndex
 		//Если фильтр уже применен не применяем снова
 		var currentFilterAlreadyApplied = false
@@ -72,18 +80,18 @@ extension ImageEditorPresenter: IImageEditorPresenter
 		}
 		let filter = filtersList[filterIndex]
 		if currentFilterAlreadyApplied == false {
-			filterApplyingPreparing(isFilter: isFilter)
+			filterApplyingPreparing()
 			let filterQueue = DispatchQueue(label: "FilterQueue", qos: .userInteractive, attributes: .concurrent)
 			filterQueue.async { [weak self] in
 				self?.imagesState.filterSourceImage.setFiltersList(filtersList: [filter],
-																   isFilter: isFilter) { ciImage, rect in
+																   actionType: actionType) { ciImage, rect in
 					//применять будем только последний нажатый фильтр
 					if let currentIndex = self?.currentApplyingFilterIndex,
 						currentIndex == filterIndex,
 						let cgImageOutput = self?.context.createCGImage(ciImage, from: rect) {
 						let image = UIImage(cgImage: cgImageOutput)
 						DispatchQueue.main.async {
-							self?.filterApplyingFinish(image: image, isFilter: isFilter, index: filterIndex)
+							self?.filterApplyingFinish(image: image, actionType: actionType, index: filterIndex)
 							self?.lastApplyingFilter = filter
 						}
 					}
@@ -98,11 +106,12 @@ extension ImageEditorPresenter: IImageEditorPresenter
 	}
 // MARK: - Инструмент
 	func applyInstrument(instrument: Filter, instrumentIndex: Int, parameter: FilterParameter, newValue: Float) {
-		let isFilter = false
-		filterApplyingPreparing(isFilter: isFilter)
+		let actionType: ActionType = .instrument
+
+		filterApplyingPreparing()
 //Запомним текущее значение параметра и сложим в стэк
 		for param in instrumentsList[instrumentIndex].parameters where param.code == parameter.code {
-			filtersStack.push((instrumentsList[instrumentIndex].code, param.code, param.currentValue))
+			filtersStack.push(instrumentsList)
 		}
 		instrumentsList[instrumentIndex].setValueForParameter(parameterCode: parameter.code,
 															  newValue: parameter.currentValue)
@@ -110,11 +119,11 @@ extension ImageEditorPresenter: IImageEditorPresenter
 		let instrumentQueue = DispatchQueue(label: "InstrumentQueue", qos: .userInteractive, attributes: .concurrent)
 		instrumentQueue.async { [weak self] in
 			self?.imagesState.instrumentSourceImage.setFiltersList(filtersList: self?.instrumentsList,
-																   isFilter: isFilter) { ciImage, rect in
+																   actionType: actionType) { ciImage, rect in
 				if let cgImageOutput = self?.context.createCGImage(ciImage, from: rect) {
 					let image = UIImage(cgImage: cgImageOutput)
 					DispatchQueue.main.async {
-						self?.filterApplyingFinish(image: image, isFilter: isFilter, index: instrumentIndex)
+						self?.filterApplyingFinish(image: image, actionType: actionType, index: instrumentIndex)
 					}
 				}
 				else {
@@ -158,7 +167,7 @@ extension ImageEditorPresenter: IImageEditorPresenter
 	func getCurrentInstrumentParameters(instrumentIndex: Int) -> [FilterParameter] {
 		return instrumentsList[instrumentIndex].parameters
 	}
-
+// MARK: - Save
 	func saveImage() {
 		applyFiltersToOriginalImage { [weak self] image in
 			guard let imageData = image.pngData(), let self = self else { return }
@@ -198,14 +207,35 @@ extension ImageEditorPresenter: IImageEditorPresenter
 		self.router.moveToMain()
 	}
 // MARK: - Кроп
-	func cropImage(cropRect: CGRect) {
-		guard let croppedImage = imagesState.editingImage.cropImage(to: cropRect) else { return }
-		imageStack.push(self.imagesState.editingImage)
-		view?.refreshButtonsState(imagesStackIsEmpty: imageStack.isEmpty)
-		imagesState.editingImage = croppedImage
-		imagesState.filterSourceImage = croppedImage
-		imagesState.instrumentSourceImage = croppedImage
-		view?.setImage(image: imagesState.editingImage)
+	func cropImage(imageRect: CGRect, cropRect: CGRect) {
+		let actionType: ActionType = .crop
+		filtersStack.push([cropFilter])
+		let croppingRect = imagesState.editingImage.getCroppingRect(from: imageRect, to: cropRect)
+		currentCropRectForSourceImage = imagesState.sourceImage.getCroppingRect(from: imageRect,
+																	  to: cropRect,
+																	  sourceSize: currentCropRectForSourceImage?.size ?? imagesState.sourceImage.size)
+		cropRectStack.push(currentCropRectForSourceImage)
+		let cropVector = CIVector(cgRect: croppingRect)
+		cropFilter.setValueForParameter(parameterCode: "inputRectangle", newValue: cropVector)
+		let filter = cropFilter
+		filterApplyingPreparing()
+		let cropQueue = DispatchQueue(label: "CropQueue", qos: .userInteractive, attributes: .concurrent)
+		cropQueue.async { [weak self] in
+			self?.imagesState.editingImage.setFiltersList(filtersList: [filter],
+														  actionType: actionType) { ciImage, _ in
+				if let cgImageOutput = self?.context.createCGImage(ciImage, from: ciImage.extent) {
+					let image = UIImage(cgImage: cgImageOutput)
+					DispatchQueue.main.async {
+						self?.filterApplyingFinish(image: image, actionType: actionType)
+					}
+				}
+				else {
+					DispatchQueue.main.async {
+						self?.view?.stopSpinner()
+					}
+				}
+			}
+		}
 	}
 }
 // MARK: - private extension
@@ -214,9 +244,10 @@ private extension ImageEditorPresenter
 	func createFilteredImageCollection() {
 		guard let preview = imagesState.sourceImage.resizeImage(to: UIConstants.collectionViewCellWidth) else { return }
 		let filterQueue = DispatchQueue(label: "FilterQueue", qos: .userInteractive, attributes: .concurrent)
+		let actionType: ActionType = .filter
 		filterQueue.async { [weak self] in
 			self?.filtersList.forEach{
-				preview.setFiltersList(filtersList: [$0], isFilter: true) { ciImage, rect in
+				preview.setFiltersList(filtersList: [$0], actionType: actionType) { ciImage, rect in
 					if let cgImageOutput = self?.context.createCGImage(ciImage, from: rect) {
 						let image = UIImage(cgImage: cgImageOutput)
 						self?.filteredPreviews.append(image)
@@ -230,39 +261,63 @@ private extension ImageEditorPresenter
 		}
 	}
 
-	func filterApplyingPreparing(isFilter: Bool) {
+	func filterApplyingPreparing() {
 		view?.startSpinner()
 		imageStack.push(imagesState.editingImage)
 		view?.refreshButtonsState(imagesStackIsEmpty: imageStack.isEmpty)
 	}
 
-	func filterApplyingFinish(image: UIImage, isFilter: Bool, index: Int) {
+	func filterApplyingFinish(image: UIImage, actionType: ActionType, index: Int? = nil) {
 		self.view?.setImage(image: image)
 		self.imagesState.editingImage = image
 		self.view?.stopSpinner()
-		if isFilter {
-			self.previousAppliedFilterIndex = index
+		switch actionType {
+		case .filter:
+			if let index = index {
+				self.previousAppliedFilterIndex = index
+				self.imagesState.instrumentSourceImage = image
+			}
+		case .instrument:
+			if let index = index {
+				self.previousAppliedInstrumentIndex = index
+				self.imagesState.filterSourceImage = image
+			}
+		case .crop:
+			self.imagesState.editingImage = image
+			self.imagesState.filterSourceImage = image
 			self.imagesState.instrumentSourceImage = image
 		}
-		else {
-			self.previousAppliedInstrumentIndex = index
-			self.imagesState.filterSourceImage = image
-		}
 	}
-
+// MARK: - apply filter to original
 	func applyFiltersToOriginalImage(completion: @escaping (UIImage) -> Void) {
 		self.view?.userInteractionEnabled = false
 		view?.startSpinner()
+		var lastCropFilter = cropFilter
 		let filterQueue = DispatchQueue(label: "FilterQueue", qos: .userInteractive, attributes: .concurrent)
 		filterQueue.async {[weak self] in
+			var actionType: ActionType = .crop
+			if let rect = self?.currentCropRectForSourceImage {
+				let cropVector = CIVector(cgRect: rect)
+				lastCropFilter.setValueForParameter(parameterCode: "inputRectangle", newValue: cropVector)
+				self?.imagesState.sourceImage.setFiltersList(filtersList: [lastCropFilter],
+															  actionType: actionType) { ciImage, _ in
+					if let cgImageOutput = self?.context.createCGImage(ciImage, from: ciImage.extent) {
+						self?.imagesState.sourceImage = UIImage(cgImage: cgImageOutput)
+					}
+				}
+			}
+			actionType = .filter
 			if let filter = self?.lastApplyingFilter {
-				self?.imagesState.sourceImage.setFiltersList(filtersList: [filter], isFilter: true) { ciImage, rect in
+				self?.imagesState.sourceImage.setFiltersList(filtersList: [filter],
+															 actionType: actionType) { ciImage, rect in
 					if let cgImageOutput = self?.context.createCGImage(ciImage, from: rect) {
 						self?.imagesState.sourceImage = UIImage(cgImage: cgImageOutput)
 					}
 				}
 			}
-			self?.imagesState.sourceImage.setFiltersList(filtersList: self?.instrumentsList, isFilter: false) { ciImage, rect in
+			actionType = .instrument
+			self?.imagesState.sourceImage.setFiltersList(filtersList: self?.instrumentsList,
+														 actionType: actionType) { ciImage, rect in
 				if let cgImageOutput = self?.context.createCGImage(ciImage, from: rect) {
 					self?.imagesState.sourceImage = UIImage(cgImage: cgImageOutput)
 				}

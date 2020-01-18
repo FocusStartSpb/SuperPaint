@@ -12,14 +12,14 @@ struct FilterParameter
 {
 	let name: String
 	let code: String
-	let defaultValue: NSNumber
+	let defaultValue: Any
 	let minValue: NSNumber
 	let maxValue: NSNumber
-	var currentValue: NSNumber
+	var currentValue: Any
 
 	init(name: String,
 		 code: String,
-		 defaultValue: NSNumber,
+		 defaultValue: Any,
 		 minValue: NSNumber,
 		 maxValue: NSNumber) {
 		self.name = name

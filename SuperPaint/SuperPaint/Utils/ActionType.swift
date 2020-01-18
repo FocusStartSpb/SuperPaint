@@ -7,3 +7,10 @@
 //
 
 import Foundation
+
+enum ActionType
+{
+	case filter
+	case instrument
+	case crop
+}

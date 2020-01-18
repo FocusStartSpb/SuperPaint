@@ -104,7 +104,7 @@ final class CropView: UIView
 private extension CropView
 {
 	func setupInitialState() {
-		self.layer.borderWidth = 3.0
+		self.layer.borderWidth = UIConstants.cropViewBorderWidth
 		self.layer.borderColor = UIConstants.systemButtonColor.cgColor
 		self.backgroundColor = .clear
 	}
