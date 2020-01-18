@@ -47,7 +47,7 @@ final class ImageEditorPresenter
 }
 extension ImageEditorPresenter: IImageEditorPresenter
 {
-	//MARK: - Undo
+	// MARK: - Undo
 	func undoAction() {
 		if let lastImage = imageStack.pop() {
 			self.imagesState.editingImage = lastImage
