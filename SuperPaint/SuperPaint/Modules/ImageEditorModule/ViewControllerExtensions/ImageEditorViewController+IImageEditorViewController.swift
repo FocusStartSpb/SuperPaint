@@ -45,8 +45,9 @@ extension ImageEditorViewController: IImageEditorViewController
 		presenter.instrumentsList.forEach { instrument in
 			for (index, parameter) in instrument.parameters.enumerated() {
 				if let sliderViewArray = sliders[instrument.name],
-					let sliderView = sliderViewArray[index] as? SliderView {
-					sliderView.setSliderValue(value: parameter.currentValue.floatValue)
+					let sliderView = sliderViewArray[index] as? SliderView,
+					let currentValue = parameter.currentValue as? NSNumber {
+					sliderView.setSliderValue(value: currentValue.floatValue)
 				}
 			}
 		}

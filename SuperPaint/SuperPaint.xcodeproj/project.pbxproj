@@ -42,10 +42,12 @@
 		720A392523CA2D1F0026EFC9 /* NetworkErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A392423CA2D1F0026EFC9 /* NetworkErrors.swift */; };
 		720A392723CB57A60026EFC9 /* CollectionViewActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A392623CB57A50026EFC9 /* CollectionViewActivityIndicator.swift */; };
 		720A392923CBC6C10026EFC9 /* CropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85747C7823CB14E60014EA4B /* CropView.swift */; };
-		720A392A23CBC78E0026EFC9 /* UIImage+cropImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85747C7623CB10930014EA4B /* UIImage+cropImage.swift */; };
+		720A392A23CBC78E0026EFC9 /* UIImage+getCroppingRect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85747C7623CB10930014EA4B /* UIImage+getCroppingRect.swift */; };
 		72D1949D23CE492F00459D41 /* UIAlertController+removeBrokenConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72D1949C23CE492F00459D41 /* UIAlertController+removeBrokenConstraint.swift */; };
 		8511E6ED23AA936A0032B588 /* ModuleFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8511E6EC23AA936A0032B588 /* ModuleFactory.swift */; };
 		85121CAC23C79B6000DD4020 /* FiltersStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85121CAB23C79B6000DD4020 /* FiltersStack.swift */; };
+		854357B323D25A9D000EF8B9 /* ActionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 854357B223D25A9D000EF8B9 /* ActionType.swift */; };
+		854357B523D2FE5D000EF8B9 /* CropRectStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 854357B423D2FE5D000EF8B9 /* CropRectStack.swift */; };
 		8546B83B23CC5FFB00F4B33C /* ImageEditorViewController+IImageEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8546B83A23CC5FFB00F4B33C /* ImageEditorViewController+IImageEditorViewController.swift */; };
 		8546B83D23CC60E600F4B33C /* ImageEditorViewController+UIScrollViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8546B83C23CC60E600F4B33C /* ImageEditorViewController+UIScrollViewDelegate.swift */; };
 		8546B83F23CC60F900F4B33C /* ImageEditorViewController+UICollectionViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8546B83E23CC60F900F4B33C /* ImageEditorViewController+UICollectionViewDataSource.swift */; };
@@ -111,6 +113,8 @@
 		72D1949C23CE492F00459D41 /* UIAlertController+removeBrokenConstraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIAlertController+removeBrokenConstraint.swift"; sourceTree = "<group>"; };
 		8511E6EC23AA936A0032B588 /* ModuleFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleFactory.swift; sourceTree = "<group>"; };
 		85121CAB23C79B6000DD4020 /* FiltersStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiltersStack.swift; sourceTree = "<group>"; };
+		854357B223D25A9D000EF8B9 /* ActionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionType.swift; sourceTree = "<group>"; };
+		854357B423D2FE5D000EF8B9 /* CropRectStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CropRectStack.swift; sourceTree = "<group>"; };
 		8546B83A23CC5FFB00F4B33C /* ImageEditorViewController+IImageEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImageEditorViewController+IImageEditorViewController.swift"; sourceTree = "<group>"; };
 		8546B83C23CC60E600F4B33C /* ImageEditorViewController+UIScrollViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImageEditorViewController+UIScrollViewDelegate.swift"; sourceTree = "<group>"; };
 		8546B83E23CC60F900F4B33C /* ImageEditorViewController+UICollectionViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImageEditorViewController+UICollectionViewDataSource.swift"; sourceTree = "<group>"; };
@@ -122,7 +126,7 @@
 		85612B0123ACE8AC0082DC95 /* IImageEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IImageEditorViewController.swift; sourceTree = "<group>"; };
 		85612B0323ACE8DC0082DC95 /* IImageEditorPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IImageEditorPresenter.swift; sourceTree = "<group>"; };
 		85612B0523ACE8FC0082DC95 /* IImageEditorRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IImageEditorRouter.swift; sourceTree = "<group>"; };
-		85747C7623CB10930014EA4B /* UIImage+cropImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+cropImage.swift"; sourceTree = "<group>"; };
+		85747C7623CB10930014EA4B /* UIImage+getCroppingRect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+getCroppingRect.swift"; sourceTree = "<group>"; };
 		85747C7823CB14E60014EA4B /* CropView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CropView.swift; sourceTree = "<group>"; };
 		8577DD9F23B10D3100BE86E2 /* FilterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCell.swift; sourceTree = "<group>"; };
 		8577DDA123B22D3C00BE86E2 /* FiltersList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiltersList.swift; sourceTree = "<group>"; };
@@ -231,11 +235,13 @@
 				859BCCE423B0F4D100553048 /* UIImage+resize.swift */,
 				859BCCE623B0F4DD00553048 /* UIImage+setFilter.swift */,
 				720A390923B3BF690026EFC9 /* UIImage+orientation.swift */,
-				85747C7623CB10930014EA4B /* UIImage+cropImage.swift */,
+				85747C7623CB10930014EA4B /* UIImage+getCroppingRect.swift */,
 				8577DDA323B24E0B00BE86E2 /* ImagesStack.swift */,
+				854357B423D2FE5D000EF8B9 /* CropRectStack.swift */,
 				85121CAB23C79B6000DD4020 /* FiltersStack.swift */,
 				85F61CC023CA2DE500E2C8FF /* UIImageView+getImageRectangle.swift */,
 				72D1949C23CE492F00459D41 /* UIAlertController+removeBrokenConstraint.swift */,
+				854357B223D25A9D000EF8B9 /* ActionType.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -534,11 +540,13 @@
 				720A38AE23AA922D0026EFC9 /* ImagesCollectionRouter.swift in Sources */,
 				858F4AAD23C1EF6A002C0BAB /* InstrumentCell.swift in Sources */,
 				720A391823C63CCF0026EFC9 /* IWebSearchRouter.swift in Sources */,
-				720A392A23CBC78E0026EFC9 /* UIImage+cropImage.swift in Sources */,
+				854357B523D2FE5D000EF8B9 /* CropRectStack.swift in Sources */,
+				720A392A23CBC78E0026EFC9 /* UIImage+getCroppingRect.swift in Sources */,
 				859BCCD123AE99C600553048 /* EditorControlsCreator.swift in Sources */,
 				85612B0223ACE8AC0082DC95 /* IImageEditorViewController.swift in Sources */,
 				85121CAC23C79B6000DD4020 /* FiltersStack.swift in Sources */,
 				858F4A8B23C1D5CE002C0BAB /* FilterParameter.swift in Sources */,
+				854357B323D25A9D000EF8B9 /* ActionType.swift in Sources */,
 				720A38FE23B21E070026EFC9 /* CDImageModelManager.swift in Sources */,
 				8546B84323CC613000F4B33C /* ImageEditorViewController+UICollectionViewDelegateFlowLayout.swift in Sources */,
 				720A38B823AA9A050026EFC9 /* NetworkRepository.swift in Sources */,

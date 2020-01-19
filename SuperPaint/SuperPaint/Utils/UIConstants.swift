@@ -41,4 +41,5 @@ enum UIConstants
 	static let doubleTapZoomScale: CGFloat = 2.0
 	static let editorImageDimension: CGFloat = 1000
 	static let imageCellDimension: CGFloat = 500
+	static let cropViewBorderWidth: CGFloat = 4.0
 }

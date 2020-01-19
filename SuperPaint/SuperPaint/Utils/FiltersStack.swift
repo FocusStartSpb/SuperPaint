@@ -10,13 +10,13 @@ import Foundation
 
 struct FiltersStack
 {
-	private var filtersStack: [(instrumenCode: String, parameterCode: String, parameterValue: NSNumber)] = []
+	private var filtersStack: [[Filter]] = []
 
-	mutating func push(_ filter: (instrumenCode: String, parameterCode: String, parameterValue: NSNumber)) {
+	mutating func push(_ filter: [Filter]) {
 		filtersStack.append(filter)
 	}
 
-	mutating func pop() -> (instrumenCode: String, parameterCode: String, parameterValue: NSNumber)? {
+	mutating func pop() -> [Filter]? {
 		if filtersStack.isEmpty {
 			return nil
 		}

@@ -11,7 +11,7 @@ import UIKit
 extension UIImage
 {
 	func setFiltersList(filtersList: [Filter]?,
-						isFilter: Bool,
+						actionType: ActionType,
 						 completion: @escaping (CIImage, CGRect) -> Void) {
 		guard let filtersList = filtersList else { return }
 		var ciImage = CIImage(image: self)
@@ -20,11 +20,18 @@ extension UIImage
 		filtersList.forEach { filter in
 			var parameters: [String: Any] = [:]
 			filter.parameters.forEach { parameter in
-				if parameter.currentValue != parameter.defaultValue {
+				if let currentValue = parameter.currentValue as? NSNumber,
+					let defaultValue = parameter.defaultValue as? NSNumber,
+					currentValue != defaultValue {
+						parameters[parameter.code] = parameter.currentValue
+					}
+				if let currentValue = parameter.currentValue as? CIVector,
+				let defaultValue = parameter.defaultValue as? CIVector,
+				currentValue != defaultValue {
 					parameters[parameter.code] = parameter.currentValue
 				}
 			}
-			if parameters.isEmpty == false || isFilter {
+			if parameters.isEmpty == false || actionType == .filter {
 				filters.append(CIFilter(name: filter.code, parameters: parameters))
 			}
 		}

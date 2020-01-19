@@ -12,15 +12,17 @@ struct Filter
 {
 	let name: String
 	let code: String
+	let actionType: ActionType
 	var parameters: [FilterParameter]
 
-	init(with name: String, code: String, parameters: [FilterParameter] = []) {
+	init(with name: String, code: String, actionType: ActionType, parameters: [FilterParameter] = []) {
 		self.name = name
 		self.code = code
+		self.actionType = actionType
 		self.parameters = parameters
 	}
 
-	mutating func setValueForParameter(parameterCode: String, newValue: NSNumber) {
+	mutating func setValueForParameter(parameterCode: String, newValue: Any) {
 		for index in parameters.indices where parameters[index].code == parameterCode {
 			parameters[index].currentValue = newValue
 		}
