@@ -16,4 +16,6 @@ protocol IWebSearchPresenter: AnyObject
 	func getTotalPages() -> Int
 	func getImageAtIndex(index: Int) -> UIImage
 	func onCellPressed(image: UIImage)
+
+	func inject(view: IWebSearchViewController)
 }

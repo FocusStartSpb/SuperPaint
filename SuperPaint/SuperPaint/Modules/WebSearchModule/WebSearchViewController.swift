@@ -10,7 +10,7 @@ import UIKit
 
 final class WebSearchViewController: UIViewController
 {
-	private let webSearchPresenter: IWebSearchPresenter
+	private let presenter: IWebSearchPresenter
 	private let collectionView: UICollectionView = {
 		let layout = UICollectionViewFlowLayout()
 		layout.scrollDirection = .vertical
@@ -35,7 +35,7 @@ final class WebSearchViewController: UIViewController
 	private var currentPage = 1
 
 	init(presenter: IWebSearchPresenter) {
-		self.webSearchPresenter = presenter
+		self.presenter = presenter
 		super.init(nibName: nil, bundle: nil)
 	}
 
@@ -199,10 +199,10 @@ extension WebSearchViewController: UISearchBarDelegate
 		self.imagePlaceholderStack.isHidden = true
 		self.activityIndicator.startAnimating()
 		self.activityIndicatorContainer.isHidden = false
-		self.webSearchPresenter.clearImages()
+		self.presenter.clearImages()
 		self.collectionView.reloadData()
 		self.showBottomIndicator = false
-		self.webSearchPresenter.loadImages(withSearchText: searchBar.text, page: 1)
+		self.presenter.loadImages(withSearchText: searchBar.text, page: 1)
 		self.currentPage = 1
 	}
 
@@ -216,8 +216,8 @@ extension WebSearchViewController: UICollectionViewDelegate
 {
 	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 		self.collectionView.deselectItem(at: indexPath, animated: false)
-		let image = self.webSearchPresenter.getImageAtIndex(index: indexPath.row)
-		self.webSearchPresenter.onCellPressed(image: image)
+		let image = self.presenter.getImageAtIndex(index: indexPath.row)
+		self.presenter.onCellPressed(image: image)
 	}
 
 	func collectionView(_ collectionView: UICollectionView,
@@ -249,12 +249,12 @@ extension WebSearchViewController: UICollectionViewDelegate
 						willDisplaySupplementaryView view: UICollectionReusableView,
 						forElementKind elementKind: String,
 						at indexPath: IndexPath) {
-		let totalPages = self.webSearchPresenter.getTotalPages()
+		let totalPages = self.presenter.getTotalPages()
 		if elementKind == UICollectionView.elementKindSectionFooter &&
 			self.currentPage >= 1 &&
 			self.currentPage <= totalPages {
 			self.loadingView?.activityIndicator.startAnimating()
-			self.webSearchPresenter.loadImages(withSearchText: self.searchController.searchBar.text, page: self.currentPage)
+			self.presenter.loadImages(withSearchText: self.searchController.searchBar.text, page: self.currentPage)
 		}
 	}
 
@@ -272,14 +272,14 @@ extension WebSearchViewController: UICollectionViewDelegate
 extension WebSearchViewController: UICollectionViewDataSource
 {
 	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-		return self.webSearchPresenter.getNumberOfImages()
+		return self.presenter.getNumberOfImages()
 	}
 
 	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 		let cell = self.collectionView.dequeueReusableCell(
 			withReuseIdentifier: WebImageCell.cellReuseIdentifier,
 			for: indexPath) as? WebImageCell ?? WebImageCell(frame: .zero)
-		cell.imageView.image = self.webSearchPresenter.getImageAtIndex(index: indexPath.row)
+		cell.imageView.image = self.presenter.getImageAtIndex(index: indexPath.row)
 		return cell
 	}
 }
@@ -330,7 +330,7 @@ extension WebSearchViewController: IWebSearchViewController
 			self.currentPage += 1
 			self.notFoundStack.isHidden = true
 		}
-		if self.currentPage > self.webSearchPresenter.getTotalPages() {
+		if self.currentPage > self.presenter.getTotalPages() {
 			self.showBottomIndicator = false
 		}
 		else {

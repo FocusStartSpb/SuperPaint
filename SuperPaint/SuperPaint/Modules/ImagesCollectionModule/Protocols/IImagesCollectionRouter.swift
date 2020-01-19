@@ -12,4 +12,6 @@ protocol IImagesCollectionRouter: AnyObject
 {
 	func pushEditorModule(id: String, image: UIImage, isNewImage: Bool)
 	func pushWebSearchModule()
+
+	func inject(view: IImagesCollectionViewController)
 }

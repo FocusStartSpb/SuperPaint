@@ -11,4 +11,6 @@ import UIKit
 protocol IWebSearchRouter: AnyObject
 {
 	func pushEditorModule(image: UIImage)
+
+	func inject(view: IWebSearchViewController)
 }

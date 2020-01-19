@@ -10,20 +10,20 @@ import UIKit
 
 final class WebSearchPresenter
 {
-	private let webSearchRouter: IWebSearchRouter
+	private let router: IWebSearchRouter
 	private let repository: INetworkRepository
-	private weak var webSearchViewController: IWebSearchViewController?
+	private weak var view: IWebSearchViewController?
 
 	private var images = [UIImage]()
 	private var totalPages = 0
 
 	init(router: IWebSearchRouter, repository: INetworkRepository) {
-		self.webSearchRouter = router
+		self.router = router
 		self.repository = repository
 	}
 
 	func inject(view: IWebSearchViewController) {
-		self.webSearchViewController = view
+		self.view = view
 	}
 }
 
@@ -34,10 +34,10 @@ extension WebSearchPresenter: IWebSearchPresenter
 			switch unsplashImagesResult {
 			case .success(let result):
 				DispatchQueue.main.async {
-					if result.query == self.webSearchViewController?.searchBarText {
+					if result.query == self.view?.searchBarText {
 						result.images.forEach { self.images.append($0) }
 						self.totalPages = result.totalPages
-						self.webSearchViewController?.reloadView(itemsCount: self.images.count)
+						self.view?.reloadView(itemsCount: self.images.count)
 					}
 				}
 			case .failure(let error):
@@ -63,6 +63,6 @@ extension WebSearchPresenter: IWebSearchPresenter
 	}
 
 	func onCellPressed(image: UIImage) {
-		self.webSearchRouter.pushEditorModule(image: image)
+		self.router.pushEditorModule(image: image)
 	}
 }

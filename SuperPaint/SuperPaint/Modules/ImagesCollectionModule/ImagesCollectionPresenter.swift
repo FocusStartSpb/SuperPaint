@@ -10,20 +10,20 @@ import UIKit
 
 final class ImagesCollectionPresenter
 {
-	private let imagesCollectionRouter: IImagesCollectionRouter
+	private let router: IImagesCollectionRouter
 	private let repository: IDatabaseRepository
-	private weak var imagesCollectionViewController: IImagesCollectionViewController?
+	private weak var view: IImagesCollectionViewController?
 
 	private var imageModels: [ImageModel] = []
 	private var images: [UIImage] = []
 
 	init(router: IImagesCollectionRouter, repository: IDatabaseRepository) {
-		self.imagesCollectionRouter = router
+		self.router = router
 		self.repository = repository
 	}
 
 	func inject(view: IImagesCollectionViewController) {
-		self.imagesCollectionViewController = view
+		self.view = view
 	}
 }
 
@@ -50,7 +50,7 @@ extension ImagesCollectionPresenter: IImagesCollectionPresenter
 						self?.images.append(image)
 					}
 				}
-				self.imagesCollectionViewController?.reloadView()
+				self.view?.reloadView()
 			case .failure(let error):
 				assertionFailure(error.localizedDescription)
 			}
@@ -73,7 +73,7 @@ extension ImagesCollectionPresenter: IImagesCollectionPresenter
 				self?.images[index] = image
 			}
 		}
-		self.imagesCollectionViewController?.reloadView()
+		self.view?.reloadView()
 	}
 
 	func deleteImages(_ indexes: [IndexPath]) {
@@ -116,10 +116,10 @@ extension ImagesCollectionPresenter: IImagesCollectionPresenter
 	}
 
 	func onCellPressed(id: String, image: UIImage, isNewImage: Bool) {
-		self.imagesCollectionRouter.pushEditorModule(id: id, image: image, isNewImage: isNewImage)
+		self.router.pushEditorModule(id: id, image: image, isNewImage: isNewImage)
 	}
 
 	func pushWebSearchModule() {
-		self.imagesCollectionRouter.pushWebSearchModule()
+		self.router.pushWebSearchModule()
 	}
 }

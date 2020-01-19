@@ -10,7 +10,7 @@ import UIKit
 
 final class ImagesCollectionViewController: UIViewController
 {
-	private let imagesCollectionPresenter: IImagesCollectionPresenter
+	private let presenter: IImagesCollectionPresenter
 	private let collectionView: UICollectionView = {
 		let layout = UICollectionViewFlowLayout()
 		layout.scrollDirection = .vertical
@@ -22,7 +22,7 @@ final class ImagesCollectionViewController: UIViewController
 	private var safeArea = UILayoutGuide()
 
 	init(presenter: IImagesCollectionPresenter) {
-		self.imagesCollectionPresenter = presenter
+		self.presenter = presenter
 		super.init(nibName: nil, bundle: nil)
 	}
 
@@ -129,7 +129,7 @@ private extension ImagesCollectionViewController
 		libraryAction.setValue(Images.libraryIcon, forKey: "image")
 		libraryAction.setValue(CATextLayerAlignmentMode.left, forKey: "titleTextAlignment")
 		let webAction = UIAlertAction(title: "Web search", style: .default) { _ in
-			self.imagesCollectionPresenter.pushWebSearchModule()
+			self.presenter.pushWebSearchModule()
 			actionSheet.dismiss(animated: true)
 		}
 		webAction.setValue(Images.webIcon, forKey: "image")
@@ -145,7 +145,7 @@ private extension ImagesCollectionViewController
 
 	// MARK: - Загружаем картинки из базы данных
 	func loadImages() {
-		self.imagesCollectionPresenter.loadImages()
+		self.presenter.loadImages()
 	}
 	// MARK: - Действие добавления новой картинки
 	@objc func addNewImage() {
@@ -159,7 +159,7 @@ private extension ImagesCollectionViewController
 												preferredStyle: .alert)
 		let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { _ in
 			guard let selectedIndexes = self.collectionView.indexPathsForSelectedItems else { return }
-			self.imagesCollectionPresenter.deleteImages(selectedIndexes)
+			self.presenter.deleteImages(selectedIndexes)
 			self.collectionView.deleteItems(at: selectedIndexes)
 			self.navigationItem.rightBarButtonItem?.isEnabled = false
 		}
@@ -180,10 +180,10 @@ extension ImagesCollectionViewController: UICollectionViewDelegate
 		}
 		else if indexPath.row != 0 && self.isEditing == false {
 			self.collectionView.deselectItem(at: indexPath, animated: false)
-			self.imagesCollectionPresenter.getImageModelAt(index: indexPath.row - 1, completion: { imageModel in
+			self.presenter.getImageModelAt(index: indexPath.row - 1, completion: { imageModel in
 				guard let id = imageModel.id, let imageData = imageModel.imageData,
 					let image = UIImage(data: imageData as Data) else { return }
-				self.imagesCollectionPresenter.onCellPressed(id: id, image: image, isNewImage: false)
+				self.presenter.onCellPressed(id: id, image: image, isNewImage: false)
 			})
 		}
 		else if indexPath.row != 0 && self.isEditing {
@@ -203,7 +203,7 @@ extension ImagesCollectionViewController: UICollectionViewDataSource
 {
 	func collectionView(_ collectionView: UICollectionView,
 						numberOfItemsInSection section: Int) -> Int {
-		return self.imagesCollectionPresenter.getNumberOfImages()
+		return self.presenter.getNumberOfImages()
 	}
 
 	func collectionView(_ collectionView: UICollectionView,
@@ -233,7 +233,7 @@ extension ImagesCollectionViewController: UICollectionViewDataSource
 			}
 			cell.selectionImageView.image = cell.isSelected ? Images.selected : Images.notSelected
 
-			self.imagesCollectionPresenter.getImage(index: indexPath.row - 1, completion: { image in
+			self.presenter.getImage(index: indexPath.row - 1, completion: { image in
 				cell.imageView.image = image
 			})
 		}
@@ -280,7 +280,7 @@ extension ImagesCollectionViewController: UIImagePickerControllerDelegate, UINav
 			guard let image = (info[.originalImage] as? UIImage)?.verticalOrientationImage() else { return }
 
 			let id = UUID().uuidString
-			self?.imagesCollectionPresenter.onCellPressed(id: id, image: image, isNewImage: true)
+			self?.presenter.onCellPressed(id: id, image: image, isNewImage: true)
 		}
 	}
 }
@@ -297,12 +297,12 @@ extension ImagesCollectionViewController: IImagesCollectionViewController
 	}
 
 	func saveNewImage(newImageModel: ImageModel) {
-		self.imagesCollectionPresenter.saveNewImage(newImageModel: newImageModel)
+		self.presenter.saveNewImage(newImageModel: newImageModel)
 		let indexPath = IndexPath(row: 1, section: 0)
 		self.collectionView.insertItems(at: [indexPath])
 	}
 
 	func updateImage(imageModel: ImageModel) {
-		self.imagesCollectionPresenter.updateImage(imageModel: imageModel)
+		self.presenter.updateImage(imageModel: imageModel)
 	}
 }
