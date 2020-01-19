@@ -298,6 +298,8 @@ extension ImagesCollectionViewController: IImagesCollectionViewController
 
 	func saveNewImage(newImageModel: ImageModel) {
 		self.imagesCollectionPresenter.saveNewImage(newImageModel: newImageModel)
+		let indexPath = IndexPath(row: 1, section: 0)
+		self.collectionView.insertItems(at: [indexPath])
 	}
 
 	func updateImage(imageModel: ImageModel) {

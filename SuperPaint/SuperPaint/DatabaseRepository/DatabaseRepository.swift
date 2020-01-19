@@ -24,7 +24,7 @@ extension DatabaseRepository: IDatabaseRepository
 		self.imagesManager.loadImages { imagesResult in
 			switch imagesResult {
 			case .success(let imagesResult):
-				completion(.success(imagesResult))
+				completion(.success(imagesResult.reversed()))
 			case .failure(let error):
 				completion(.failure(error))
 			}
