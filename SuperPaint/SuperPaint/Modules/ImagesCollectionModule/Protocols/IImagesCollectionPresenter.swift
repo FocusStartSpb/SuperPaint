@@ -20,4 +20,6 @@ protocol IImagesCollectionPresenter: AnyObject
 	func getImage(index: Int, completion: @escaping (UIImage) -> Void)
 	func onCellPressed(id: String, image: UIImage, isNewImage: Bool)
 	func pushWebSearchModule()
+
+	func inject(view: IImagesCollectionViewController)
 }

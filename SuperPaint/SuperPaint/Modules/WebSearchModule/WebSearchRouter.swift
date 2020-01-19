@@ -10,7 +10,7 @@ import UIKit
 
 final class WebSearchRouter
 {
-	weak var webSearchViewController: IWebSearchViewController?
+	weak var view: IWebSearchViewController?
 	private let factory: ModuleFactory
 
 	init(factory: ModuleFactory) {
@@ -18,7 +18,7 @@ final class WebSearchRouter
 	}
 
 	func inject(view: IWebSearchViewController) {
-		self.webSearchViewController = view
+		self.view = view
 	}
 }
 
@@ -26,6 +26,6 @@ extension WebSearchRouter: IWebSearchRouter
 {
 	func pushEditorModule(image: UIImage) {
 		let vc = self.factory.createImageEditorModule(id: UUID().uuidString, image: image, isNewImage: true)
-		self.webSearchViewController?.navController?.pushViewController(vc, animated: true)
+		self.view?.navController?.pushViewController(vc, animated: true)
 	}
 }
