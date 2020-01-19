@@ -24,6 +24,7 @@ final class ImageEditorViewController: UIViewController
 
 	var undoButton: UIBarButtonItem?
 	var saveButton: UIBarButtonItem?
+	var exportButton: UIBarButtonItem?
 	private var cropButton: UIBarButtonItem?
 	private var backButton: UIBarButtonItem?
 	private var croppingView: CropView?
@@ -71,6 +72,7 @@ final class ImageEditorViewController: UIViewController
 			filtersButton.isSelected = filtersButton.isSelected && normalMode
 			instrumentsButton.isSelected = instrumentsButton.isSelected && normalMode
 			saveButton?.isEnabled = normalMode
+			exportButton?.isEnabled = normalMode
 			undoButton?.isEnabled = normalMode
 			backButton?.isEnabled = normalMode
 			instrumentsCollection.isHidden = true
@@ -208,6 +210,7 @@ private extension ImageEditorViewController
 											action: #selector(back))
 		self.navigationItem.leftBarButtonItem = backButton
 		saveButton = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(savePressed))
+		exportButton = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(exportPressed))
 		undoButton = UIBarButtonItem(barButtonSystemItem: .reply, target: self, action: #selector(undoPressed))
 		cropButton = UIBarButtonItem(image: Images.cropIcon,
 									 landscapeImagePhone: Images.cropIcon,
@@ -216,7 +219,7 @@ private extension ImageEditorViewController
 									 action: #selector(toggleCropMode))
 		undoButton?.isEnabled = false
 		cropButton?.tintColor = UIConstants.systemButtonColor
-		let barButtonItems = [saveButton, undoButton, cropButton].compactMap{ $0 }
+		let barButtonItems = [saveButton, exportButton, undoButton, cropButton].compactMap{ $0 }
 		self.navigationItem.setRightBarButtonItems(barButtonItems, animated: true)
 	}
 // MARK: - createSliders
@@ -282,6 +285,15 @@ private extension ImageEditorViewController
 
 	@objc func savePressed(_ sender: UIBarButtonItem) {
 		self.presenter.saveImage()
+	}
+
+	@objc func exportPressed(_ sender: UIBarButtonItem) {
+		guard let image = self.imageView.image?.pngData() else {
+			return
+		}
+
+		let activityVC = UIActivityViewController(activityItems: [image], applicationActivities: nil)
+		present(activityVC, animated: true)
 	}
 
 	@objc func undoPressed(_ sender: UIBarButtonItem) {
