@@ -58,12 +58,11 @@ extension ImagesCollectionPresenter: IImagesCollectionPresenter
 	}
 
 	func saveNewImage(newImageModel: ImageModel) {
-		self.imageModels.append(newImageModel)
+		self.imageModels.insert(newImageModel, at: 0)
 		self.getImage(imageModel: newImageModel) { [weak self] image in
 			guard let image = image else { return }
-			self?.images.append(image)
+			self?.images.insert(image, at: 0)
 		}
-		self.imagesCollectionViewController?.reloadView()
 	}
 
 	func updateImage(imageModel: ImageModel) {
