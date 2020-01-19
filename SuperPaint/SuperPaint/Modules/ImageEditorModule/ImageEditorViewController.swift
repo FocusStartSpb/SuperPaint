@@ -89,14 +89,6 @@ final class ImageEditorViewController: UIViewController
 			else {
 				if let cropView = croppingView {
 					let cropRect = cropView.frame
-//					let imageWidth = image.size.width
-//					let imageHeight = image.size.height
-//					let widthScale = imageWidth / imageRect.width
-//					let heightScale = imageHeight / imageRect.height
-//					cropRect.origin.x = (cropRect.origin.x - imageRect.origin.x) * widthScale
-//					cropRect.origin.y = (cropRect.origin.y - imageRect.origin.y) * heightScale
-//					cropRect.size.width *= widthScale
-//					cropRect.size.height *= heightScale
 					presenter.cropImage(imageRect: imageRect, cropRect: cropRect)
 					cropView.removeFromSuperview()
 				}
