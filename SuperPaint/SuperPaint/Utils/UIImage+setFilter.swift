@@ -15,7 +15,7 @@ extension UIImage
 						 completion: @escaping (CIImage, CGRect) -> Void) {
 		guard let filtersList = filtersList else { return }
 		var ciImage = CIImage(image: self)
-		guard let ciRect = ciImage?.extent else { return }
+		guard let sourceCIRect = ciImage?.extent else { return }
 		var filters: [CIFilter?] = []
 		filtersList.forEach { filter in
 			var parameters: [String: Any] = [:]
@@ -41,6 +41,7 @@ extension UIImage
 			ciImage = filter.outputImage
 		}
 		guard let outputImage = ciImage else { return }
-		completion(outputImage, ciRect)
+		let rect = (actionType == .crop) ? outputImage.extent : sourceCIRect
+		completion(outputImage, rect)
 	}
 }
