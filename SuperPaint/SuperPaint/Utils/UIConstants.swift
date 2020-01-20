@@ -17,6 +17,7 @@ enum UIConstants
 	static let numberOfItemsPerRow: CGFloat = 3
 	static let numberOfItemsPerRowWeb: CGFloat = 2
 	static let cellCornerRadius: CGFloat = 20
+	static let filterCellCornerRadius: CGFloat = 5
 	static let systemButtonColor = UIButton(type: .system).currentTitleColor
 	static let firstCell: Int = 1
 	static let filterCollectionViewCellHeight: CGFloat = 105
