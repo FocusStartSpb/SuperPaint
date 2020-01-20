@@ -28,4 +28,14 @@ struct FiltersStack
 	mutating func clear() {
 		filtersStack = []
 	}
+
+	func getLastFilterByType(actionType: ActionType) -> Filter? {
+		for index in (0..<filtersStack.count).reversed() {
+			let zeroElement = filtersStack[index][0]
+			if zeroElement.actionType == actionType {
+				return zeroElement
+			}
+		}
+		return nil
+	}
 }

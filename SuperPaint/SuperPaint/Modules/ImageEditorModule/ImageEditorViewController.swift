@@ -41,6 +41,9 @@ final class ImageEditorViewController: UIViewController
 		set {
 			instrumentsCollection.isHidden = true
 			filtersCollection.isHidden = (newValue == false)
+			if newValue {
+				showSliders()
+			}
 			filtersButton.isSelected = newValue
 			instrumentsButton.isSelected = filtersButton.isSelected ? false : instrumentsButton.isSelected
 		}
