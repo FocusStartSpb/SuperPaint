@@ -38,9 +38,9 @@ private extension FilterCell
 		imageView.clipsToBounds = true
 		imageView.contentMode = .scaleAspectFill
 		imageView.layer.masksToBounds = true
-		imageView.layer.cornerRadius = UIConstants.cellCornerRadius
+		imageView.layer.cornerRadius = UIConstants.filterCellCornerRadius
 		label.translatesAutoresizingMaskIntoConstraints = false
-		label.font = UIFont.systemFont(ofSize: 13)
+		label.font = Fonts.sliderFont
 		label.textAlignment = .center
 		label.textColor = UIConstants.textColor
 		self.addSubview(imageView)
