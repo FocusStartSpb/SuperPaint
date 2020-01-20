@@ -36,8 +36,9 @@ private extension FilterCell
 	func setupInitialState() {
 		imageView.translatesAutoresizingMaskIntoConstraints = false
 		imageView.clipsToBounds = true
-		imageView.contentMode = .scaleAspectFit
+		imageView.contentMode = .scaleAspectFill
 		imageView.layer.masksToBounds = true
+		imageView.layer.cornerRadius = UIConstants.cellCornerRadius
 		label.translatesAutoresizingMaskIntoConstraints = false
 		label.font = UIFont.systemFont(ofSize: 13)
 		label.textAlignment = .center
