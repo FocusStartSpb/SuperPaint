@@ -44,12 +44,6 @@ extension DatabaseRepository: IDatabaseRepository
 		}
 	}
 
-//	func updateImage(id: String, data imageData: NSData, completion: (ImageModel) -> Void) {
-//		self.imagesManager.updateImage(id: id, data: imageData) { imageModel in
-//			completion(imageModel)
-//		}
-//	}
-
 	func deleteImages(_ images: [ImageModel]) {
 		self.imagesManager.deleteImages(images)
 	}
