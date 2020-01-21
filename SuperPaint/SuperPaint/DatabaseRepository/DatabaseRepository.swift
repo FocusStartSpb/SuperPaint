@@ -31,17 +31,24 @@ extension DatabaseRepository: IDatabaseRepository
 		}
 	}
 
-	func saveImage(id: String, data imageData: NSData, completion: (NSManagedObject) -> Void) {
-		self.imagesManager.saveImage(id: id, data: imageData) { object in
-			completion(object)
+	func saveImage(id: String, data imageData: NSData, isNewImage: Bool, completion: (ImageModel) -> Void) {
+		if isNewImage {
+			self.imagesManager.saveImage(id: id, data: imageData) { imageModel in
+				completion(imageModel)
+			}
+		}
+		else {
+			self.imagesManager.updateImage(id: id, data: imageData) { imageModel in
+				completion(imageModel)
+			}
 		}
 	}
 
-	func updateImage(id: String, data imageData: NSData, completion: (ImageModel) -> Void) {
-		self.imagesManager.updateImage(id: id, data: imageData) { imageModel in
-			completion(imageModel)
-		}
-	}
+//	func updateImage(id: String, data imageData: NSData, completion: (ImageModel) -> Void) {
+//		self.imagesManager.updateImage(id: id, data: imageData) { imageModel in
+//			completion(imageModel)
+//		}
+//	}
 
 	func deleteImages(_ images: [ImageModel]) {
 		self.imagesManager.deleteImages(images)

@@ -160,31 +160,26 @@ extension ImageEditorPresenter: IImageEditorPresenter
 	func saveImage() {
 		applyFiltersToOriginalImage { [weak self] image in
 			guard let imageData = image.pngData(), let self = self else { return }
+			guard let rootViewController = (UIApplication.shared.windows.first?.rootViewController as?
+			UINavigationController)?.viewControllers.first as? IImagesCollectionViewController else { return }
 			let savingImageQueue = DispatchQueue(label: "saveImage", qos: .userInteractive, attributes: .concurrent)
-			if self.isNewImage {
-				savingImageQueue.async {
-					self.repository.saveImage(id: self.id, data: imageData as NSData) { object in
-						guard let imageModel = object as? ImageModel else { return }
-						DispatchQueue.main.async {
-							guard let mainVC = (UIApplication.shared.windows.first?.rootViewController as?
-								UINavigationController)?.viewControllers.first as? IImagesCollectionViewController else { return }
-							mainVC.saveNewImage(newImageModel: imageModel)
-						}
+			savingImageQueue.async { [weak self] in
+				if let newImageFlag = self?.isNewImage, let imageID = self?.id {
+					self?.repository.saveImage(id: imageID,
+											  data: imageData as NSData,
+											  isNewImage: newImageFlag) { imageModel in
+												DispatchQueue.main.async {
+													if newImageFlag {
+														rootViewController.saveNewImage(newImageModel: imageModel)
+													}
+													else {
+														rootViewController.updateImage(imageModel: imageModel)
+													}
+													self?.moveToMain()
+												}
 					}
 				}
 			}
-			else {
-				savingImageQueue.async {
-					self.repository.updateImage(id: self.id, data: imageData as NSData) { imageModel in
-						DispatchQueue.main.async {
-							guard let mainVC = (UIApplication.shared.windows.first?.rootViewController as?
-								UINavigationController)?.viewControllers.first as? IImagesCollectionViewController else { return }
-							mainVC.updateImage(imageModel: imageModel)
-						}
-					}
-				}
-			}
-			self.moveToMain()
 		}
 	}
 
@@ -196,10 +191,10 @@ extension ImageEditorPresenter: IImageEditorPresenter
 		self.router.moveToMain()
 	}
 }
-// MARK: - private extension
+
 private extension ImageEditorPresenter
 {
-
+// MARK: - apply CIFilter
 	func applyCIFilter(to image: UIImage,
 					   actionType: ActionType,
 					   filtersToApply: [Filter],
@@ -231,7 +226,7 @@ private extension ImageEditorPresenter
 			}
 		}
 	}
-
+// MARK: - create previews
 	func createFilteredImageCollection() {
 		guard let preview = imagesState.sourceImage.resizeImage(to: UIConstants.collectionViewCellWidth) else { return }
 		let filterQueue = DispatchQueue(label: "FilterQueue", qos: .userInteractive, attributes: .concurrent)
@@ -255,35 +250,29 @@ private extension ImageEditorPresenter
 	func applyFiltersToOriginalImage(completion: @escaping (UIImage) -> Void) {
 		self.view?.userInteractionEnabled = false
 		view?.startSpinner()
+		var applyingFilters: [Filter] = []
 		var lastCropFilter = cropFilter
 		let filterQueue = DispatchQueue(label: "FilterQueue", qos: .userInteractive, attributes: .concurrent)
 		filterQueue.async {[weak self] in
-			var actionType: ActionType = .crop
+			var actionType: ActionType = .instrument
 			if let rect = self?.currentCropRectForSourceImage {
 				let cropVector = CIVector(cgRect: rect)
 				lastCropFilter.setValueForParameter(parameterCode: "inputRectangle", newValue: cropVector)
-				self?.imagesState.sourceImage.setFiltersList(filtersList: [lastCropFilter],
-															  actionType: actionType) { ciImage, rect in
-					if let cgImageOutput = self?.context.createCGImage(ciImage, from: rect) {
-						self?.imagesState.sourceImage = UIImage(cgImage: cgImageOutput)
-					}
-				}
+				applyingFilters.append(lastCropFilter)
+				actionType = .crop
 			}
-			actionType = .filter
 			if let filter = self?.filtersStack.getLastFilterByType(actionType: .filter) {
-				self?.imagesState.sourceImage.setFiltersList(filtersList: [filter],
-															 actionType: actionType) { ciImage, rect in
-					if let cgImageOutput = self?.context.createCGImage(ciImage, from: rect) {
-						self?.imagesState.sourceImage = UIImage(cgImage: cgImageOutput)
-					}
-				}
+				applyingFilters.append(filter)
 			}
-			actionType = .instrument
-			self?.imagesState.sourceImage.setFiltersList(filtersList: self?.instrumentsList,
+			if let instruments = self?.instrumentsList {
+				applyingFilters += instruments
+			}
+
+			self?.imagesState.sourceImage.setFiltersList(filtersList: applyingFilters,
 														 actionType: actionType) { ciImage, rect in
-				if let cgImageOutput = self?.context.createCGImage(ciImage, from: rect) {
-					self?.imagesState.sourceImage = UIImage(cgImage: cgImageOutput)
-				}
+															if let cgImageOutput = self?.context.createCGImage(ciImage, from: rect) {
+																self?.imagesState.sourceImage = UIImage(cgImage: cgImageOutput)
+															}
 			}
 			DispatchQueue.main.async {
 				self?.view?.stopSpinner()
