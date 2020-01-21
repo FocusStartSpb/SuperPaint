@@ -31,7 +31,7 @@ extension UIImage
 					parameters[parameter.code] = parameter.currentValue
 				}
 			}
-			if parameters.isEmpty == false || actionType == .filter {
+			if parameters.isEmpty == false || filter.actionType == .filter {
 				filters.append(CIFilter(name: filter.code, parameters: parameters))
 			}
 		}

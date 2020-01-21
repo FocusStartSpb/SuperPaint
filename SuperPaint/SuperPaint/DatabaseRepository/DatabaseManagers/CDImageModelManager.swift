@@ -47,7 +47,7 @@ extension CDImageModelManager: ICDImageModelManager
 		}
 	}
 
-	func saveImage(id: String, data imageData: NSData, completion: (NSManagedObject) -> Void) {
+	func saveImage(id: String, data imageData: NSData, completion: (ImageModel) -> Void) {
 		guard let imageEntity = NSEntityDescription.entity(forEntityName: ImageModelKeys.name,
 														   in: self.managedContext) else { return }
 		let imageModel = NSManagedObject(entity: imageEntity, insertInto: self.managedContext)
@@ -56,6 +56,7 @@ extension CDImageModelManager: ICDImageModelManager
 
 		do {
 			try self.managedContext.save()
+			guard let imageModel = imageModel as? ImageModel else { return }
 			completion(imageModel)
 		}
 		catch {
