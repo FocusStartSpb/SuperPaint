@@ -15,6 +15,7 @@ final class ImageEditorPresenter
 	var cropFilter: Filter
 	var filteredPreviews: [UIImage] = []
 	private var imageStack = ImagesStack()
+	private var filteredImageStack = ImagesStack()
 	private var filtersStack = FiltersStack()
 	private var cropRectStack = CropRectStack()
 	private let router: IImageEditorRouter
@@ -65,7 +66,9 @@ extension ImageEditorPresenter: IImageEditorPresenter
 					currentCropRectForSourceImage = rect
 				}
 			case .filter:
-				self.imagesState.instrumentSourceImage = self.imagesState.editingImage
+				if let image = filteredImageStack.pop() {
+					self.imagesState.instrumentSourceImage = image
+				}
 			}
 		}
 	}
@@ -80,6 +83,7 @@ extension ImageEditorPresenter: IImageEditorPresenter
 		}
 		let filter = filtersList[filterIndex]
 		if currentFilterAlreadyApplied == false {
+			filteredImageStack.push(imagesState.instrumentSourceImage)
 			applyCIFilter(to: imagesState.filterSourceImage,
 						  actionType: actionType,
 						  filtersToApply: [filter],
